@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
+import {Link} from 'react-router-dom'
 
 //* Images
-import bgImage from '../assets/bgImage.png';
-import girlImage from '../assets/girlImage.png';
+import bgImage from '../assets/images/bgImage.png';
+import girlImage from '../assets/images/girlImage.png';
 
 //* Icons
 import { TfiEmail } from "react-icons/tfi";
@@ -21,9 +22,9 @@ function Login() {
     };
 
     return (
-        <div className='bg-blue-300 h-screen flex'>
+        <div className='bg-[#8DA9C4] h-screen flex'>
             <div className='flex items-center justify-center w-full'>
-                <div className='bg-gray-200 flex items-center justify-center h-[90vh] w-[140vh] rounded-xl'>
+                <div className='bg-[#EEF4ED] flex items-center justify-center h-[90vh] w-[140vh] rounded-xl'>
                     <div className='relative'>
                         <img src={bgImage} alt='Background image' />
                         <img className='absolute inset-20 h-4/5' src={girlImage} alt='Girl image' />
@@ -31,8 +32,8 @@ function Login() {
                     <div className='bg-white rounded-xl px-20 py-8'>
                         <form>
                             {/* Title Form */}
-                            <h1 className='text-blue-900 text-2xl font-bold'>¡Bienvenido a </h1>
-                            <h1 className='text-blue-950 text-3xl font-bold'>PROTRACKER!</h1>
+                            <h1 className='text-[#13315C] text-2xl font-bold'>¡Bienvenido a </h1>
+                            <h1 className='text-[#13315C] text-3xl font-bold'>PROTRACKER!</h1>
                             <p className='mt-2'>Ingresa con tus credenciales y</p>
                             <p>empieza a trabajar.</p>
                             
@@ -42,7 +43,7 @@ function Login() {
                                     <label className='mb-1 font-bold'>
                                         Correo Electrónico
                                     </label>
-                                    <div className='flex items-center bg-gray-200 rounded-sm'>
+                                    <div className='flex items-center bg-[#D9D9D9] rounded-sm'>
                                         <TfiEmail className='text-black ml-4 mr-1' />
                                         <input
                                             type='email'
@@ -54,7 +55,7 @@ function Login() {
                                     <label className='mb-1 font-bold'>
                                         Contraseña
                                     </label>
-                                    <div className='flex items-center bg-gray-200 rounded-sm'>
+                                    <div className='flex items-center bg-[#D9D9D9] rounded-sm'>
                                         <FaKey className='text-black ml-4 mr-1' />
                                         <input
                                             type={showPassword ? 'text' : 'password'}
@@ -66,18 +67,18 @@ function Login() {
                                     </div>
                                 </div>
                                 <div className='text-center'>
-                                    <button className='text-center bg-blue-200 py-2 px-10 font-bold rounded-md align-center text-white'>Iniciar Sesión</button>
+                                    <button className='text-center bg-[#8DA9C4] py-2 px-10 font-bold rounded-md align-center text-white'>Iniciar Sesión</button>
                                 </div>
                             </div>
 
                             {/* Additional links section */}
                             <div className='flex flex-row mt-4'>
-                                <p>¿No tienes una cuenta?</p>
-                                <p>Regístrate ahora</p>
+                                <p className='text-xs'>¿No tienes una cuenta?</p>
+                                <p className='text-xs text-[#13315C]'>Regístrate ahora</p>
                             </div>
-                            <div className='flex flex-row'>
-                                <p>¿Olvidaste tu contraseña?</p>
-                                <p>Restablece tu contraseña</p>
+                            <div className='flex flex-row mt-1'>
+                                <Link to='/restore-password' className='text-xs'>¿Olvidaste tu contraseña?</Link>
+                                <Link to='/restore-password' className='text-xs text-[#13315C]'>Restablece tu contraseña</Link>
                             </div>
                         </form>
                     </div>
