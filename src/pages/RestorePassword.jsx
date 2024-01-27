@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import {Link} from 'react-router-dom'
 
 //* Images
 import bgImage from '../assets/images/bgImage.png';
@@ -7,20 +6,8 @@ import girlImage from '../assets/images/girlImage.png';
 
 //* Icons
 import { TfiEmail } from "react-icons/tfi";
-import { FaKey } from "react-icons/fa";
-import { ImEyeBlocked } from "react-icons/im";
-import { ImEye } from "react-icons/im";
 
 function RestorePassword() {
-    
-    //* Show password
-    const [showPassword, setShowPassword] = useState(false);
-
-    const seePassword = (e) => {
-        e.preventDefault();
-        setShowPassword(!showPassword);
-    };
-
     return (
         <div className='bg-[#8DA9C4] h-screen flex'>
             <div className='flex items-center justify-center w-full'>
