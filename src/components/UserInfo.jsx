@@ -1,5 +1,5 @@
 import React from 'react'
-import ReturnButton from './returnButton.jsx'
+import ReturnButton from './ReturnButton.jsx'
 
 function UserInfo({ name, email, specialty, profilePhoto}) {
   return (

@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import pipaImg from "../../assets/images/pipa-img.png"
+import profilePhoto from "../../assets/images/pipa-img.png"
 import UserInfo from '../../components/UserInfo'
 import Teams from '../../components/Teams'
 import AssignedTasks from '../../components/AssignedTasks'
@@ -11,6 +11,7 @@ function MemberInformation() {
     name: "Pipa",
     email: "pipa@utcancun.edu.mx",
     specialty: "Programadora",
+    profilePhoto: profilePhoto
   })
 
   const [teamsData, setTeamsData] = useState([])
@@ -18,13 +19,13 @@ function MemberInformation() {
   const [tasksData, setTasksData] = useState([])
 
   return (
-    <div className="h-screen container">
+    <div className="h-screen container bg-[#EEF4ED] w-full">
         <Header/>
-        <div className= "flex flex-col w-full h-full bg-[#EEF4ED] md:flex-row">
-            <UserInfo name={userData.name} email={userData.email} specialty={userData.specialty} profilePhoto={pipaImg}/>
+        <div className= "flex flex-col w-full h-auto bg-[#EEF4ED] md:flex-row">
+            <UserInfo name={userData.name} email={userData.email} specialty={userData.specialty} profilePhoto={profilePhoto}/>
             <div>
-                <Teams/>
-                <AssignedTasks/>
+                <Teams profilePhoto={userData.profilePhoto}/>
+                <AssignedTasks profilePhoto={userData.profilePhoto}/>
             </div>
         </div>
     </div>
