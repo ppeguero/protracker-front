@@ -8,6 +8,7 @@ import RequestResource from './pages/team-member/RequestResource.jsx'
 import ProjectManagerHome from './pages/proyect-manager/ProjectManagerHome.jsx'
 import RestorePassword from './pages/RestorePassword.jsx'
 import ChangePassword from './pages/ChangePassword.jsx'
+import SelectAccountType from './pages/SelectAccountType.jsx'
 
 import './index.css'
 
@@ -25,6 +26,7 @@ const router = createBrowserRouter([
   {path: "/project-manager-home", element: <ProjectManagerHome/>},
   {path: "/restore-password", element: <RestorePassword/>},
   {path: "/change-password", element: <ChangePassword/>},
+  {path: "/select-account-type", element: <SelectAccountType/>}
 ])
 
 ReactDOM.createRoot(document.getElementById('root')).render(

@@ -88,7 +88,7 @@ function Register(){
                                 </button>
                             </div>
                             <div className='text-center w-3/4 mt-4'>
-                                <button className='text-center bg-[#8DA8C5] py-2 px-10 font-bold rounded-md align-center text-white'>Registarse</button>
+                                <button className='text-center bg-[#8DA8C5] py-2 px-10 font-bold rounded-md align-center text-white'>Registrarse</button>
                             </div>
                         </div>
                     </div>
