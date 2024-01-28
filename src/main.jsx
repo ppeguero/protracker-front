@@ -4,6 +4,8 @@ import App from './App.jsx'
 import MemberInformation from './pages/proyect-manager/MemberInformation.jsx'
 import RequestResource from './pages/team-member/RequestResource.jsx'
 import ProjectManagerHome from './pages/proyect-manager/ProjectManagerHome.jsx'
+import DeliveredTaskDetails from './pages/proyect-manager/DeliveredTaskDetails.jsx'
+import TaskDetails from './pages/team-member/TaskDetails.jsx'
 
 import './index.css'
 
@@ -17,7 +19,8 @@ const router = createBrowserRouter([
   {path: "/member-information", element: <MemberInformation/>},
   {path: "/request-resource", element: <RequestResource/>},
   {path: "/project-manager-home", element: <ProjectManagerHome/>},
-
+  {path: "/delivered-task-details", element: <DeliveredTaskDetails/>},
+  {path: "/task-details", element: <TaskDetails/>}
 ])
 
 ReactDOM.createRoot(document.getElementById('root')).render(
