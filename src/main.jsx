@@ -9,6 +9,9 @@ import ProjectManagerHome from './pages/proyect-manager/ProjectManagerHome.jsx'
 import RestorePassword from './pages/RestorePassword.jsx'
 import ChangePassword from './pages/ChangePassword.jsx'
 import SelectAccountType from './pages/SelectAccountType.jsx'
+import ProjectDetails from './pages/proyect-manager/ProjectDetails.jsx'
+import ProjectDetailsMember from './pages/team-member/ProjectDetailsMember.jsx'
+import TeamMemberHome from './pages/team-member/TeamMemberHome.jsx'
 
 import './index.css'
 
@@ -26,7 +29,10 @@ const router = createBrowserRouter([
   {path: "/project-manager-home", element: <ProjectManagerHome/>},
   {path: "/restore-password", element: <RestorePassword/>},
   {path: "/change-password", element: <ChangePassword/>},
-  {path: "/select-account-type", element: <SelectAccountType/>}
+  {path: "/select-account-type", element: <SelectAccountType/>},
+  {path: "/project-details-pj", element: <ProjectDetails/>},
+  {path: "/project-details-tm", element: <ProjectDetailsMember/>},
+  {path: "/team-member-home", element: <TeamMemberHome/>},
 ])
 
 ReactDOM.createRoot(document.getElementById('root')).render(

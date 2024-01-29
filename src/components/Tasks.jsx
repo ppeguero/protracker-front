@@ -2,7 +2,7 @@ import React from 'react'
 
 function Tasks({ profilePhoto }) {
   return (
-    <li>
+    <li className='list-none'>
       <div className="container bg-[#13315C] w-full flex justify-between px-10 py-5 rounded-xl">
         <div className=''>
             <h6 className='text-white font-medium text-xs'>Tarea 1</h6>

@@ -8,10 +8,10 @@ function Statistics() {
         Estadísticas
         </h3>
         <ul className="grid grid-cols-2 gap-8 justify-center md:justify-start mt-4">
-            <StatisticCard data={45} description={"Tareas Completadas en total"}/>
-            <StatisticCard data={9} description={"Equipos trabajando"}/>
-            <StatisticCard data={"77%"} description={"De cumplimiento en tiempo y forma"}/>
-            <StatisticCard data={"77%"} description={"De cumplimiento en tiempo y forma"}/>
+            <StatisticCard data={45} description={"Tareas Completadas en total"} color={"#8DA8C5"}/>
+            <StatisticCard data={9} description={"Equipos trabajando"} color={"#8DA8C5"}/>
+            <StatisticCard data={"77%"} description={"De cumplimiento en tiempo y forma"} color={"#8DA8C5"}/>
+            <StatisticCard data={"77%"} description={"De cumplimiento en tiempo y forma"} color={"#8DA8C5"}/>
         </ul>
     </div>
   )
