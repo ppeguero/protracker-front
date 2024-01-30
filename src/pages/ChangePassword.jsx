@@ -11,7 +11,7 @@ import { FaKey } from "react-icons/fa";
 import { ImEyeBlocked } from "react-icons/im";
 import { ImEye } from "react-icons/im";
 
-function Login() {
+function ChangePassword() {
     
     //* Show password
     const [showPassword, setShowPassword] = useState(false);
@@ -32,25 +32,10 @@ function Login() {
                     <div className='bg-white rounded-xl px-20 py-8'>
                         <form>
                             {/* Title Form */}
-                            <h1 className='text-[#13315C] text-2xl font-bold'>¡Bienvenido a </h1>
-                            <h1 className='text-[#13315C] text-3xl font-bold'>PROTRACKER!</h1>
-                            <p className='mt-2'>Ingresa con tus credenciales y</p>
-                            <p>empieza a trabajar.</p>
+                            <h1 className='text-[#13315C] text-2xl font-bold'>Restablecer Contraseña</h1>
                             
                             {/* Form */}
-                            <div>
-                                <div className='flex flex-col mb-4 mt-2'>
-                                    <label className='mb-1 font-bold'>
-                                        Correo Electrónico
-                                    </label>
-                                    <div className='flex items-center bg-[#D9D9D9] rounded-sm'>
-                                        <TfiEmail className='text-black ml-4 mr-1' />
-                                        <input
-                                            type='email'
-                                            className='bg-transparent text-black p-2 focus:outline-none'
-                                        />
-                                    </div>
-                                </div>
+                            <div className='mt-10'>
                                 <div className='flex flex-col mb-4 mt-2'>
                                     <label className='mb-1 font-bold'>
                                         Contraseña
@@ -66,19 +51,24 @@ function Login() {
                                         </button>
                                     </div>
                                 </div>
-                                <div className='text-center'>
-                                    <button className='text-center bg-[#8DA9C4] py-2 px-10 font-bold rounded-md align-center text-white'>Iniciar Sesión</button>
+                                <div className='flex flex-col mb-4 mt-2'>
+                                    <label className='mb-1 font-bold'>
+                                        Confirmar contraseña
+                                    </label>
+                                    <div className='flex items-center bg-[#D9D9D9] rounded-sm'>
+                                        <FaKey className='text-black ml-4 mr-1' />
+                                        <input
+                                            type={showPassword ? 'text' : 'password'}
+                                            className='bg-transparent text-black p-2 focus:outline-none'
+                                        />
+                                        <button onClick={seePassword} className='mr-2'>
+                                            {showPassword ? <ImEye /> : <ImEyeBlocked />}
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-
-                            {/* Additional links section */}
-                            <div className='flex flex-row mt-4'>
-                                <Link to='/register' className='text-xs'>¿No tienes una cuenta?</Link>
-                                <Link to='/register' className='text-xs text-[#13315C]'>Regístrate ahora</Link>
-                            </div>
-                            <div className='flex flex-row mt-1'>
-                                <Link to='/restore-password' className='text-xs'>¿Olvidaste tu contraseña?</Link>
-                                <Link to='/restore-password' className='text-xs text-[#13315C]'>Restablece tu contraseña</Link>
+                                <div className='text-center mt-8'>
+                                    <button className='text-center bg-[#8DA9C4] py-2 px-10 font-bold rounded-md align-center text-white'>Cambiar Contraseña</button>
+                                </div>
                             </div>
                         </form>
                     </div>
@@ -88,4 +78,4 @@ function Login() {
     );
 }
 
-export default Login;
+export default ChangePassword;
