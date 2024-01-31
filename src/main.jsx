@@ -9,9 +9,20 @@ import ProjectManagerHome from './pages/proyect-manager/ProjectManagerHome.jsx'
 import RestorePassword from './pages/RestorePassword.jsx'
 import ChangePassword from './pages/ChangePassword.jsx'
 import SelectAccountType from './pages/SelectAccountType.jsx'
+<<<<<<< HEAD
 import ProjectDetails from './pages/proyect-manager/ProjectDetails.jsx'
 import ProjectDetailsMember from './pages/team-member/ProjectDetailsMember.jsx'
 import TeamMemberHome from './pages/team-member/TeamMemberHome.jsx'
+=======
+import DeliveredTaskDetails from './pages/proyect-manager/DeliveredTaskDetails.jsx'
+import TaskDetails from './pages/team-member/TaskDetails.jsx'
+import ProfileDetails from './pages/ProfileDetails.jsx'
+import ProjectDetails from './pages/proyect-manager/ProjectDetails.jsx'
+import ProjectDetailsMember from './pages/team-member/ProjectDetailsMember.jsx'
+import TeamMemberHome from './pages/team-member/TeamMemberHome.jsx'
+import RequestDetails from './pages/proyect-manager/RequestDetails.jsx'
+import AddNewProject from './pages/proyect-manager/AddNewProject.jsx'
+>>>>>>> 244a23b5ab36d6e13d66c4da283a503bce4fca9a
 
 import './index.css'
 
@@ -19,6 +30,7 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom"
+import { element } from 'prop-types'
 
 const router = createBrowserRouter([
   {path: "/", element: <App/>},
@@ -27,12 +39,26 @@ const router = createBrowserRouter([
   {path: "/member-information", element: <MemberInformation/>},
   {path: "/request-resource", element: <RequestResource/>},
   {path: "/project-manager-home", element: <ProjectManagerHome/>},
+<<<<<<< HEAD
   {path: "/restore-password", element: <RestorePassword/>},
   {path: "/change-password", element: <ChangePassword/>},
   {path: "/select-account-type", element: <SelectAccountType/>},
   {path: "/project-details-pj", element: <ProjectDetails/>},
   {path: "/project-details-tm", element: <ProjectDetailsMember/>},
   {path: "/team-member-home", element: <TeamMemberHome/>},
+=======
+  {path: "/delivered-task-details", element: <DeliveredTaskDetails/>},
+  {path: "/task-details", element: <TaskDetails/>},
+  {path: "/Profile-Details", element: <ProfileDetails/>},
+  {path: "/project-details-pj", element: <ProjectDetails/>},
+  {path: "/project-details-tm", element: <ProjectDetailsMember/>},
+  {path: "/team-member-home", element: <TeamMemberHome/>},
+  {path: "/restore-password", element: <RestorePassword/>},
+  {path: "/change-password", element: <ChangePassword/>},
+  {path: "/select-account-type", element: <SelectAccountType/>},
+  {path: "/request-details", element: <RequestDetails/>},
+  {path: "/add-new-project", element: <AddNewProject/>}
+>>>>>>> 244a23b5ab36d6e13d66c4da283a503bce4fca9a
 ])
 
 ReactDOM.createRoot(document.getElementById('root')).render(
