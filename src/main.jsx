@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import Login from './pages/Login.jsx'
+import NotFound from './pages/NotFound.jsx'
 import Register from './pages/Register.jsx'
 import MemberInformation from './pages/proyect-manager/MemberInformation.jsx'
 import RequestResource from './pages/team-member/RequestResource.jsx'
@@ -16,6 +17,10 @@ import ProjectDetails from './pages/proyect-manager/ProjectDetails.jsx'
 import ProjectDetailsMember from './pages/team-member/ProjectDetailsMember.jsx'
 import TeamMemberHome from './pages/team-member/TeamMemberHome.jsx'
 
+import CrudProjects from './pages/team-member/CRUDS/CrudProjects.jsx'
+import CrudTeams from './pages/team-member/CRUDS/CrudTeams.jsx'
+import CrudMembers from './pages/team-member/CRUDS/CrudMembers.jsx'
+
 import './index.css'
 
 import {
@@ -25,6 +30,7 @@ import {
 
 const router = createBrowserRouter([
   {path: "/", element: <App/>},
+  {path: "*", element: <NotFound/>},
   {path: "/register", element: <Register/>},
   {path: "/login", element: <Login/>},
   {path: "/member-information", element: <MemberInformation/>},
@@ -38,7 +44,12 @@ const router = createBrowserRouter([
   {path: "/team-member-home", element: <TeamMemberHome/>},
   {path: "/restore-password", element: <RestorePassword/>},
   {path: "/change-password", element: <ChangePassword/>},
-  {path: "/select-account-type", element: <SelectAccountType/>}
+  {path: "/select-account-type", element: <SelectAccountType/>},
+
+  //* CRUDS
+  {path: "/projects", element: <CrudProjects/>},
+  {path: "/teams", element: <CrudTeams/>},
+  {path: "/members", element: <CrudMembers/>},
 ])
 
 ReactDOM.createRoot(document.getElementById('root')).render(
