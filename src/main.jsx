@@ -15,6 +15,8 @@ import ProfileDetails from './pages/ProfileDetails.jsx'
 import ProjectDetails from './pages/proyect-manager/ProjectDetails.jsx'
 import ProjectDetailsMember from './pages/team-member/ProjectDetailsMember.jsx'
 import TeamMemberHome from './pages/team-member/TeamMemberHome.jsx'
+import RequestDetails from './pages/proyect-manager/RequestDetails.jsx'
+import AddNewProject from './pages/proyect-manager/AddNewProject.jsx'
 
 import './index.css'
 
@@ -22,6 +24,7 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom"
+import { element } from 'prop-types'
 
 const router = createBrowserRouter([
   {path: "/", element: <App/>},
@@ -38,7 +41,9 @@ const router = createBrowserRouter([
   {path: "/team-member-home", element: <TeamMemberHome/>},
   {path: "/restore-password", element: <RestorePassword/>},
   {path: "/change-password", element: <ChangePassword/>},
-  {path: "/select-account-type", element: <SelectAccountType/>}
+  {path: "/select-account-type", element: <SelectAccountType/>},
+  {path: "/request-details", element: <RequestDetails/>},
+  {path: "/add-new-project", element: <AddNewProject/>}
 ])
 
 ReactDOM.createRoot(document.getElementById('root')).render(
