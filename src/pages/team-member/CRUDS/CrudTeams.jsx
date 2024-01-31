@@ -11,6 +11,7 @@ function CrudTeams() {
         {
             id_team: 1,
             nombre: 'Equipo 1',
+            miembros: ['Kevin', 'Manuel']
         },
         {
             id_team: 2,
@@ -40,6 +41,7 @@ function CrudTeams() {
                             <thead>
                                 <tr>
                                     <th className="px-4 py-2">Equipo</th>
+                                    <th className="px-4 py-2">Miembros</th>
                                     {/* <th className="px-4 py-2"></th> */}
                                     {/* <th className="px-4 py-2"></th> */}
                                     <th className="px-4 py-2">Acciones</th>
@@ -49,6 +51,7 @@ function CrudTeams() {
                                 {teams.map((team, index) => (
                                     <tr key={index}>
                                         <td className="px-4 py-2">{team.nombre}</td>
+                                        <td className="px-4 py-2">{team.miembros}</td>
                                         {/* <td className="px-4 py-2">{team.fecha_inicio}</td> */}
                                         {/* <td className="px-4 py-2">{team.estado}</td> */}
                                         <td className="px-4 py-2">

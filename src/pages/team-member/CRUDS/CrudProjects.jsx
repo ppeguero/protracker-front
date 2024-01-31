@@ -15,6 +15,12 @@ function CrudProjects() {
             estado: 'En proceso',
         },
         {
+            id_proyecto: 1,
+            proyecto: 'Sistema de estadias',
+            fecha_inicio: '30/01/2024',
+            estado: 'En proceso',
+        },
+        {
             id_proyecto: 2,
             proyecto: 'Sistema de coches',
             fecha_inicio: '30/01/2024',

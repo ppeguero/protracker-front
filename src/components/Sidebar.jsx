@@ -32,7 +32,7 @@ function Sidebar(){
                     <Link to='/teams' className='text-2xl'>Equipos</Link>
                 </div>
                 <div className='px-4 py-2 mt-5 text-white bg-[#8DA8C5] hover:bg-[#6F849F] rounded w-40 text-center'>
-                    <Link to='/members' className='text-2xl'>Miembros</Link>
+                    <Link to='/members' className='text-2xl'>Usuarios</Link>
                 </div>
             </div>
         </div>

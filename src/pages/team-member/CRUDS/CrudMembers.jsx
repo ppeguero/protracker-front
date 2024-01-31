@@ -11,13 +11,13 @@ function CrudMembers() {
         {
             id_usuario: 1,
             usuario: 'Manuel',
-            equipo: 'Equipo 1',
+            // equipo: 'Equipo 1',
             especialidad: 'Diseñador',
         },
         {
             id_usuario: 2,
             usuario: 'Kevin',
-            equipo: 'Equipo 2',
+            // equipo: 'Equipo 2',
             especialidad: 'Programador',
         },
     ]);
@@ -40,7 +40,7 @@ function CrudMembers() {
                             <thead>
                                 <tr>
                                     <th className="px-4 py-2">Usuario</th>
-                                    <th className="px-4 py-2">Equipo</th>
+                                    {/* <th className="px-4 py-2">Equipo</th> */}
                                     <th className="px-4 py-2">Especialidad</th>
                                     <th className="px-4 py-2">Acciones</th>
                                 </tr>
@@ -49,7 +49,7 @@ function CrudMembers() {
                                 {users.map((user, index) => (
                                     <tr key={index}>
                                         <td className="px-4 py-2">{user.usuario}</td>
-                                        <td className="px-4 py-2">{user.equipo}</td>
+                                        {/* <td className="px-4 py-2">{user.equipo}</td> */}
                                         <td className="px-4 py-2">{user.especialidad}</td>
                                         <td className="px-4 py-2">
                                         <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">
