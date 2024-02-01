@@ -66,6 +66,11 @@ function Sidebar({ show, setShow }) {
                 Equipos
               </div>
             </Link>
+            <Link to="/members" className="text-2xl">
+              <div className="px-4 py-2 mt-5 text-white bg-[#8DA8C5] hover:bg-[#6F849F] rounded w-40 text-center">
+                Miembros
+              </div>
+            </Link>
             <button onClick={logout} className="block md:hidden text-2xl">
               <div className="flex justify-center items-center px-4 py-2 mt-5 text-white bg-red-600 hover:bg-red-700 rounded w-40 text-center">
                 <MdOutlineLogout className="text-3xl text-white" />
@@ -114,6 +119,11 @@ function Sidebar({ show, setShow }) {
                   Equipos
                 </div>
               </Link>
+              <Link to="/members" className="text-2xl">
+              <div className="px-4 py-2 mt-5 text-white bg-[#8DA8C5] hover:bg-[#6F849F] rounded w-40 text-center">
+                Miembros
+              </div>
+            </Link>
             </div>
             <div className="hidden md:flex flex-row justify-center bottom-0 absolute">
               <div>

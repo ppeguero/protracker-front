@@ -148,20 +148,20 @@ function CrudUsers() {
         </div>
       </div>
 
-      {/* Modal para añadir usuario */}
-      <AddUserModal
-        isOpen={isAddModalOpen}
-        onRequestClose={closeAddModal}
-        handleAddOrUpdate={handleAddOrUpdate}
-      />
+        {/* Modal para añadir usuario */}
+        <AddUserModal
+          isOpen={isAddModalOpen}
+          onRequestClose={closeAddModal}
+          handleAddOrUpdate={handleAddOrUpdate}
+        />
 
-      {/* Modal para actualizar usuario */}
-      <UpdateUserModal
-        isOpen={isUpdateModalOpen}
-        onRequestClose={closeUpdateModal}
-        handleAddOrUpdate={handleAddOrUpdate}
-        selectedUser={selectedUser}
-      />
+        {/* Modal para actualizar usuario */}
+        <UpdateUserModal
+          isOpen={isUpdateModalOpen}
+          onRequestClose={closeUpdateModal}
+          handleAddOrUpdate={handleAddOrUpdate}
+          selectedUser={selectedUser}
+        />
     </div>
   );
 }

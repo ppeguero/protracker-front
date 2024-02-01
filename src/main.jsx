@@ -22,6 +22,7 @@ import AddNewProject from './pages/proyect-manager/AddNewProject.jsx'
 import CrudProjects from './pages/team-member/CRUDS/CrudProjects.jsx'
 import CrudTeams from './pages/team-member/CRUDS/CrudTeams.jsx'
 import CrudUsers from './pages/team-member/CRUDS/CrudUsers.jsx'
+import CrudMembers from './pages/team-member/CRUDS/CrudMembers.jsx'
 
 import './index.css'
 
@@ -61,6 +62,7 @@ const router = createBrowserRouter([
   {path: "/projects", element: <CrudProjects/>},
   {path: "/teams", element: <CrudTeams/>},
   {path: "/users", element: <CrudUsers/>},
+  {path: "/members", element: <CrudMembers/>},
 ])
 
 ReactDOM.createRoot(document.getElementById('root')).render(
