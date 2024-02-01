@@ -5,11 +5,11 @@ import userIcon from '../assets/icons/user.png'
 import searchIcon from '../assets/icons/search.png'
 import { Link } from 'react-router-dom'
 
-function Header() {
+function Header( { homeLink }) {
   return (
     <div className='flex justify-between box-border md:px-20 bg-[#EEF4ED]'>
         <div>
-            <Link to="/" className='w-11 h-11 bg-[#8DA8C5] p-2 rounded-lg m-5 items-center justify-center flex'>
+            <Link to={homeLink} className='w-11 h-11 bg-[#8DA8C5] p-2 rounded-lg m-5 items-center justify-center flex'>
                 <img src={homeIcon}></img>
             </Link>
         </div>
@@ -25,7 +25,7 @@ function Header() {
             <Link to="#" className='w-11 h-11 bg-[#8DA8C5] p-3 rounded-lg m-5 items-center justify-center flex'>
                 <img src={notificationIcon}></img>
             </Link>
-            <Link to="#" className='w-11 h-11 bg-[#8DA8C5] p-3 rounded-lg m-5 items-center justify-center flex'>
+            <Link to='/Profile-Details' className='w-11 h-11 bg-[#8DA8C5] p-3 rounded-lg m-5 items-center justify-center flex'>
                 <img src={userIcon}></img>
             </Link>
         </div>

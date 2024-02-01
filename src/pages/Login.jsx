@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate } from 'react-router-dom';
 
 //* Images
 import bgImage from '../assets/images/bgImage.png';
@@ -9,6 +9,7 @@ import { FaKey } from 'react-icons/fa';
 import { ImEyeBlocked, ImEye } from 'react-icons/im';
 
 function Login() {
+    const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
@@ -34,39 +35,48 @@ function Login() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('correo: ' + email);
-        console.log('contraseña: ' + password);
+        console.log('Correo: ' + email);
+        console.log('Contraseña: ' + password);
+    
         if (!email || !password) {
             setEmailErrorMessage('Por favor, ingresa tu correo electrónico');
             setPasswordErrorMessage('Por favor, ingresa tu contraseña');
             return;
         }
-        
+    
         try {
             const response = await fetch('https://localhost:8080/api/login', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ email, password })
-            }).then(response => response.json())
-            .then(data => {
-              console.log(data);
-            })
-            if (response.ok) {
-                // Autenticación exitosa
-                console.log('Inicio de sesión exitoso');
-                // Aquí puedes redirigir al usuario a la página de inicio o realizar otras acciones necesarias
-            } else {
-                // Error de autenticación
-                console.error('Error de inicio de sesión');
-                setLoginError('Correo electrónico o contraseña incorrectos');
+                body: JSON.stringify({ email, password }),
+            });
+    
+            if (!response.ok) {
+                throw new Error('Error en la solicitud: ' + response.status);
+            }
+    
+            const data = await response.json();
+    
+            console.log('Inicio de sesión exitoso');
+            localStorage.setItem('token', data.token);
+            // console.log(data.token);
+            // console.log(data.usuario.nombre_rol );
+    
+            if (data.usuario.nombre_rol === 'Administrador') {
+                navigate('/team-member-home');
+            } else if (data.usuario.nombre_rol === 'Usuario') {
+                navigate('/project-manager-home');
             }
         } catch (error) {
             console.error('Error al realizar la solicitud:', error);
-            setLoginError('Ocurrió un error al intentar iniciar sesión. Por favor, inténtalo de nuevo más tarde');
+            setLoginError(
+                'Ocurrió un error al intentar iniciar sesión. Por favor, inténtalo de nuevo más tarde'
+            );
         }
     };
+    
 
     return (
         <div className='bg-[#8DA9C4] h-screen flex'>
