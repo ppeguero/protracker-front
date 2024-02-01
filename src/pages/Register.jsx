@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ImEyeBlocked, ImEye } from "react-icons/im";
 import registerImage from '../assets/images/registerImage.png';
 import { IoMdArrowBack } from 'react-icons/io';
+import ReturnButton from '../components/ReturnButton'
 
 function Register() {
     const [showPassword, setShowPassword] = useState(false);
@@ -68,10 +69,7 @@ function Register() {
             <div className='flex items-center w-full justify-evenly'>
                 <div className='w-1/3'>
                     <h1 className='text-[#13315C] font-bold text-3xl'>P R O T R A C K E R</h1>
-                    <Link className='flex flex-row items-center'>
-                        <IoMdArrowBack />
-                        <p className='mx-2 my-8'>Regresar</p>
-                    </Link>
+                        <ReturnButton/>
                     <div className='bg-white p-8 items-center justify-center rounded-md my-12'>
                         <img className='' src={registerImage} alt="Register Image" />
                     </div>

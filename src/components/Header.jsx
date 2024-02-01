@@ -25,7 +25,7 @@ function Header() {
             <Link to="#" className='w-11 h-11 bg-[#8DA8C5] p-3 rounded-lg m-5 items-center justify-center flex'>
                 <img src={notificationIcon}></img>
             </Link>
-            <Link to="#" className='w-11 h-11 bg-[#8DA8C5] p-3 rounded-lg m-5 items-center justify-center flex'>
+            <Link to="/profile-details" className='w-11 h-11 bg-[#8DA8C5] p-3 rounded-lg m-5 items-center justify-center flex'>
                 <img src={userIcon}></img>
             </Link>
         </div>

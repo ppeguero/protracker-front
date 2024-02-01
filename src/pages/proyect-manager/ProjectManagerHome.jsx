@@ -36,7 +36,7 @@ function ProjectManagerHome() {
                   <p className="text-[#13315C] text-xl font-light md:text-left text-center mt-2">Hoy es {currentDate}</p>
                 </div>
                 <div className='my-10 md:mx-10'>
-                  <Link className='bg-[#13315C] text-white px-8 py-3 rounded-xl'>Añadir nuevo proyecto</Link>
+                  <Link to='/add-new-project' className='bg-[#13315C] text-white px-8 py-3 rounded-xl'>Añadir nuevo proyecto</Link>
                 </div>
               </div>
               <Projects/>
