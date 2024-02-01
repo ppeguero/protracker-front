@@ -7,7 +7,7 @@ const UpdateUserModal = ({ isOpen, onRequestClose, handleAddOrUpdate, selectedUs
     nombre: selectedUser.nombre || '',
     correo: selectedUser.correo || '',
     contraseña: '',  // Contraseña inicialmente vacía
-    id_rol_id: selectedUser.id_rol_id || '',
+    id_rol_id: selectedUser.id_rol_id || '', // Por defecto, mantén el ID de rol del usuario seleccionado
   });
 
   useEffect(() => {
@@ -25,22 +25,14 @@ const UpdateUserModal = ({ isOpen, onRequestClose, handleAddOrUpdate, selectedUs
     setUpdatedUser((prevUser) => ({ ...prevUser, [name]: value }));
   };
 
-  function hasOnlySpaces(str) {
-    return str.trim() === '';
-  }
+  const handleRoleChange = (e) => {
+    const { value } = e.target;
+    // Asigna el ID de rol correspondiente al valor seleccionado
+    setUpdatedUser((prevUser) => ({ ...prevUser, id_rol_id: value }));
+  };
 
   const handleUpdateUser = (e) => {
-    e.preventDefault()
-
-//  // Validación de espacios en blanco
-//  if (hasOnlySpaces(updatedUser.nombre) || hasOnlySpaces(updatedUser.contraseña) || hasOnlySpaces(updatedUser.id_rol_id)) {
-//   Swal.fire({
-//     title: '¡Error!',
-//     text: 'Los campos no pueden consistir solo en espacios en blanco.',
-//     icon: 'error',
-//   });
-//   return;
-// }
+    e.preventDefault();
 
     // Realizar la petición de actualizar usuario
     fetch(`https://localhost:8080/api/users/${selectedUser.id_usuario}`, {
@@ -62,14 +54,14 @@ const UpdateUserModal = ({ isOpen, onRequestClose, handleAddOrUpdate, selectedUs
           title: '¡Actualizado!',
           text: 'El usuario ha sido actualizado.',
           icon: 'success',
-        })}).catch((error) => {
+        });
+      }).catch((error) => {
         console.error('Fetch error:', error);
         // Muestra detalles adicionales del error
         console.error('Detalles del error:', error.response ? error.response.data : 'No hay detalles disponibles');
         Swal.fire('Error', 'Hubo un error al actualizar el usuario.', 'error');
       });
-    };
-  
+  };
 
   return (
     <Modal
@@ -127,31 +119,34 @@ const UpdateUserModal = ({ isOpen, onRequestClose, handleAddOrUpdate, selectedUs
 
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">
-            ID del Rol:
+            Rol:
           </label>
-          <input
+          <select
             required
             className="w-full px-3 py-2 border rounded-md"
-            type="text"
             name="id_rol_id"
             value={updatedUser.id_rol_id}
-            onChange={handleInputChange}
-          />
+            onChange={handleRoleChange}
+          >
+            <option value="">Seleccionar Rol</option>
+            <option value="1">Admin</option>
+            <option value="2">Usuario</option>
+          </select>
         </div>
 
         <div className='grid grid-cols-2 gap-2'>
-            <button
+          <button
             className="bg-blue-500 hover:bg-blue-700 w-full text-white font-bold py-2 px-4 rounded-md"
             type="submit"
-            >
+          >
             Actualizar Usuario
-            </button>
-            <button
+          </button>
+          <button
             className="bg-red-500 hover:bg-red-700 w-full text-white font-bold py-2 px-4 rounded-md"
             onClick={onRequestClose}
-        >
+          >
             Cancelar
-        </button>
+          </button>
         </div>
       </form>
     </Modal>
