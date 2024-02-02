@@ -25,6 +25,9 @@ import CrudTeams from './pages/team-member/CRUDS/CrudTeams.jsx'
 import CrudUsers from './pages/team-member/CRUDS/CrudUsers.jsx'
 import CrudMembers from './pages/team-member/CRUDS/CrudMembers.jsx'
 import ProtectedRoute from './pages/ProtectedRoutes.jsx';
+import Home from './pages/Home.jsx';
+import NotAuth from './pages/NotAuth.jsx';
+
 
 function AppRouter() {
 
@@ -33,9 +36,9 @@ function AppRouter() {
     const adminPermissions = ['viewCrudProjects', 'viewCrudTeams', 'viewCrudUsers', 'viewCrudMembers'];
 
 
-    const token_jwt = localStorage.getItem('token'); // Obtén el token del localStorage o del lugar donde lo estás almacenando
+    const token_jwt = localStorage.getItem('token'); 
     const decodedToken = token_jwt ? jwt_decode(token_jwt) : null;
-    const userRole = decodedToken ? decodedToken.rol_name : null; // Esto contendrá el rol o los permisos del usuario
+    const userRole = decodedToken ? decodedToken.rol_name : null; 
     
     const [user, setUser] = useState({
       token: token_jwt || null,
@@ -45,19 +48,20 @@ function AppRouter() {
   
     useEffect(() => {
       console.log(user);
-    }, []); // Asegúrate de incluir token_jwt en la dependencia del useEffect si lo utilizas dentro
+    }, []); 
   
       
     return (
         <>
           <Routes>
             {/* RUTAS PUBLICAS */}
-            {/* <Route path="/" element={<Home />} /> */}
+            <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login/>} />
             <Route path="/register" element={<Register />} />
             <Route path="/restore-password" element={<RestorePassword />} />
             <Route path="/change-password" element={<ChangePassword />} />
             <Route path="/select-account-type" element={<SelectAccountType />} />
+            <Route path="/not-auth" element={<NotAuth />} />
     
             {/* RUTAS PROTEGIDAS DEL USUARIO PROJECT MANAGER*/}
             <Route element={<ProtectedRoute

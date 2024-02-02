@@ -50,6 +50,7 @@ function Register() {
             });
             if (response.ok) {
                 // Usuario creado exitosamente
+                location.href = "/login"
                 console.log('Usuario creado exitosamente');
             } else {
                 // Error al crear el usuario
@@ -84,6 +85,7 @@ function Register() {
                             </label>
                             <div className='flex items-center bg-white rounded-sm w-3/4'>
                                 <input
+                                required
                                     type='text'
                                     name='nombre'
                                     value={formData.nombre}
@@ -101,6 +103,8 @@ function Register() {
                             </label>
                             <div className='flex items-center bg-white rounded-sm w-3/4'>
                                 <input
+                                                                required
+
                                     type='email'
                                     name='correo'
                                     value={formData.correo}
@@ -118,6 +122,7 @@ function Register() {
                             </label>
                             <div className='flex items-center justify-between bg-white rounded-sm w-3/4'>
                                 <input
+                                required
                                     type={showPassword ? 'text' : 'password'}
                                     name='contraseña'
                                     value={formData.contraseña}
@@ -138,6 +143,7 @@ function Register() {
                             </label>
                             <div className='flex items-center justify-between bg-white rounded-sm w-3/4'>
                                 <input
+                                required
                                     type={showPassword ? 'text' : 'password'}
                                     name='confirmarContraseña'
                                     value={formData.confirmarContraseña}

@@ -11,8 +11,6 @@ import jwt_decode from 'jwt-decode';
 import { useParams } from 'react-router-dom';
 
 
-import ProjectResources from "../../components/ProjectResources";
-
 function ProjectDetails() {
 
   const [projectDetail, setProjectDetail] = useState({})
@@ -79,7 +77,7 @@ function ProjectDetails() {
               <TeamCard profilePhoto={profilePicture}/>
             </div>      
             <div className="flex justify-around">
-              <ProjectResources id_project={id_project}/>
+              <CompletedTaskHistory/>
               <TeamMembersCard/>
             </div>      
           </div>

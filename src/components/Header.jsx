@@ -20,14 +20,14 @@ function Header( { homeLink }) {
             </Link>
         </div>
         <div className='flex justify-center items-center'>
-            <Link className='hidden md:flex bg-white p-2 px-4'>
+            {/* <Link className='hidden md:flex bg-white p-2 px-4'>
                 <input value="" placeholder='Buscar en la aplicación' className='placeholder:text-[#134175] focus:border-none focus:outline-none'>
                 </input>
                 <span>
                     <img src={searchIcon} className='w-6'></img>
                 </span>
                 
-            </Link>
+            </Link> */}
             <Link to='/Profile-Details' className='w-11 h-11 bg-[#8DA8C5] p-3 rounded-lg m-5 items-center justify-center flex'>
                 <img src={userIcon}></img>
             </Link>

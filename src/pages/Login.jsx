@@ -105,6 +105,7 @@ function Login() {
                                         <TfiEmail className='text-black ml-4 mr-1' />
                                         <input
                                             type='email'
+                                            required
                                             value={email}
                                             onChange={handleEmailChange}
                                             className='bg-transparent text-black p-2 focus:outline-none'
@@ -121,6 +122,7 @@ function Login() {
                                     <div className='flex items-center bg-[#D9D9D9] rounded-sm'>
                                         <FaKey className='text-black ml-4 mr-1' />
                                         <input
+                                        required
                                             type={showPassword ? 'text' : 'password'}
                                             value={password}
                                             onChange={handlePasswordChange}
@@ -146,10 +148,10 @@ function Login() {
                                 <Link to='/register' className='text-xs'>¿No tienes una cuenta?</Link>
                                 <Link to='/register' className='text-xs text-[#13315C]'>Regístrate ahora</Link>
                             </div>
-                            <div className='flex flex-row mt-1'>
+                            {/* <div className='flex flex-row mt-1'>
                                 <Link to='/restore-password' className='text-xs'>¿Olvidaste tu contraseña?</Link>
                                 <Link to='/restore-password' className='text-xs text-[#13315C]'>Restablece tu contraseña</Link>
-                            </div>
+                            </div> */}
                         </form>
                     </div>
                 </div>

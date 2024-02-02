@@ -131,8 +131,9 @@ const AddUserModal = ({ isOpen, onRequestClose, handleAddOrUpdate }) => {
             onChange={handleInputChange}
           >
             <option value="">Seleccionar Rol</option>
-            <option value="1">Admin</option>
-            <option value="2">Usuario</option>
+            <option value="1">Administrador</option>
+            <option value="2">Project Manager</option>
+            <option value="2">Miembro</option>
           </select>
         </div>
 

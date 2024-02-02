@@ -152,14 +152,26 @@ const UpdateProjectModal = ({ isOpen, onRequestClose, handleAddOrUpdate, selecte
           <label className="block text-gray-700 text-sm font-bold mb-2">
             Estado:
           </label>
-          <input
+          {/* <input
             required
             className="w-full px-3 py-2 border rounded-md"
             type="text"
             name="id_estado_id"
             value={updatedProject.id_estado_id}
             onChange={handleInputChange}
-          />
+          /> */}
+           <select
+            required
+            className="w-full px-3 py-2 border rounded-md"
+            name="id_estado_id"
+            value={updatedProject.id_estado_id}
+            onChange={handleInputChange}
+          >
+            <option value="">Seleccionar Rol</option>
+            <option value="1">Completado</option>
+            <option value="2">En proceso</option>
+            <option value="3">Pendiente</option>
+          </select>
         </div>
 
         <div className="mb-4">

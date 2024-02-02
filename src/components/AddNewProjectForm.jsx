@@ -40,7 +40,7 @@ function AddNewProjectForm() {
         return response.json();
       })
       .then((data) => {
-        setNewUser({
+        setNewProject({
         nombre: '',
         descripcion: '',
         fecha_inicio: '',
@@ -73,6 +73,7 @@ function AddNewProjectForm() {
         <div className='space-y-1'>
           <h3 className='text-xl font-semibold text-[#13315C]'>Equipo</h3>
           <input value={newProject.id_equipo_id}  onChange={(e) => setNewProject({ ...newProject, id_equipo_id: e.target.value })} className='p-2 w-80'></input>
+        
         </div>
         <img src={teamMembers} className='w-20'></img>
         <button type='submit' className='bg-[#13315C] text-white p-2 w-80 capitalize hover:bg-[#8DA8C5]'>Crear proyecto</button>

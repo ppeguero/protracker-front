@@ -9,18 +9,24 @@ function RequestResource({id_usuario, id_proyecto_id}) {
   const { id_recurso } = useParams(); 
   console.log(id_recurso)
 
-  const [userData, setUserData] = useState({
-    userName: "Pipa",
-    email: "pipa@utcancun.edu.mx",
-    project: "Proyecto SGE",
+  const [requestData, setRequestData] = useState({
+    userName: "",
+    email: "",
+    project: "",
     id_proyecto_id: 4,
+    name_resource: "Recurso 1",
+    type_resource: "Tipo 1",
+    quantity_resource: 1,
+    date_resource: "2023-04-01",
+    limit_date_resource: "2023-04-10",
+    reason_resource: "Razon 1"
  // cambiar esto para cuando esten los modulos de proyecto para seleccionar el proyecto en el cual se esta solicitando los recursos
   }) // hacer un fetch ? para traer la informacion del usuario
 
   const [resourceName, setResourceName] = useState('');
   const [type, setType] = useState('')
   const [quantity, setQuantity] = useState(0)
-  // const [date, setDate] = useState('')
+  const [date, setDate] = useState('')
   const [limitDate, setLimitDate] = useState('')
   const [reason, setReason] = useState('')
 
@@ -73,7 +79,7 @@ function RequestResource({id_usuario, id_proyecto_id}) {
 
   return (
     <div className="h-screen container bg-[#EEF4ED] w-full">
-        <Header/>
+        <Header homeLink={'/team-member-home'}/>
         <div className= "flex flex-col w-full h-auto bg-[#EEF4ED] md:flex-row">
           <div className='flex flex-col user-info mx-10'>
             <ReturnButton link={"/"}/>
@@ -85,13 +91,18 @@ function RequestResource({id_usuario, id_proyecto_id}) {
                     Información del solicitante 
                   </h3>
                   <label htmlFor="" className='text-[#134175] text-xl font-light'>Nombre del solicitante</label>
-                  <input type="text" value={userData.userName} className='bg-[#fff] p-2 px-3 text-[#13315C] my-2' onChange={(e) => setData({ ...data, userName: e.target.value })}/>
+                  <input type="text" value={requestData.userName} className='bg-[#fff] p-2 px-3 text-[#13315C] my-2' onChange={(e) => setRequestData({ ...data, userName: e.target.value })}/>
 
                   <label htmlFor="" className='text-[#134175] text-xl font-light'>Correo electrónico</label>
-                  <input type="text" value={userData.email} className='bg-[#fff] p-2 px-3 text-[#13315C] my-2' onChange={(e) => setData({ ...data, email: e.target.value })}/>
+                  <input type="text" value={requestData.email} className='bg-[#fff] p-2 px-3 text-[#13315C] my-2' onChange={(e) => setRequestData({ ...data, email: e.target.value })}/>
 
                   <label htmlFor="" className='text-[#134175] text-xl font-light'>Proyecto</label>
-                  <input type="text" value={userData.project} className='bg-[#fff] p-2 px-3 text-[#13315C] my-2' onChange={(e) => setData({ ...data, project: e.target.value })}/>
+                  <select value={requestData.id_proyecto_id} onChange={(e) => setRequestData({ ...data, id_proyecto_id: e.target.value })} className='p-2 w-30'>
+                    <option value="">Seleccionar</option>
+                    <option value="Humano">Proyecto 1</option>
+                    <option value="Material">Proyecto 2</option>
+                    <option value="Otro">Proyecto 3</option>
+                  </select>
 
                   <button type='submit' className='hidden md:block bg-[#8DA8C5] p-2 px-3 md:my-16'>Realizar solicitud</button>
                 </div>
@@ -100,10 +111,10 @@ function RequestResource({id_usuario, id_proyecto_id}) {
                     Información del recurso 
                   </h3>
                   <label htmlFor="" className='text-[#134175] text-xl font-light '>Nombre del recurso</label>
-                  <input type="text" value={resourceName} className='bg-[#fff] p-2 px-3 text-[#13315C] my-2' onChange={(e) => setResourceName(e.target.value )}/>
+                  <input type="text" value={requestData.name_resource} className='bg-[#fff] p-2 px-3 text-[#13315C] my-2' onChange={(e) => setRequestData({ ...data, name_resource: e.target.value })}/>
 
                   <label htmlFor="" className='text-[#134175] text-xl font-light'>Tipo</label>
-                  <select value={type} onChange={(e) => setType(e.target.value)} className='p-2 w-30'>
+                  <select value={requestData.type_resource} onChange={(e) => setRequestData({ ...data, type_resource: e.target.value })} className='p-2 w-30'>
                     <option value="">Seleccionar</option>
                     <option value="Humano">Humano</option>
                     <option value="Material">Material</option>
@@ -111,21 +122,21 @@ function RequestResource({id_usuario, id_proyecto_id}) {
                 </select>
 
                   <label htmlFor="" className='text-[#134175] text-xl font-light'>Cantidad</label>
-                  <input min={1} type="number" value={quantity} className='bg-[#fff] p-2 px-3 text-[#13315C] md:my-2' onChange={(e) => setQuantity(parseInt(e.target.value))}/>
+                  <input min={1} type="number" value={requestData.quantity_resource} className='bg-[#fff] p-2 px-3 text-[#13315C] md:my-2' onChange={(e) => setRequestData({ ...data, quantity_resource: e.target.value })}/>
 
                 </div>
                 <div className='flex flex-col'>
                   <h3 className="text-xl font-bold text-[#13315C] text-center mt-4 md:m-0 md:text-left">
                   ‎ 
                   </h3>
-                  {/* <label htmlFor="" className='text-[#134175] text-xl font-light '>Fecha de disponibilidad del recurso</label>
-                  <input type="date" value={date} className='bg-[#fff] p-2 px-3 text-[#13315C] my-2' onChange={(e) => setData({ ...data, date: e.target.value })}/> */}
+                  <label htmlFor="" className='text-[#134175] text-xl font-light '>Fecha de disponibilidad del recurso</label>
+                  <input type="date" value={requestData.date_resource} className='bg-[#fff] p-2 px-3 text-[#13315C] my-2' onChange={(e) => setRequestData({ ...data, date_resource: e.target.value })}/>
 
                   <label htmlFor="" className='text-[#134175] text-xl font-light'>Fecha limite, si aplica</label>
-                  <input type="date" value={limitDate} className='bg-[#fff] p-2 px-3 text-[#13315C] my-2' onChange={(e) => setLimitDate(e.target.value)}/>
+                  <input type="date" value={requestData.limit_date_resource} className='bg-[#fff] p-2 px-3 text-[#13315C] my-2' onChange={(e) => setRequestData({ ...data, limit_date_resource: e.target.value })}/>
 
                   <label htmlFor="" className='text-[#134175] text-xl font-light'>Razón detrás de la solicitud</label>
-                  <textarea type="text" value={reason} className='bg-[#fff] p-2 px-3 text-[#13315C] my-2' onChange={(e) => setReason(e.target.value)}/>
+                  <textarea type="text" value={requestData.reason_resource} className='bg-[#fff] p-2 px-3 text-[#13315C] my-2' onChange={(e) => setRequestData({ ...data, reason_resource: e.target.value })}/>
 
                   <button type='submit' className=' md:hidden bg-[#8DA8C5] p-2 px-3 my-5'>Realizar solicitud</button>
 

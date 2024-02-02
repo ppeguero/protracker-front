@@ -11,7 +11,7 @@ const AddMemberModal = ({ isOpen, onRequestClose, handleAddOrUpdate }) => {
   });
 
   const [isAddingMember, setIsAddingMember] = useState(false);
-
+  const [users, setUsers] = useState([]);
 
 //   function hasOnlySpaces(str) {
 //     return str.trim() === '';
@@ -68,6 +68,16 @@ setIsAddingMember(true); // Activa el estado para desactivar el botón
         setIsAddingMember(false); // Desactiva el estado después de que se complete la solicitud
       });;
   };
+
+  useEffect(() => {
+    fetch("https://localhost:8080/api/users/")
+        .then(response => response.json())
+        .then(data => {
+          console.log(data);
+          setUsers(data);
+        })
+        .catch(error => console.error("Fetch error:", error));
+  }, [])
   
 
   return (
@@ -108,13 +118,14 @@ setIsAddingMember(true); // Activa el estado para desactivar el botón
             onChange={handleInputChange}
             placeholder="Usuario"
           />
+          
         </div>
         
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">
             Especialidad
           </label>
-          <input
+          {/* <input
             required
             className="w-full px-3 py-2 border rounded-md"
             type="text"
@@ -122,7 +133,18 @@ setIsAddingMember(true); // Activa el estado para desactivar el botón
             value={newMember.id_especialidad_id}
             onChange={handleInputChange}
             placeholder="Especialidad"
-          />
+          /> */}
+          <select
+            required
+            className="w-full px-3 py-2 border rounded-md"
+            name="id_rol_id"
+            value={newMember.id_especialidad_id}
+            onChange={handleInputChange}
+          >
+            <option value="">Seleccionar Rol</option>
+            <option value="1">Programador</option>
+            <option value="2">Diseñador</option>
+          </select>
         </div>
 
         <div className="grid grid-cols-2 gap-2">

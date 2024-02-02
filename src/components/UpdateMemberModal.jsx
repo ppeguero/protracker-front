@@ -103,7 +103,7 @@ const UpdateMemberModal = ({ isOpen, onRequestClose, handleAddOrUpdate, selected
           <label className="block text-gray-700 text-sm font-bold mb-2">
             Especialidad
           </label>
-          <input
+          {/* <input
             
             className="w-full px-3 py-2 border rounded-md"
             type="text"
@@ -111,7 +111,18 @@ const UpdateMemberModal = ({ isOpen, onRequestClose, handleAddOrUpdate, selected
             value={updatedMember.id_especialidad_id}
             onChange={handleInputChange}
             placeholder="Especialidad"
-          />
+          /> */}
+          <select
+            required
+            className="w-full px-3 py-2 border rounded-md"
+            name="id_rol_id"
+            value={updatedMember.id_especialidad_id}
+            onChange={handleInputChange}
+          >
+            <option value="">Seleccionar Rol</option>
+            <option value="1">Programador</option>
+            <option value="2">Diseñador</option>
+          </select>
         </div>  
 
         <div className="grid grid-cols-2 gap-2">
