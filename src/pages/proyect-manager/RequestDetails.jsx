@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import Header from "../../components/Header";
 import ResourceRequest from "../../components/ResourceRequest";
 import RequestDetailsCard from "../../components/RequestDetailsCard";
 
 function RequestDetails() {
+
+  
+
   return (
     <div className="w-full container h-screen bg-[#EEF4ED]">
       <Header />

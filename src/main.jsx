@@ -25,6 +25,7 @@ import {
   RouterProvider,
 } from "react-router-dom"
 import { element } from 'prop-types'
+import AddResource from './pages/proyect-manager/AddResource.jsx'
 
 const router = createBrowserRouter([
   {path: "/", element: <App/>},
@@ -43,7 +44,8 @@ const router = createBrowserRouter([
   {path: "/change-password", element: <ChangePassword/>},
   {path: "/select-account-type", element: <SelectAccountType/>},
   {path: "/request-details", element: <RequestDetails/>},
-  {path: "/add-new-project", element: <AddNewProject/>}
+  {path: "/add-new-project", element: <AddNewProject/>},
+  {path: "/add-resource", element: <AddResource/>}
 ])
 
 ReactDOM.createRoot(document.getElementById('root')).render(

@@ -8,8 +8,13 @@ import profilePicture from "../../assets/images/pipa-img.png"
 import CompletedTaskHistory from "../../components/CompletedTaskHistory";
 import TeamMembersCard from "../../components/TeamMembersCard";
 import Calendar from "../../components/Calendar"
+import ProjectResources from '../../components/ProjectResources'
 
 function ProjectDetailsMember() {
+
+  const id_project = 4;
+
+
   return (
     <div className='h-screen container bg-[#EEF4ED] w-full'>
       <Header/>
@@ -31,7 +36,7 @@ function ProjectDetailsMember() {
               </div>            
           </div>
           <div className='flex justify-around'>
-            <CompletedTaskHistory/>
+            <ProjectResources id_project={id_project}/>
           </div>
         </div>
         <Calendar/>

@@ -8,7 +8,11 @@ import profilePicture from "../../assets/images/pipa-img.png"
 import CompletedTaskHistory from "../../components/CompletedTaskHistory";
 import TeamMembersCard from "../../components/TeamMembersCard";
 
+import ProjectResources from "../../components/ProjectResources";
+
 function ProjectDetails() {
+
+  const id_project = 4;
 
   return (
     <div className="h-screen container bg-[#EEF4ED] w-full ">
@@ -32,7 +36,7 @@ function ProjectDetails() {
               <TeamCard profilePhoto={profilePicture}/>
             </div>      
             <div className="flex justify-around">
-              <CompletedTaskHistory/>
+              <ProjectResources id_project={id_project}/>
               <TeamMembersCard/>
             </div>      
           </div>
