@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Link, useNavigate } from 'react-router-dom';
+import {Link } from 'react-router-dom';
 
 //* Images
 import bgImage from '../assets/images/bgImage.png';
@@ -9,7 +9,6 @@ import { FaKey } from 'react-icons/fa';
 import { ImEyeBlocked, ImEye } from 'react-icons/im';
 
 function Login() {
-    const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
@@ -64,10 +63,14 @@ function Login() {
             // console.log(data.token);
             // console.log(data.usuario.nombre_rol );
     
-            if (data.usuario.nombre_rol === 'Administrador') {
-                navigate('/team-member-home');
-            } else if (data.usuario.nombre_rol === 'Usuario') {
-                navigate('/project-manager-home');
+            if (data.usuario.nombre_rol === 'Miembro') {
+                // navigate('/team-member-home');
+                location.href = '/team-member-home';
+            } else if (data.usuario.nombre_rol === 'Project Manager') {
+                // navigate('/project-manager-home');
+                location.href = '/project-manager-home';
+            } else if (data.usuario.nombre_rol === 'Administrador') {
+                location.href = '/projects';
             }
         } catch (error) {
             console.error('Error al realizar la solicitud:', error);

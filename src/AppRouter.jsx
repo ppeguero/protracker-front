@@ -28,32 +28,25 @@ import ProtectedRoute from './pages/ProtectedRoutes.jsx';
 
 function AppRouter() {
 
+    const projectManagerPermissions = ['viewHome', 'addProject', 'viewDeliveredTaskDetails', 'viewMemberInformation', 'viewProjectDetails', 'viewRequestDetails', 'viewProfileDetails'];
+    const memberPermissions = ['viewTeamMemberHome', 'viewTaskDetails', 'viewProfileDetails', 'viewProjectDetailsMember', 'viewRequestResource'];
+    const adminPermissions = ['viewCrudProjects', 'viewCrudTeams', 'viewCrudUsers', 'viewCrudMembers'];
+
+
     const token_jwt = localStorage.getItem('token'); // Obtén el token del localStorage o del lugar donde lo estás almacenando
     const decodedToken = token_jwt ? jwt_decode(token_jwt) : null;
     const userRole = decodedToken ? decodedToken.rol_name : null; // Esto contendrá el rol o los permisos del usuario
     
     const [user, setUser] = useState({
-      permissions: ['ok'],
-      user_rol: userRole,
+      token: token_jwt || null,
+      permissions: decodedToken ? decodedToken.rol_permissions.split(', ') : [],
+      user_rol: userRole || '',
     });
-    
+  
     useEffect(() => {
-      if (token_jwt) {
-        const decodedToken = jwt_decode(token_jwt);
-        const userRole = decodedToken.rol_name;
-        const permissions = decodedToken.permissions || []; // Asegurarse de que permissions esté definido
-        const user = { user_rol: userRole, permissions };
-        setUser({
-          permissions: ['ok'],
-          user_rol: userRole,
-        });
-        console.log(decodedToken);
-      } else {
-        setUser({ user_rol: null, permissions: [] });
-      }
-    }, []);
-    
-
+      console.log(user);
+    }, []); // Asegúrate de incluir token_jwt en la dependencia del useEffect si lo utilizas dentro
+  
       
     return (
         <>
@@ -65,27 +58,89 @@ function AppRouter() {
             <Route path="/restore-password" element={<RestorePassword />} />
             <Route path="/change-password" element={<ChangePassword />} />
             <Route path="/select-account-type" element={<SelectAccountType />} />
-            <Route path="/request-details" element={<RequestDetails />} />
-            <Route path="/add-new-project" element={<AddNewProject />} />
     
-            {/* RUTAS PROTEGIDAS DEL USUARIO */}
-            <Route element={<ProtectedRoute isAllowed={user.user_rol === "Usuario" && user.permissions.includes('ok') } />}>
-              <Route path="/member-information" element={<MemberInformation />} />
-              <Route path="/request-resource" element={<RequestResource />} />
+            {/* RUTAS PROTEGIDAS DEL USUARIO PROJECT MANAGER*/}
+            <Route element={<ProtectedRoute
+            isAllowed={ !!user.token && user.user_rol == "Project Manager" &&
+              user.permissions.includes('viewHome') &&
+              user.permissions.includes('addProject') &&
+              user.permissions.includes('viewDeliveredTaskDetails') &&
+              user.permissions.includes('viewMemberInformation') &&
+              user.permissions.includes('viewProjectDetails') &&
+              user.permissions.includes('viewRequestDetails') &&
+              user.permissions.includes('viewProfileDetails')
+            }
+            />}>
               <Route path="/project-manager-home" element={<ProjectManagerHome />} />
-              <Route path="/project-details-pj" element={<ProjectDetails />} />
-              <Route path="/project-details-tm" element={<ProjectDetailsMember />} />
-              <Route path="/team-member-home" element={<TeamMemberHome />} />
+              <Route path="/add-new-project" element={<AddNewProject />} />
               <Route path="/delivered-task-details" element={<DeliveredTaskDetails />} />
-              <Route path="/task-details" element={<TaskDetails />} />
-              <Route path="/Profile-Details" element={<ProfileDetails />} />
+              <Route path="/member-information" element={<MemberInformation />} />
               <Route path="/project-details-pj" element={<ProjectDetails />} />
+              <Route path="/request-details" element={<RequestDetails />} />
+              {/* <Route path="/Profile-Details" element={<ProfileDetails />} /> */}
+            </Route>
+
+            {/* RUTAS PROTEGIDAS DEL USUARIO MEMBERS*/}
+            <Route element={<ProtectedRoute
+            isAllowed={ !!user.token &&
+              user.user_rol == "Miembro" &&
+              user.permissions.includes('viewTeamMemberHome') &&
+              user.permissions.includes('viewTaskDetails') &&
+              user.permissions.includes('viewProfileDetails') &&
+              user.permissions.includes('viewProjectDetailsMember') &&
+              user.permissions.includes('viewRequestResource')
+            }
+            />}>
+              <Route path="/team-member-home" element={<TeamMemberHome />} />
+              <Route path="/task-details" element={<TaskDetails />} />
+              {/* <Route path="/Profile-Details" element={<ProfileDetails />} /> */}
               <Route path="/project-details-tm" element={<ProjectDetailsMember />} />
+              <Route path="/request-resource" element={<RequestResource />} />
+            </Route>
+
+            <Route element={<ProtectedRoute
+              isAllowed={ 
+                (!!user.token && user.user_rol === "Project Manager" &&
+                user.permissions.includes('viewHome') &&
+                user.permissions.includes('addProject') &&
+                user.permissions.includes('viewDeliveredTaskDetails') &&
+                user.permissions.includes('viewMemberInformation') &&
+                user.permissions.includes('viewProjectDetails') &&
+                user.permissions.includes('viewRequestDetails') &&
+                user.permissions.includes('viewProfileDetails'))
+                ||
+                (!!user.token &&
+                  user.user_rol == "Miembro" &&
+                  user.permissions.includes('viewTeamMemberHome') &&
+                  user.permissions.includes('viewTaskDetails') &&
+                  user.permissions.includes('viewProfileDetails') &&
+                  user.permissions.includes('viewProjectDetailsMember') &&
+                  user.permissions.includes('viewRequestResource')
+                )
+               }
+            />}>
+              <Route path="/Profile-Details" element={<ProfileDetails />} />
             </Route>
     
     
             {/* RUTAS PROTEGIDAS DEL ADMIN */}
-            <Route element={<ProtectedRoute isAllowed={user.user_rol === "Administrador" && user.permissions.includes('ok')} />}>
+            <Route element={<ProtectedRoute
+              isAllowed={
+                (!!user.token && user.user_rol === "Administrador" &&
+                  user.permissions.includes('viewCrudProjects') &&
+                  user.permissions.includes('viewCrudTeams') &&
+                  user.permissions.includes('viewCrudUsers') &&
+                  user.permissions.includes('viewCrudMembers')) ||
+                (!!user.token && user.user_rol === "Project Manager" &&
+                  user.permissions.includes('viewHome') &&
+                  user.permissions.includes('addProject') &&
+                  user.permissions.includes('viewDeliveredTaskDetails') &&
+                  user.permissions.includes('viewMemberInformation') &&
+                  user.permissions.includes('viewProjectDetails') &&
+                  user.permissions.includes('viewRequestDetails') &&
+                  user.permissions.includes('viewProfileDetails'))
+              }
+            />}>
               <Route path='/projects' element={<CrudProjects />} />
               <Route path='/teams' element={<CrudTeams />} />
               <Route path='/users' element={<CrudUsers />} />
