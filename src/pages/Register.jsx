@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ImEyeBlocked, ImEye } from "react-icons/im";
 import registerImage from '../assets/images/registerImage.png';
-import { IoMdArrowBack } from 'react-icons/io';
+import Swal from 'sweetalert2';
 import ReturnButton from '../components/ReturnButton';
 
 function Register() {
@@ -19,6 +19,7 @@ function Register() {
         contraseña: '',
         confirmarContraseña: ''
     });
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         setFormData({
@@ -33,37 +34,82 @@ function Register() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (formData.contraseña !== formData.confirmarContraseña) {
+
+        // Validación de campos vacíos y longitud máxima
+        const { nombre, correo, contraseña, confirmarContraseña } = formData;
+        if (!nombre || nombre.length > 25 || !correo || correo.length > 35 || !contraseña || !confirmarContraseña || contraseña.length < 8 || contraseña.length > 25 || confirmarContraseña.length > 25) {
+            setErrors({
+                nombre: !nombre ? 'El nombre es requerido' : nombre.length > 25 ? 'El nombre debe tener máximo 25 caracteres' : '',
+                correo: !correo ? 'El correo electrónico es requerido' : correo.length > 25 ? 'El correo electrónico debe tener máximo 25 caracteres' : '',
+                contraseña: !contraseña ? 'La contraseña es requerida' : contraseña.length < 8 ? 'La contraseña debe tener al menos 8 caracteres' : contraseña.length > 25 ? 'La contraseña debe tener máximo 25 caracteres' : '',
+                confirmarContraseña: !confirmarContraseña ? 'Por favor, confirma tu contraseña' : confirmarContraseña.length > 25 ? 'La contraseña de confirmación debe tener máximo 25 caracteres' : ''
+            });
+            return;
+        }
+
+        // Validación de coincidencia de contraseñas
+        if (contraseña !== confirmarContraseña) {
             setErrors({
                 ...errors,
                 confirmarContraseña: 'Las contraseñas no coinciden'
             });
             return;
         }
-        try {
-            const response = await fetch('https://localhost:8080/api/users', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
+
+        // Verificación de complejidad de contraseña (al menos una mayúscula, un número o un carácter especial)
+        const passwordRegex = /^(?=.*[A-Z])(?=.*[0-9\W]).{8,}$/;
+        if (!passwordRegex.test(contraseña)) {
+            setErrors({
+                ...errors,
+                contraseña: 'La contraseña debe contener al menos una mayúscula, un número o un carácter especial'
             });
-            if (response.ok) {
-                // Usuario creado exitosamente
-                console.log('Usuario creado exitosamente');
-            } else {
-                // Error al crear el usuario
-                console.error('Error al crear el usuario');
-            }
-        } catch (error) {
-            console.error('Error al realizar la solicitud:', error);
+            return;
         }
+/*
+        // Verificación de correo electrónico duplicado
+        const correoDuplicado = await verificaCorreo(correo);
+        if (!correoDuplicado) {
+            // Correo electrónico duplicado
+            setErrors({
+                ...errors,
+                correo: 'El correo electrónico ya está registrado. Por favor, utiliza otro correo electrónico.'
+            });
+            return;
+        }
+*/
+        // Registro exitoso
+        Swal.fire({
+            icon: 'success',
+            title: 'Registro exitoso',
+            text: '¡El usuario se ha registrado correctamente!'
+        }).then(() => {
+            // Redirigir al usuario al login después del registro exitoso
+            navigate('/login');
+        });
     };
 
     const seePassword = () => {
         setShowPassword(!showPassword);
     };
-
+/*
+    // Función para verificar si el correo electrónico ya está registrado en la base de datos
+    const verificaCorreo = async (correo) => {
+        try {
+            const response = await fetch('/api/verifica-correo', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ correo })
+            });
+            const data = await response.json();
+            return data.correoDisponible;
+        } catch (error) {
+            console.error('Error al verificar el correo electrónico:', error);
+            return false;
+        }
+    };
+*/
     return (
         <div className='bg-[#EEF4ED] h-screen flex'>
             <div className='flex items-center w-full justify-evenly'>
