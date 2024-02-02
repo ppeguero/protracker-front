@@ -56,12 +56,21 @@ function AppRouter() {
           <Routes>
             {/* RUTAS PUBLICAS */}
             <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login/>} />
+            {/* <Route path="/login" element={<Login/>} />
             <Route path="/register" element={<Register />} />
             <Route path="/restore-password" element={<RestorePassword />} />
-            <Route path="/change-password" element={<ChangePassword />} />
-            <Route path="/select-account-type" element={<SelectAccountType />} />
+            <Route path="/change-password" element={<ChangePassword />} /> */}
+            {/* <Route path="/select-account-type" element={<SelectAccountType />} /> */}
             <Route path="/not-auth" element={<NotAuth />} />
+
+            <Route element={<ProtectedRoute
+            isAllowed={ !user.token }
+            />}>
+              <Route path="/login" element={<Login/>} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/restore-password" element={<RestorePassword />} />
+              <Route path="/change-password" element={<ChangePassword />} />
+            </Route>
     
             {/* RUTAS PROTEGIDAS DEL USUARIO PROJECT MANAGER*/}
             <Route element={<ProtectedRoute
