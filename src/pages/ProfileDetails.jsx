@@ -66,7 +66,7 @@ function ProfileDetails() {
 
     return (
         <div className="h-screen container bg-[#EEF4ED] w-full">
-            <Header />
+            <Header homeLink={'/team-member-home'}/>
             <div className="flex flex-col w-full h-auto bg-[#EEF4ED] md:flex-row">
                 <div className='flex flex-col user-info mx-5 md:mx-10'>
                     <ReturnButton/>

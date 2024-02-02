@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 
 const UpdateTeamModal = ({ isOpen, onRequestClose, handleAddOrUpdate, selectedTeam }) => {
@@ -10,6 +10,12 @@ const UpdateTeamModal = ({ isOpen, onRequestClose, handleAddOrUpdate, selectedTe
     const { name, value } = e.target;
     setUpdatedTeam((prevData) => ({ ...prevData, [name]: value }));
   };
+
+  useEffect(() => {
+    setUpdatedTeam({
+      nombre: selectedTeam.nombre || '',
+    });
+  }, [selectedTeam]);
 
   const updateTeam = (e) => {
     e.preventDefault();

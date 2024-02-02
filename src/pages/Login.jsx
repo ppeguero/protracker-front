@@ -70,7 +70,7 @@ function Login() {
                 // navigate('/project-manager-home');
                 location.href = '/project-manager-home';
             } else if (data.usuario.nombre_rol === 'Administrador') {
-                location.href = '/projects';
+                location.href = '/users';
             }
         } catch (error) {
             console.error('Error al realizar la solicitud:', error);

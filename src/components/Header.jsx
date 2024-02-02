@@ -4,6 +4,12 @@ import notificationIcon from '../assets/icons/notification.png'
 import userIcon from '../assets/icons/user.png'
 import searchIcon from '../assets/icons/search.png'
 import { Link } from 'react-router-dom'
+import { MdOutlineLogout } from "react-icons/md";
+
+function logout() {
+    localStorage.removeItem("token");
+    window.location.href = "/login";
+}
 
 function Header( { homeLink }) {
   return (
@@ -22,12 +28,18 @@ function Header( { homeLink }) {
                 </span>
                 
             </Link>
-            <Link to="#" className='w-11 h-11 bg-[#8DA8C5] p-3 rounded-lg m-5 items-center justify-center flex'>
-                <img src={notificationIcon}></img>
-            </Link>
             <Link to='/Profile-Details' className='w-11 h-11 bg-[#8DA8C5] p-3 rounded-lg m-5 items-center justify-center flex'>
                 <img src={userIcon}></img>
             </Link>
+            {/* <Link to="#" className='w-11 h-11 bg-[#8DA8C5] p-3 rounded-lg m-5 items-center justify-center flex'>
+                <img src={notificationIcon}></img>
+            </Link> */}
+            <button
+                  onClick={logout}
+                  className="w-11 h-11 bg-red-600 p-3 rounded-lg m-5 items-center justify-center flex"
+                >
+                  <MdOutlineLogout className="text-xl text-white" />
+                </button>
         </div>
         
     </div>
