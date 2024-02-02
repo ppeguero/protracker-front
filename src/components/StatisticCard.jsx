@@ -21,7 +21,7 @@ function StatisticCard( { data, description, color, textColor}) {
                 <button>
                 </button>
             </div>
-            <h4 style={textStyle} className=" font-bold mt-5 text-4xl   ">{data}</h4>
+            <h4 style={textStyle} className=" font-bold mt-5 text-4xl">{data}</h4>
         <p className='text-white font-extralight mt-6 text-xs'>{description}</p>
         </div>
         </div>

@@ -75,7 +75,7 @@ function AppRouter() {
               <Route path="/add-new-project" element={<AddNewProject />} />
               <Route path="/delivered-task-details" element={<DeliveredTaskDetails />} />
               <Route path="/member-information" element={<MemberInformation />} />
-              <Route path="/project-details-pj" element={<ProjectDetails />} />
+              <Route path="/project-details-pj/:id" element={<ProjectDetails />} />
               <Route path="/request-details" element={<RequestDetails />} />
               {/* <Route path="/Profile-Details" element={<ProfileDetails />} /> */}
             </Route>
