@@ -37,10 +37,10 @@ function Register() {
 
         // Validación de campos vacíos y longitud máxima
         const { nombre, correo, contraseña, confirmarContraseña } = formData;
-        if (!nombre || nombre.length > 25 || !correo || correo.length > 35 || !contraseña || !confirmarContraseña || contraseña.length < 8 || contraseña.length > 25 || confirmarContraseña.length > 25) {
+        if (!nombre || !correo || !contraseña || !confirmarContraseña || contraseña.length < 8 || contraseña.length > 25 || confirmarContraseña.length > 25) {
             setErrors({
-                nombre: !nombre ? 'El nombre es requerido' : nombre.length > 25 ? 'El nombre debe tener máximo 25 caracteres' : '',
-                correo: !correo ? 'El correo electrónico es requerido' : correo.length > 25 ? 'El correo electrónico debe tener máximo 25 caracteres' : '',
+                // nombre: !nombre ? 'El nombre es requerido' : nombre.length > 25 ? 'El nombre debe tener máximo 25 caracteres' : '',
+                // correo: !correo ? 'El correo electrónico es requerido' : correo.length > 25 ? 'El correo electrónico debe tener máximo 25 caracteres' : '',
                 contraseña: !contraseña ? 'La contraseña es requerida' : contraseña.length < 8 ? 'La contraseña debe tener al menos 8 caracteres' : contraseña.length > 25 ? 'La contraseña debe tener máximo 25 caracteres' : '',
                 confirmarContraseña: !confirmarContraseña ? 'Por favor, confirma tu contraseña' : confirmarContraseña.length > 25 ? 'La contraseña de confirmación debe tener máximo 25 caracteres' : ''
             });
@@ -83,7 +83,24 @@ function Register() {
             });
             return;
         }
+
+        
 */
+            const response = await fetch('https://localhost:8080/api/users', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+            if (response.ok) {
+                // Usuario creado exitosamente
+                console.log('Usuario creado exitosamente');
+            } else {
+                // Error al crear el usuario
+                console.error('Error al crear el usuario');
+            }
+
         // Registro exitoso
         Swal.fire({
             icon: 'success',

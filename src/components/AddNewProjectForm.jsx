@@ -60,19 +60,19 @@ function AddNewProjectForm() {
       <form className='space-y-6' onSubmit={handleAddProject}>
         <div className='space-y-1'>
           <h3 className='text-xl font-semibold text-[#13315C]'>Nombre del proyecto</h3>
-          <input value={newProject.nombre}  onChange={(e) => setNewProject({ ...newProject, nombre: e.target.value })} className='p-2 w-80'></input>
+          <input required value={newProject.nombre}  onChange={(e) => setNewProject({ ...newProject, nombre: e.target.value })} className='p-2 w-80'></input>
         </div>
         <div className='space-y-1'>
           <h3 className='text-xl font-semibold text-[#13315C]'>Descripción</h3>
-          <textarea value={newProject.descripcion} onChange={(e) => setNewProject({ ...newProject, descripcion: e.target.value })} className='p-2 w-80 h-24' type='text-area' maxLength={255}></textarea>
+          <textarea required value={newProject.descripcion} onChange={(e) => setNewProject({ ...newProject, descripcion: e.target.value })} className='p-2 w-80 h-24' type='text-area' maxLength={255}></textarea>
         </div>
         <div className='space-y-1'>
           <h3 className='text-xl font-semibold text-[#13315C]'>Fecha inicio</h3>
-          <input type="date" value={newProject.fecha_inicio} onChange={(e) => setNewProject({ ...newProject, fecha_inicio: e.target.value })} className='p-2 w-80'></input>
+          <input required type="date" value={newProject.fecha_inicio} onChange={(e) => setNewProject({ ...newProject, fecha_inicio: e.target.value })} className='p-2 w-80'></input>
         </div>
         <div className='space-y-1'>
           <h3 className='text-xl font-semibold text-[#13315C]'>Equipo</h3>
-          <input value={newProject.id_equipo_id}  onChange={(e) => setNewProject({ ...newProject, id_equipo_id: e.target.value })} className='p-2 w-80'></input>
+          <input required value={newProject.id_equipo_id}  onChange={(e) => setNewProject({ ...newProject, id_equipo_id: e.target.value })} className='p-2 w-80'></input>
         
         </div>
         <img src={teamMembers} className='w-20'></img>

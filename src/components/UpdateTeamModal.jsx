@@ -1,10 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
+import jwt_decode from 'jwt-decode';
 
 const UpdateTeamModal = ({ isOpen, onRequestClose, handleUpdateTeam, selectedTeam }) => {
+  
+  const token_jwt = localStorage.getItem('token'); // Obtén el token del localStorage o del lugar donde lo estás almacenando
+  const decodedToken = token_jwt ? jwt_decode(token_jwt) : null;
+  const iduser = decodedToken ? decodedToken.idUser : null; // Esto contendrá el rol o los permisos del usuario
+
+
   const [updatedTeam, setUpdatedTeam] = useState({
     nombre: selectedTeam.nombre || '',
     miembros: selectedTeam.miembros || [],
+    id_usuario_id: iduser
   });
 
   const [usuarios, setUsuarios] = useState([]);

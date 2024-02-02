@@ -8,8 +8,7 @@ import jwt_decode from 'jwt-decode';
 function NotFound() {
   const token_jwt = localStorage.getItem('token'); // Obtén el token del localStorage o del lugar donde lo estás almacenando
   const decodedToken = token_jwt ? jwt_decode(token_jwt) : null;
-  const userRoles = decodedToken ? decodedToken.rol : null; // Esto contendrá el rol o los permisos del usuario
-    
+  const nombre_rol = decodedToken ? decodedToken.rol_name : null; // Esto contendrá el rol o los permisos del usuario
   return (
     <div className='flex flex-col items-center justify-center h-screen bg-gray-100'>
       <div className='w-full p-10 '>
@@ -23,9 +22,27 @@ function NotFound() {
         <p className='text-xl mb-4'>Por favor, regresa a la sesión anterior o accede a otra con los permisos necesarios</p>
         <div className='flex justify-around'>
 
-        <button onClick={() => window.history.back()} className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2'>
-        Regresar a la sesión
-        </button>
+        {
+          nombre_rol === "Miembro"?
+          
+            <button onClick={() => location.href="/team-member-home"} className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2'>
+            Regresar a la sesión
+            </button>
+          :
+          nombre_rol === "Administrador" ?
+          <button onClick={() => location.href="/users"} className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2'>
+            Regresar a la sesión
+            </button>
+          :
+          nombre_rol === "Project Manager" ?
+          <button onClick={() => location.href="/project-manager-home"} className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2'>
+            Regresar a la sesión
+            </button>
+          :
+          null
+
+        }
+        
         <button onClick={() => {
             localStorage.removeItem('token');
             location.href = '/'
@@ -35,7 +52,6 @@ function NotFound() {
         </div>
       </div>
       :
-      
       <Link to={'/'} className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'>
         Inicia Sesión
       </Link>
