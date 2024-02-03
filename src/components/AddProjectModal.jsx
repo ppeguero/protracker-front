@@ -1,9 +1,35 @@
 import React, { useState, useEffect} from 'react';
 import Modal from 'react-modal';
 import Swal from 'sweetalert2';
+import jwt_decode from 'jwt-decode';
 
 
 const AddProjectModal = ({ isOpen, onRequestClose, handleAddOrUpdate }) => {
+
+  const token_jwt = localStorage.getItem('token'); // Obtén el token del localStorage o del lugar donde lo estás almacenando
+  const decodedToken = token_jwt ? jwt_decode(token_jwt) : null;
+  const iduser = decodedToken ? decodedToken.idUser : null; // Esto contendrá el rol o los permisos del usuario
+
+  const [teams, setTeams] = useState([])
+
+
+
+  const [data, setData] = useState({
+      nombre: '',
+      miembros: [],
+      id_usuario_id: iduser
+  });
+
+  useEffect(() => {
+    fetch(`https://localhost:8080/api/teams`)
+    .then(response => response.json())
+    .then(data => {
+      setTeams(data.equipos);
+      // console.log(data.equipos);
+    })
+  }, [])
+
+
   const [newProject, setNewProject] = useState({
     nombre: '',
     descripcion: '',
@@ -81,7 +107,7 @@ setIsAddingProject(true); // Activa el estado para desactivar el botón
       isOpen={isOpen}
       onRequestClose={onRequestClose}
       contentLabel="Añadir Proyecto"
-      className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 rounded-md shadow-md"
+      className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white md:w-3/6 p-8 rounded-md shadow-md"
       overlayClassName="fixed inset-0 bg-black bg-opacity-50"
     >
       <h2 className="text-2xl font-bold mb-4">Añadir Proyecto</h2>
@@ -178,15 +204,23 @@ setIsAddingProject(true); // Activa el estado para desactivar el botón
           <label className="block text-gray-700 text-sm font-bold mb-2">
             Equipo:
           </label>
-          <input
+          {/* teams */}
+          <select
             required
             className="w-full px-3 py-2 border rounded-md"
-            type="text"
             name="id_equipo_id"
             value={newProject.id_equipo_id}
             onChange={handleInputChange}
             placeholder="Equipo a cargo"
-          />
+          >
+            <option value="">Equipo a cargo</option>
+            {
+              teams.map((team) => (
+                <option value={team.id_equipo}>{team.nombre}</option>
+              ))
+            }
+          </select>
+
         </div>
 
 

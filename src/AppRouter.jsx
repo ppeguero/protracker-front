@@ -46,9 +46,9 @@ function AppRouter() {
       user_rol: userRole || '',
     });
   
-    useEffect(() => {
-      console.log(user);
-    }, []); 
+    // useEffect(() => {
+    //   console.log(user);
+    // }, []); 
   
       
     return (

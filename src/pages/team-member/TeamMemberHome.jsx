@@ -8,6 +8,24 @@ import profilePhoto from '../../assets/images/pipa-img.png';
 import jwt_decode from 'jwt-decode'; // Paquete para decodificar tokens JWT
 
 function TeamMemberHome() {
+
+  const token_jwt = localStorage.getItem('token'); // Obtén el token del localStorage o del lugar donde lo estás almacenando
+  const decodedToken = token_jwt ? jwt_decode(token_jwt) : null;
+  const userRole = decodedToken ? decodedToken.rol_name : null; // Esto contendrá el rol o los permisos del usuario
+  
+  const [user, setUser] = useState({
+    token: token_jwt || null,
+    permissions: decodedToken ? decodedToken.rol_permissions.split(', ') : [],
+    id_user: decodedToken ? decodedToken.idUser : null,
+    name: decodedToken ? decodedToken.user_name : null,
+  });
+
+  useEffect(() => {
+    console.log(user);
+    console.log(user.id_user);
+  }, []); // Asegúrate de incluir token_jwt en la dependencia del useEffect si lo utilizas dentro
+
+
   const [currentUser, setCurrentUser] = useState(null);
   const [currentDate, setCurrentDate] = useState('');
 

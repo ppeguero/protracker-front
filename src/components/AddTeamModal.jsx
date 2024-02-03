@@ -83,7 +83,7 @@ const AddTeamModal = ({ isOpen, onRequestClose, handleAddTeam }) => {
             isOpen={isOpen}
             onRequestClose={onRequestClose}
             contentLabel="Agregar Equipo"
-            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 rounded-md shadow-md"
+            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 md:w-3/6 bg-white p-8 rounded-md shadow-md"
             overlayClassName="fixed inset-0 bg-black bg-opacity-50"
         >
             <h2 className="text-2xl font-bold mb-4">Agregar Equipo</h2>

@@ -1,21 +1,50 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import teamMembers from '../assets/icons/participants.png'
 import Swal from 'sweetalert2';
+import jwt_decode from 'jwt-decode';
+
 
 function AddNewProjectForm() {
+
+  const [tokenData, setTokenData] = useState()
+  const [teams, setTeams] = useState([])
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewProject((prevProject) => ({ ...prevProject, [name]: value }));
+  };
+
+  useEffect(()=>{
+    const token_jwt = localStorage.getItem('token'); // Obtén el token del localStorage o del lugar donde lo estás almacenando
+    const decodedToken = token_jwt ? jwt_decode(token_jwt) : null;
+    if(decodedToken){
+        setTokenData(decodedToken)
+        console.log(decodedToken);
+        setNewProject({ ...newProject, id_usuario_id: decodedToken.idUser });
+      }
+
+      fetch(`https://localhost:8080/api/teams`)
+          .then(response => response.json())
+          .then(data => {
+            setTeams(data.equipos)
+            // console.log(data.equipos);
+          });
+            
+  
+  }, [])
 
   const [newProject, setNewProject] = useState({
     nombre: '',
     descripcion: '',
     fecha_inicio: '',
-    id_usuario_id: '44',
-    id_estado_id: '1',
+    id_usuario_id: '',
+    id_estado_id: 1,
     id_equipo_id: ''
   });
 
   const handleAddProject = (e) => {
     e.preventDefault()
-
+    
 //     // Validación de espacios en blanco
 //   if (hasOnlySpaces(newUser.nombre) || hasOnlySpaces(newUser.descripcion) || hasOnlySpaces(newUser.id_rol_id)) {
 //     Swal.fire({
@@ -25,6 +54,8 @@ function AddNewProjectForm() {
 //     });
 //     return;
 //   }
+
+    console.log(newProject);
 
     fetch('https://localhost:8080/api/projects/', {
       method: 'POST',
@@ -40,6 +71,8 @@ function AddNewProjectForm() {
         return response.json();
       })
       .then((data) => {
+        Swal.fire('Añadido!', 'El proyecto ha sido añadido.', 'success')
+
         setNewProject({
         nombre: '',
         descripcion: '',
@@ -72,8 +105,23 @@ function AddNewProjectForm() {
         </div>
         <div className='space-y-1'>
           <h3 className='text-xl font-semibold text-[#13315C]'>Equipo</h3>
-          <input required value={newProject.id_equipo_id}  onChange={(e) => setNewProject({ ...newProject, id_equipo_id: e.target.value })} className='p-2 w-80'></input>
-        
+          {/* <input required value={newProject.id_equipo_id}  onChange={(e) => setNewProject({ ...newProject, id_equipo_id: e.target.value })} className='p-2 w-80'></input> */}
+          <select
+            required
+            className="w-full px-3 py-2 border rounded-md"
+            name="id_equipo_id"
+            value={newProject.id_equipo_id}
+            onChange={handleInputChange}
+            placeholder="Equipo a cargo"
+          >
+            <option value="">Equipo a cargo</option>
+            {
+
+            teams.filter((team) => team.id_usuario_id === tokenData.idUser).map((team) => (
+                <option value={team.id_equipo}>{team.nombre}</option>
+              ))
+            }
+          </select>
         </div>
         <img src={teamMembers} className='w-20'></img>
         <button type='submit' className='bg-[#13315C] text-white p-2 w-80 capitalize hover:bg-[#8DA8C5]'>Crear proyecto</button>
