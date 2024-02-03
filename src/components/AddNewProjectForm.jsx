@@ -44,8 +44,8 @@ function AddNewProjectForm() {
         nombre: '',
         descripcion: '',
         fecha_inicio: '',
-        id_usuario_id: '',
         id_estado_id: '',
+        id_usuario_id: '',
         id_equipo_id: ''
         })}).catch((error) => {
         console.error('Fetch error:', error);

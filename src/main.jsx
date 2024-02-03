@@ -18,6 +18,7 @@ import TaskDetails from './pages/team-member/TaskDetails.jsx'
 import ProfileDetails from './pages/ProfileDetails.jsx'
 import RequestDetails from './pages/proyect-manager/RequestDetails.jsx'
 import AddNewProject from './pages/proyect-manager/AddNewProject.jsx'
+import AddNewTask from './pages/team-member/AddNewTask.jsx'
 
 import CrudProjects from './pages/team-member/CRUDS/CrudProjects.jsx'
 import CrudTeams from './pages/team-member/CRUDS/CrudTeams.jsx'
@@ -57,6 +58,7 @@ const router = createBrowserRouter([
   {path: "/select-account-type", element: <SelectAccountType/>},
   {path: "/request-details", element: <RequestDetails/>},
   {path: "/add-new-project", element: <AddNewProject/>},
+  {path: "/add-new-task", element: <AddNewTask/>},
 
   //* CRUDS
   {path: "/projects", element: <CrudProjects/>},
