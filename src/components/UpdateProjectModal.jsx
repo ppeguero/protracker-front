@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import Swal from 'sweetalert2';
+import jwt_decode from 'jwt-decode';
+
 
 const UpdateProjectModal = ({ isOpen, onRequestClose, handleAddOrUpdate, selectedProject }) => {
   const [updatedProject, setUpdatedProject] = useState({
@@ -11,6 +13,23 @@ const UpdateProjectModal = ({ isOpen, onRequestClose, handleAddOrUpdate, selecte
     id_estado_id: selectedProject.id_estado_id || '',
     id_equipo_id: selectedProject.id_equipo_id || ''
   });
+
+  const token_jwt = localStorage.getItem('token'); // Obtén el token del localStorage o del lugar donde lo estás almacenando
+  const decodedToken = token_jwt ? jwt_decode(token_jwt) : null;
+  const iduser = decodedToken ? decodedToken.idUser : null; // Esto contendrá el rol o los permisos del usuario
+
+  const [teams, setTeams] = useState([])
+
+
+
+  useEffect(() => {
+    fetch(`https://localhost:8080/api/teams`)
+    .then(response => response.json())
+    .then(data => {
+      setTeams(data.equipos);
+      // console.log(data.equipos);
+    })
+  }, [])
 
   useEffect(() => {
     // Actualizar los datos cuando cambia el proyecto seleccionado
@@ -84,7 +103,7 @@ const UpdateProjectModal = ({ isOpen, onRequestClose, handleAddOrUpdate, selecte
       isOpen={isOpen}
       onRequestClose={onRequestClose}
       contentLabel="Actualizar Proyecto"
-      className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 rounded-md shadow-md"
+      className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white md:w-3/6 p-8 rounded-md shadow-md"
       overlayClassName="fixed inset-0 bg-black bg-opacity-50"
     >
       <h2 className="text-2xl font-bold mb-4">Actualizar Proyecto</h2>
@@ -113,6 +132,7 @@ const UpdateProjectModal = ({ isOpen, onRequestClose, handleAddOrUpdate, selecte
           <textarea
             required
             className="w-full px-3 py-2 border rounded-md"
+            rows={3}
             type="text"
             name="descripcion"
             value={updatedProject.descripcion}
@@ -152,28 +172,39 @@ const UpdateProjectModal = ({ isOpen, onRequestClose, handleAddOrUpdate, selecte
           <label className="block text-gray-700 text-sm font-bold mb-2">
             Estado:
           </label>
-          <input
+           <select
             required
             className="w-full px-3 py-2 border rounded-md"
-            type="text"
             name="id_estado_id"
             value={updatedProject.id_estado_id}
             onChange={handleInputChange}
-          />
+          >
+            <option value="">Seleccionar Rol</option>
+            <option value="1">Completado</option>
+            <option value="2">En proceso</option>
+            <option value="3">Pendiente</option>
+          </select>
         </div>
 
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">
             Equipo a cargo:
           </label>
-          <input
+          <select
             required
             className="w-full px-3 py-2 border rounded-md"
-            type="text"
             name="id_equipo_id"
             value={updatedProject.id_equipo_id}
             onChange={handleInputChange}
-          />
+            placeholder="Equipo a cargo"
+          >
+            <option value="">Equipo a cargo</option>
+            {
+              teams.map((team) => (
+                <option value={team.id_equipo}>{team.nombre}</option>
+              ))
+            }
+          </select>
         </div>
 
         <div className='grid grid-cols-2 gap-2'>

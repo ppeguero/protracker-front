@@ -41,10 +41,30 @@ function Statistics() {
         Estadísticas
       </h3>
       <ul className="grid grid-cols-2 gap-8 justify-center md:justify-start mt-4">
-        <StatisticCard data={statisticsData.teamsWorking?.total_equipos} description={"Total de equipos trabajando"} color={"#8DA8C5"} />
-        <StatisticCard data={statisticsData.projectsInProgress?.cantidad_proyectos_en_proceso} description={"Proyectos en proceso"} color={"#8DA8C5"} />
-        <StatisticCard data={statisticsData.totalMembers?.total_miembros} description={"Total de miembros en el área"} color={"#8DA8C5"} />
-        <StatisticCard data={statisticsData.completedTasks?.PromedioCompletadas + "%"} description={"Tareas completadas"} color={"#8DA8C5"} />
+      <StatisticCard
+  data={statisticsData.teamsWorking?.total_equipos ?? 0}
+  description={"Total de equipos trabajando"}
+  color={"#8DA8C5"}
+/>
+
+<StatisticCard
+  data={statisticsData.projectsInProgress?.cantidad_proyectos_en_proceso ?? 0}
+  description={"Proyectos en proceso"}
+  color={"#8DA8C5"}
+/>
+
+<StatisticCard
+  data={statisticsData.totalMembers?.total_miembros ?? 0}
+  description={"Total de miembros en el área"}
+  color={"#8DA8C5"}
+/>
+
+<StatisticCard
+  data={(statisticsData.completedTasks?.PromedioCompletadas ?? 0) + "%"}
+  description={"Tareas completadas"}
+  color={"#8DA8C5"}
+/>
+
       </ul>
     </div>
   );

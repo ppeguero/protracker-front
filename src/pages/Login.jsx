@@ -1,5 +1,6 @@
-import React, {useState} from 'react';
-import {Link} from 'react-router-dom';
+import React, {useState, useEffect} from 'react';
+import {Link } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 //* Images
 import bgImage from '../assets/images/bgImage.png';
@@ -16,6 +17,36 @@ function Login() {
     const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
     const [loginError, setLoginError] = useState('');
 
+    // const [csrfToken, setCsrfToken] = useState('');
+
+    // useEffect(() => {
+    //   const obtenerTokenCSRF = async () => {
+    //     try {
+    //       const response = await fetch('https://localhost:8080/api/csrf-token');
+    //       if (!response.ok) {
+    //         throw new Error(`Error al obtener el token CSRF. Código de estado: ${response.status}`);
+    //       }
+      
+    //       const data = await response.json();
+    //       setCsrfToken(data.csrfToken);
+    //       console.log('Token CSRF recibido:', data.csrfToken);
+    //     } catch (error) {
+    //       console.error('Error al obtener el token CSRF:', error);
+    //     }
+    //   };
+      
+    //   // Solo ejecutar la solicitud si csrfToken es null
+    //   if (csrfToken === null || csrfToken == '') {
+    //     obtenerTokenCSRF();
+    //   }
+    // }, [csrfToken]);
+  
+    // useEffect(() => {
+    //   console.log(csrfToken);
+    // }, [csrfToken]);
+
+
+
     const seePassword = () => {
         setShowPassword(!showPassword);
     };
@@ -31,42 +62,74 @@ function Login() {
         setPassword(value);
         setPasswordErrorMessage('');
     };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('correo: ' + email);
-        console.log('contraseña: ' + password);
-        if (!email || !password) {
-            setEmailErrorMessage('Por favor, ingresa tu correo electrónico');
+      
+        // Validación de campos vacíos
+        
+        if (!email) {
+          setEmailErrorMessage('Por favor, ingresa tu correo electrónico');
+          return;
+        }
+        if (!password) {
             setPasswordErrorMessage('Por favor, ingresa tu contraseña');
             return;
-        }
-        
+          }
+      
+        // Realizar la solicitud de inicio de sesión solo si los campos están completos
         try {
-            const response = await fetch('https://localhost:8080/api/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ email, password })
-            }).then(response => response.json())
-            .then(data => {
-              console.log(data);
-            })
-            if (response.ok) {
-                // Autenticación exitosa
-                console.log('Inicio de sesión exitoso');
-                // Aquí puedes redirigir al usuario a la página de inicio o realizar otras acciones necesarias
-            } else {
-                // Error de autenticación
-                console.error('Error de inicio de sesión');
-                setLoginError('Correo electrónico o contraseña incorrectos');
-            }
+          const response = await fetch('https://localhost:8080/api/login', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, password }),
+          });
+      
+          if (!response.ok) {
+            const data = await response.json();
+            throw new Error(data.error || 'Error en la solicitud: ' + response.status);
+          }
+      
+          const data = await response.json();
+          console.log('Inicio de sesión exitoso');
+          // Almacenar el token CSRF en el localStorage
+          // localStorage.setItem('csrfToken', data.csrfToken);
+          localStorage.setItem('token', data.token);
+      
+          // Redirigir según el rol del usuario
+          if (data.usuario.nombre_rol === 'Miembro') {
+            location.href = '/team-member-home';
+          } else if (data.usuario.nombre_rol === 'Project Manager') {
+            location.href = '/project-manager-home';
+          } else if (data.usuario.nombre_rol === 'Administrador') {
+            location.href = '/users';
+          }
         } catch (error) {
-            console.error('Error al realizar la solicitud:', error);
-            setLoginError('Ocurrió un error al intentar iniciar sesión. Por favor, inténtalo de nuevo más tarde');
-        }
-    };
+            console.error('Error al realizar la solicitud:', error.message);
+          
+            if (error.message === 'No se ha encontrado el usuario' || error.message === 'Contraseña incorrecta') {
+              Swal.fire({
+                icon: 'error',
+                title: 'Error de inicio de sesión',
+                text: error.message,
+              });
+            } else if (error.message === 'Error interno del servidor') {
+              Swal.fire({
+                icon: 'error',
+                title: 'Error de inicio de sesión',
+                text: 'Ocurrió un error con el servidor. Por favor, inténtalo de nuevo más tarde',
+              });
+            } else {
+              Swal.fire({
+                icon: 'error',
+                title: 'Error de inicio de sesión',
+                text: 'Ocurrió un error al intentar iniciar sesión. Por favor, inténtalo de nuevo más tarde',
+              });
+            }
+        }          
+      };
+    
 
     return (
         <div className='bg-[#8DA9C4] h-screen flex'>
@@ -84,6 +147,7 @@ function Login() {
                             <p>empieza a trabajar.</p>
 
                             <div>
+                              {/* <input type='hidden' name="_csrf" value={csrfToken}></input> */}
                                 <div className='flex flex-col mb-4 mt-2'>
                                     <label className='mb-1 font-bold'>
                                         Correo Electrónico

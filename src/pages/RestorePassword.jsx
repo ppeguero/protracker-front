@@ -13,7 +13,7 @@ function RestorePassword() {
     const handleResetPassword = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('/api/reset-password', { correo: email });
+            const response = await axios.post('https://localhost:8080/api/reset-password', { correo: email });
             setMessage(response.data.message);
         } catch (error) {
             setMessage(error.response.data.message);

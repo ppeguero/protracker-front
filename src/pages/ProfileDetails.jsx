@@ -3,6 +3,7 @@ import Header from '../components/Header';
 import ShowPassword from '../assets/icons/ShowPassword.png';
 import Pipa from '../assets/images/pipa-img.png'; // Importa la imagen Pipa
 import axios from 'axios';
+import ReturnButton from '../components/ReturnButton';
 
 function ProfileDetails() {
     const [userData, setUserData] = useState({
@@ -65,12 +66,10 @@ function ProfileDetails() {
 
     return (
         <div className="h-screen container bg-[#EEF4ED] w-full">
-            <Header />
+            <Header homeLink={'/team-member-home'}/>
             <div className="flex flex-col w-full h-auto bg-[#EEF4ED] md:flex-row">
                 <div className='flex flex-col user-info mx-5 md:mx-10'>
-                    <div className='md:mx-10'>
-                        <p className='text-black -mt-2 -ml-3'><strong>{"<"}</strong> REGRESAR</p>
-                    </div>
+                    <ReturnButton/>
                     <div className='flex flex-col md:flex-row justify-between items-center md:mx-14'>
                         <div>
                             <h1 className="text-[#13315C] text-3xl font-extrabold md:text-left text-center mt-2">

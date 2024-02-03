@@ -1,9 +1,16 @@
-import React from 'react'
+import { BrowserRouter as Router } from 'react-router-dom';
+import AppRouter from './AppRouter';
+
 
 function App() {
   return (
-    <div className='text-3xl font-bold'>App</div>
-  )
+    <div className="App">
+      <Router>
+        <AppRouter/>
+      </Router>
+      
+    </div>
+  );
 }
 
-export default App
+export default App;

@@ -138,7 +138,8 @@ function CrudTeams() {
                             <thead>
                                 <tr>
                                     <th className="px-4 py-2">Equipo</th>
-                                    <th className="px-4 py-2">Miembros</th>
+                                    <th className="px-4 py-2">Creador</th>
+                                    {/* <th className="px-4 py-2">Miembros</th> */}
                                     <th className="px-4 py-2">Acciones</th>
                                 </tr>
                             </thead>
@@ -146,7 +147,8 @@ function CrudTeams() {
                                 {Array.isArray(teams) && teams.map((team, index) => (
                                     <tr key={index}>
                                         <td className="px-4 py-2">{team.nombre}</td>
-                                        <td className="px-4 py-2">{team.miembros}</td>
+                                        <td className="px-4 py-2">{team.nombreUsuario}</td>
+                                        {/* <td className="px-4 py-2">{team.miembros}</td> */}
                                         <td className="px-4 py-2">
                                             <button onClick={() => updateTeam(team.id_equipo)}  className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2 md:mr-2">
                                                 <FaEdit className="inline-block mr-1" />

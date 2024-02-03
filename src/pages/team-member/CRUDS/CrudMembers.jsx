@@ -155,12 +155,14 @@ function CrudMembers() {
                 />
 
                 {/* Modal para actualizar proyecto */}
+
                 <UpdateMemberModal
                     isOpen={isUpdateModalOpen}
                     onRequestClose={closeUpdateModal}
                     handleAddOrUpdate={handleAddOrUpdate}
                     selectedMembers={selectedMembers}
                 />
+
             </div>
             :
             null

@@ -13,7 +13,8 @@ import { IoCloseOutline } from "react-icons/io5";
 function Sidebar({ show, setShow }) {
 
   function logout() {
-    alert("Cerror Sesión Exitosamente!!");
+    localStorage.removeItem("token");
+    window.location.href = "/login";
   }
 
   return (
@@ -33,20 +34,20 @@ function Sidebar({ show, setShow }) {
           <div className="flex flex-row justify-center">
             <div>
               <Link
-                to="/"
+                to="/users"
                 className="w-11 h-11 bg-[#8DA8C5] p-2 rounded-lg m-5 items-center justify-center flex"
               >
                 <img src={homeIcon}></img>
               </Link>
             </div>
             <div>
-              <Link
-                to="/profile-details"
+              {/* <Link
+                to="/Profile-Details"
                 onClick={() => setShow(!show)}
                 className="w-11 h-11 bg-[#8DA8C5] p-3 rounded-lg m-5 items-center justify-center flex"
               >
                 <img src={userIcon}></img>
-              </Link>
+              </Link> */}
             </div>
           </div>
           
@@ -88,19 +89,19 @@ function Sidebar({ show, setShow }) {
             <div className="flex flex-row justify-center">
               <div>
                 <Link
-                  to="/"
+                  to="/users"
                   className="w-11 h-11 bg-[#8DA8C5] p-2 rounded-lg m-5 items-center justify-center flex"
                 >
                   <img src={homeIcon}></img>
                 </Link>
               </div>
               <div>
-                <Link
-                  to="/profile-details"
+                {/* <Link
+                  to="/Profile-Details"
                   className="w-11 h-11 bg-[#8DA8C5] p-3 rounded-lg m-5 items-center justify-center flex"
                 >
                   <img src={userIcon}></img>
-                </Link>
+                </Link> */}
               </div>
             </div>
             <div className="flex flex-col items-center md:pt-10">
