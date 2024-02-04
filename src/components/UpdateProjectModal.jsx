@@ -228,7 +228,7 @@ const UpdateProjectModal = ({ isOpen, onRequestClose, handleAddOrUpdate, selecte
             value={updatedProject.id_estado_id}
             onChange={handleInputChange}
           >
-            <option value="" disabled>Seleccionar Rol</option>
+            <option value="" disabled>Seleccionar Estado</option>
             {/* <option value="1">Completado</option> */}
             <option value="2">En proceso</option>
             <option value="3">Pendiente</option>

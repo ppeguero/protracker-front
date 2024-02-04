@@ -40,7 +40,7 @@ const AddProjectModal = ({ isOpen, onRequestClose, handleAddOrUpdate }) => {
   const handleAddProject = (e) => {
     e.preventDefault()
 
-    console.log("proyecto actualizado", newProject);
+    // console.log("proyecto actualizado", newProject);
 
 
   setIsAddingProject(true); // Activa el estado para desactivar el botón
@@ -86,7 +86,7 @@ id_usuario_id: (userRole !== 'Administrador' ? newProject.id_usuario_id : iduser
       fetch("https://localhost:8080/api/users/")
         .then(response => response.json())
         .then(data => {
-          console.log(data);
+          // console.log(data);
           setUsers(data);
         })
         .catch(error => console.error("Fetch error:", error));
@@ -185,7 +185,7 @@ id_usuario_id: (userRole !== 'Administrador' ? newProject.id_usuario_id : iduser
             value={newProject.id_estado_id}
             onChange={handleInputChange}
           >
-            <option value="" disabled>Seleccionar Rol</option>
+            <option value="" disabled>Seleccionar Estado</option>
             <option value="2">En proceso</option>
             <option value="3">Pendiente</option>
           </select>

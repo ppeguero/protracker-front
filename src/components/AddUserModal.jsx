@@ -24,6 +24,25 @@ const AddUserModal = ({ isOpen, onRequestClose, handleAddOrUpdate }) => {
   const handleAddUser = (e) => {
     e.preventDefault();
 
+
+       // Validación de campos vacíos
+    if (!newUser.nombre || !newUser.correo || !newUser.contraseña || !newUser.id_rol_id) {
+    Swal.fire('Error', 'Todos los campos son obligatorios. Por favor, completa todos los campos.', 'error');
+    return;
+    }
+    // Validación de campos vacíos
+    if (!newUser.nombre.trim() || !newUser.correo.trim() || !newUser.contraseña.trim() || !newUser.id_rol_id.trim()) {
+      Swal.fire('Error', 'Los valores de los campos no pueden ser espacios. Por favor, completa todos los campos.', 'error');
+      return;
+    }
+
+    if (!newUser.id_rol_id) {
+      Swal.fire('Error', 'Selecciona un rol para el usuario.', 'error');
+      return;
+    }
+
+
+
     // Validación de espacios en blanco
     if (hasOnlySpaces(newUser.nombre) || hasOnlySpaces(newUser.contraseña) || hasOnlySpaces(newUser.id_rol_id)) {
       Swal.fire({

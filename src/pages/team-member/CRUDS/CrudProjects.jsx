@@ -90,7 +90,7 @@ function CrudProjects() {
           fetch("https://localhost:8080/api/projects/")
             .then(response => response.json())
             .then(data => {
-              console.log(data);
+              // console.log(data);
               setProjects(data);
             })
             .catch(error => console.error("Fetch error:", error));
