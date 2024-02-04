@@ -8,13 +8,15 @@ function NotFound() {
   const userRoles = decodedToken ? decodedToken.rol : null; // Esto contendrá el rol o los permisos del usuario
     
   return (
-    <div className='flex flex-col items-center justify-center h-screen bg-gray-100'>
-      <FaExclamationCircle className='text-red-500 text-6xl mb-4' />
-      <h1 className='text-5xl mb-3'>404 - Página no encontrada</h1>
-      <p className='text-xl mb-4'>Lo sentimos, la página que buscas no existe.</p>
-      <Link to={'/'} className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'>
-        Volver al inicio
-      </Link>
+    <div className='flex justify-center bg-[#8DA9C4] h-screen'>
+      <div className='flex items-center justify-center w-full flex-col'>
+        <FaExclamationCircle className='text-red-500 text-6xl mb-4' />
+        <h1 className='text-5xl mb-3'>404 - Página no encontrada</h1>
+        <p className='text-xl mb-4'>Lo sentimos, la página que buscas no existe.</p>
+        <Link to={'/'} className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'>
+          Volver al inicio
+        </Link>
+      </div>
     </div>
   );
 }
