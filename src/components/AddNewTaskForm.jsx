@@ -14,8 +14,10 @@ function AddNewTaskForm() {
   });
 
   const [projects, setProjects] = useState([]);
+  const [project, setProject] = useState();
   const [miembros, setMiembros] = useState([]);
   const [status, setStatus] = useState([]);
+  
 
   const token_jwt = localStorage.getItem('token'); 
   const decodedToken = token_jwt ? jwt_decode(token_jwt) : null;
@@ -24,6 +26,40 @@ function AddNewTaskForm() {
 
   const handleAddTask = (e) => {
     e.preventDefault();
+
+
+  // Validación de campos vacíos
+  if (!newTask.nombre || !newTask.descripcion || !newTask.fecha_limite || !newTask.id_proyecto_id || !newTask.id_estado_id || !newTask.id_miembro_id) {
+    Swal.fire('Error', 'Todos los campos son obligatorios. Por favor, completa todos los campos.', 'error');
+    return;
+    }
+    // Validación de campos vacíos
+    if (!newTask.nombre.trim() || !newTask.descripcion.trim() || !newTask.fecha_limite.trim() || !newTask.id_proyecto_id.trim() || !newTask.id_estado_id.trim() || !newTask.id_miembro_id.trim()) {
+      Swal.fire('Error', 'Los valores de los campos no pueden ser espacios. Por favor, completa todos los campos.', 'error');
+      return;
+    }
+
+    const today = new Date().toISOString().split('T')[0];
+    if (!newTask.fecha_limite || newTask.fecha_limite < today) {
+        Swal.fire('Error', 'La fecha de inicio del proyecto no puede estar en el pasado.', 'error');
+        return;
+    }
+
+    if (!newTask.id_proyecto_id) {
+      Swal.fire('Error', 'Selecciona un equipo para el proyecto.', 'error');
+      return;
+    }
+
+    if (!newTask.id_estado_id) {
+      Swal.fire('Error', 'Selecciona un estado para el proyecto.', 'error');
+      return;
+    }
+
+    if (!newTask.id_miembro_id) {
+      Swal.fire('Error', 'Selecciona un estado para el proyecto.', 'error');
+      return;
+    }
+
 
     fetch('https://localhost:8080/api/tasks/', {
       method: 'POST',
@@ -39,6 +75,7 @@ function AddNewTaskForm() {
         return response.json();
       })
       .then((data) => {
+        Swal.fire('Añadido!', 'El proyecto ha sido añadido.', 'success')
         setNewTask({
           nombre : '',
           descripcion : '', 
@@ -63,14 +100,38 @@ function AddNewTaskForm() {
       })
   };
 
-  const getMembers = () => {
-    fetch('https://localhost:8080/api/members/')
+  const getProject = () => {
+    fetch(`https://localhost:8080/api/projects/${newTask.id_proyecto_id}`)
       .then((response) => response.json())
       .then((data) => {
-        setMiembros(data);
+        setProject(data);
         console.log(data);
       })
   };
+
+
+  const getMembers = () => {
+    console.log(project.id_equipo_id);
+    fetch(`https://localhost:8080/api/members-team/${project.id_equipo_id}`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setMiembros(data);
+          console.log(data);
+        } else {
+          console.error("API response for members is not an array:", data);
+          setMiembros([]); // Set empty array if API response is not an array
+          Swal.fire({
+            title: "Opps!...",
+            text: "El equipo seleccionado no tiene miembros",
+            icon: "warning",
+          })        }
+      })
+      .catch((error) => {
+        console.error("Error fetching members:", error);
+      });
+  };
+  
 
   const getStatus = () => {
     fetch('https://localhost:8080/api/status')
@@ -86,36 +147,29 @@ function AddNewTaskForm() {
 
   useEffect(() => {
     getProjects();
-    getMembers();
     getStatus();
   }, []);
+  
+  useEffect(() => {
+    if (newTask.id_proyecto_id) {
+      getProject();
+    }
+  }, [newTask.id_proyecto_id]);
+  
+  useEffect(() => {
+    if (project) {
+      getMembers();
+    }
+  }, [project]);
+  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewTask((prevProject) => ({ ...prevProject, [name]: value }));
   };
 
-  // const handleProjectChange = (projectId) => {
-  //   console.log("Id del proyecto: ", projectId);
-  //   console.log(projects);
-  //   // Actualizar la lista de miembros basándonos en el nuevo proyecto seleccionado
-  //   const filteredProject = projects.find((project) => {
-  //     console.log("El proyecto", project.id_proyecto, "No es igual a", projectId, " = ", projectId == project.id_proyecto);
-  //     return projectId == project.id_proyecto ;
-  //   });
     
-    
-  //   if (filteredProject) {
-  //     const filteredMembers = miembros.filter((miembro) => miembro.id_equipo_id === filteredProject.id_equipo_id);
-  //     setMiembros(filteredMembers);
-  //     console.log(filteredMembers);
-  //   } else {
-  //     console.log("Proyecto no encontrado");
-  //     // Puedes manejar este caso según tus necesidades
-  //   }
-  //   // Limpiar el miembro seleccionado cuando cambia el proyecto
-  //   setNewTask((prevTask) => ({ ...prevTask, id_miembro_id: '' }));
-  // };
+   
 
   return (
     <div className='flex flex-col px-6 my-10'>

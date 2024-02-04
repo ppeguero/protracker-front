@@ -15,22 +15,18 @@ function Projects({ link }) {
     id_user: decodedToken ? decodedToken.idUser : null
   });
 
-  // useEffect(() => {
-  //   console.log(user);
-  //   console.log(user.id_user);
-  // }, []); // Asegúrate de incluir token_jwt en la dependencia del useEffect si lo utilizas dentro
 
 
   useEffect(() => {
-    // Realizar la solicitud al endpoint de proyectos aquí
-    // Puedes usar fetch, axios u otro método para obtener la información
 
-    // Ejemplo usando fetch
     fetch('https://localhost:8080/api/projects')
       .then(response => response.json())
       .then(data => setProjects(data))
       .catch(error => console.error('Error al obtener proyectos:', error));
-  }, []); // El segundo argumento [] asegura que el efecto se ejecute solo una vez al montar el componente
+
+  }, []); 
+
+  // console.log(projects);
 
   return (
     <div className='project mx-14 my-2 w-full h-[600px] overflow-auto scrollbar-track-transparent scrollbar-thumb-[#134175] scrollbar-thumb-rounded-7xl scrollbar-thin'>
@@ -41,7 +37,7 @@ function Projects({ link }) {
         {projects
           .filter(project => project.id_usuario_id === user.id_user) // Filtrar proyectos según el id_user
           .map(project => (
-            <ProjectCard key={project.id} title={project.nombre} idProject={project.id_proyecto} link={link}/>
+            <ProjectCard key={project.id} title={project.nombre} idProject={project.id_proyecto} link={link} description={project.descripcion}/>
           ))}
       </ul>
     </div>

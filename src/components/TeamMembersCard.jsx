@@ -3,7 +3,7 @@ import options from "../assets/icons/options.png";
 import plusIcon from "../assets/icons/plus.png";
 import TeamMember from "./TeamMember";
 
-function TeamMembersCard({ idNumerico }) {
+function TeamMembersCard({ idNumerico, members }) {
   // Añadir la validacion que si detecta que es el jefe de proyecto, se muestre el botón de añadir miembro
 
   const [manager, setManager] = useState(false);
@@ -35,9 +35,11 @@ function TeamMembersCard({ idNumerico }) {
         </button>
       </div> 
       <div className="flex flex-col justify-start mx-auto overflow-y-auto px-5 scrollbar-track-transparent scrollbar-thumb-[#134175] scrollbar-thumb-rounded-7xl scrollbar-thin">
-        <TeamMember/>
-        <TeamMember/>
-        <TeamMember/>
+        {
+          members.map((member) => (
+            <TeamMember key={member.id_miembro} member={member} />
+          ))
+        }
 
       </div>
       

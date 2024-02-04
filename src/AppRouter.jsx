@@ -106,12 +106,12 @@ function AppRouter() {
               <Route path="/request-resource" element={<RequestResource />} />
             </Route>
 
-            <Route element={<ProtectedRoute
+            {/* <Route element={<ProtectedRoute
               isAllowed={hasPermissions(user, rolesPermissions[1].nombre, rolesPermissions[1].permisos.split(', ')) ||
               hasPermissions(user, rolesPermissions[2].nombre, rolesPermissions[2].permisos.split(', '))}
             />}>
               <Route path="/Profile-Details" element={<ProfileDetails />} />
-            </Route>
+            </Route> */}
     
     
             {/* RUTAS PROTEGIDAS DEL ADMIN */}

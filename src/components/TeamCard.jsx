@@ -1,10 +1,9 @@
 import React, {useState} from 'react'
     import optionsIcon from '../assets/icons/options.png'
 
-function TeamCard( { profilePhoto }) {
+function TeamCard( { profilePhoto, team }) {
 
-    // Apartir del id del equipo, hacer un filter para poder saber que tareas pertenecen a que equipo y poder mostrarlas en la tarjeta
-    // const [tasks, setTasks] = useState([])
+    console.log("team card", team);
 
   return (
     <li className=" list-none">
@@ -21,8 +20,8 @@ function TeamCard( { profilePhoto }) {
             <div className='flex justify-around py-4'>
                 <img src={profilePhoto} className='w-14 h-14'></img>
                 <div>
-                    <h5 className='text-white font-medium'>Lider de equipo</h5>
-                    <p className='text-white font-extralight text-sm'>Pedrito Sola</p>
+                    <h5 className='text-white font-medium'>{team.nombre}</h5>
+                    <p className='text-white font-extralight text-sm'>{team.nombreUsuario}</p>
                 </div>
             </div>
         <p className='text-white font-extralight'>Últimas tareas asignadas</p>
