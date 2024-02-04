@@ -62,12 +62,12 @@ function RequestDetailsCard() {
                 <h4 className='text-[#134175] font-semibold'>Fecha de límite, si aplica</h4>
                 <p className='text-[#134175] font-thin ml-4'>{applicantData.date}</p>
             </div>
-            <div className='flex space-x-4 justify-center items-center'>
-                <button className='flex flex-col justify-center items-center hover:bg-green-600 rounded-sm p-2'>
-                    <img src={accept} className='w-8 h-8'></img>
-                    <p className='text-sm font-semibold text-white'>Aceptar</p>
+            <div className='flex space-x-4 justify-center items-center pt-1'>
+                <button className='flex flex-col justify-center items-center hover:bg-green-600 rounded-xl p-2 pt-3'>
+                    <img src={accept} className='w-[30px] h-[30px'></img>
+                    <p className='text-sm font-semibold text-white pt-[3px]'>Aceptar</p>
                 </button>
-                <button className='flex flex-col justify-center items-center hover:bg-red-600 rounded-sm p-2'>
+                <button className='flex flex-col justify-center items-center hover:bg-red-600 rounded-xl p-2'>
                     <img src={deny} className='w-10 h-10'></img>
                     <p className='text-sm font-semibold text-white'>Denegar</p>
                 </button>

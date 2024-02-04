@@ -9,6 +9,7 @@ import profilePicture from "../../assets/images/pipa-img.png";
 import jwt_decode from 'jwt-decode';
 import { useParams } from 'react-router-dom';
 
+
 function ProjectDetails() {
   const [projectDetail, setProjectDetail] = useState({});
   const [show, setShow] = useState(false);
@@ -16,6 +17,7 @@ function ProjectDetails() {
   const [miembros, setMiembros] = useState([]);
   const [team, setTeam] = useState([]);
   const [dataLoaded, setDataLoaded] = useState(false);
+  const [tasks, setTasks] = useState([]);
 
   const token_jwt = localStorage.getItem('token');
   const decodedToken = token_jwt ? jwt_decode(token_jwt) : null;
@@ -30,36 +32,47 @@ function ProjectDetails() {
   const idNumerico = parseInt(id, 10);
 
   useEffect(() => {
-    const fetchData = async () => {
-      await getProject();
-      await getTeam();
-      await getMembers();
-      setDataLoaded(true);
-    };
-    fetchData();
+    getProject();
   }, []);
 
-  const getProject = async () => {
+  useEffect(() => {
+    if(projectDetail.id_equipo_id){
+      getTeam();
+      getMembers();
+      getTasks();
+    }
+  }, [projectDetail.id_equipo_id]);
+
+  const getProject = () => {
     try {
-      const response = await fetch(`https://localhost:8080/api/projects/${idNumerico}`);
-      const data = await response.json();
-      setProjectDetail(data);
-      if (data.id_usuario_id !== user.id_user) {
-        window.location.href = "/project-manager-home";
-      } else {
-        setShow(true);
-      }
+      fetch(`https://localhost:8080/api/projects/${idNumerico}`)
+        .then(response => response.json())
+        .then(data => {
+          setProjectDetail(data);
+          console.log("detalles del proyecto", data);
+  
+          if (data.id_usuario_id !== user.id_user) {
+            window.location.href = "/project-manager-home";
+          } else {
+            setShow(true);
+          }
+        })
+        .catch(error => {
+          console.error('Error al obtener proyectos:', error);
+        });
     } catch (error) {
       console.error('Error al obtener proyectos:', error);
     }
   };
+  
 
   const getTeam = async () => {
     try {
+      console.log(projectDetail.id_equipo_id);
       const response = await fetch(`https://localhost:8080/api/teams/${projectDetail.id_equipo_id}`);
       const data = await response.json();
-      // console.log("team filter", data);
-      setTeam(data);
+      setTeam(data.equipo);
+      console.log("detalles del equipo", data.equipo);
     } catch (error) {
       console.error(error);
     }
@@ -67,19 +80,26 @@ function ProjectDetails() {
 
   const getMembers = async () => {
     try {
-      const response = await fetch('https://localhost:8080/api/members/');
+      const response = await fetch(`https://localhost:8080/api/members-team/${projectDetail.id_equipo_id}`);
       const data = await response.json();
-      if (data && Array.isArray(data)) {
-        const membersFilter = data.filter(member => member.id_equipo_id === projectDetail.id_equipo_id);
-        // console.log("members filter", membersFilter);
-        setMiembros(membersFilter);
-      } else {
-        console.error("La respuesta de la API no contiene un array de miembros:", data);
-      }
+      setMiembros(data);
+      setDataLoaded(true);
+      console.log("detalles de los miembros", data);
     } catch (error) {
-      console.error("Error al obtener miembros:", error);
+      console.error(error);
     }
-  };
+    }
+
+    const getTasks = async () => {
+      try {
+        const response = await fetch(`https://localhost:8080/api/tasks/`);
+        const data = await response.json();
+        setTasks(data);
+        console.log("detalles de las tareas", data);
+      } catch (error) {
+        console.error(error);
+      }
+      }
 
   return (
     dataLoaded ? (
@@ -104,7 +124,7 @@ function ProjectDetails() {
               <div className="h-fit">
                 <h2 className="text-4xl text-[#134175] font-extrabold">Equipo</h2>
                 <div className="flex space-x-4">
-                  <TeamCard profilePhoto={profilePicture} team={team}/>
+                  <TeamCard profilePhoto={profilePicture} team={team} tasks={tasks} idNumerico={idNumerico}/>
                 </div>
               </div>
             </div>
