@@ -2,15 +2,16 @@ import React, { useState } from "react";
 import profilePicture from "../assets/images/pipa-img.png";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { MdOutlineDone } from "react-icons/md";
+import { Link } from "react-router-dom";
 
-function TeamRequestCard() {
+function TeamRequestCard({ idRequest }) {
   const [memberData, setMemberData] = useState({
     name: "Pipa",
     speciality: "Desarrolladora",
   });
 
   return (
-    <div className="container pt-6 ">
+    <Link to={`/request-details${idRequest}`} className="container pt-6 ">
       <div className="bg-[#EEF4ED] h-fit w-[1000px] rounded-md flex justify-between items-center p-10">
         <div className="flex">
             <img src={profilePicture} className="w-12 mx-6"></img>
@@ -49,7 +50,7 @@ function TeamRequestCard() {
             </button>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
 

@@ -117,7 +117,7 @@ function AddNewProjectForm() {
     <div className='flex flex-col px-6'>
       <form className='space-y-6' onSubmit={handleAddProject}>
         <div className='space-y-1'>
-          <h3 className='text-xl font-semibold text-[#13315C]'>Nombre de la tarea</h3>
+          <h3 className='text-xl font-semibold text-[#13315C]'>Nombre del proyecto</h3>
           <input required value={newProject.nombre}  onChange={(e) => setNewProject({ ...newProject, nombre: e.target.value })} className='p-2 w-80'></input>
         </div>
         <div className='space-y-1'>
@@ -125,7 +125,7 @@ function AddNewProjectForm() {
           <textarea required value={newProject.descripcion} onChange={(e) => setNewProject({ ...newProject, descripcion: e.target.value })} className='p-2 w-80 h-24' type='text-area' maxLength={255}></textarea>
         </div>
         <div className='space-y-1'>
-          <h3 className='text-xl font-semibold text-[#13315C]'>Fecha limite</h3>
+          <h3 className='text-xl font-semibold text-[#13315C]'>Fecha inicio</h3>
           <input required type="date" value={newProject.fecha_inicio} onChange={(e) => setNewProject({ ...newProject, fecha_inicio: e.target.value })} className='p-2 w-80'></input>
         </div>
         <div className='space-y-1'>

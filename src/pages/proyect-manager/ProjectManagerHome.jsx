@@ -53,7 +53,7 @@ function ProjectManagerHome() {
                     <Link to='/add-new-project' className='bg-[#13315C] text-white px-8 py-3 rounded-xl'>Añadir nuevo proyecto</Link>
                   </div>
                   <div className=' md:my-10 md:mx-10'>
-                    <Link to='/add-new-project' className='bg-[#13315C] text-white px-8 py-3 rounded-xl'>Añadir nuevo tarea</Link>
+                    <Link to='/add-new-task' className='bg-[#13315C] text-white px-8 py-3 rounded-xl'>Añadir nuevo tarea</Link>
                   </div>
                 </div>
               </div>

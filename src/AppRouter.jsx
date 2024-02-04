@@ -25,6 +25,7 @@ import CrudTeams from './pages/team-member/CRUDS/CrudTeams.jsx'
 import CrudUsers from './pages/team-member/CRUDS/CrudUsers.jsx'
 import CrudMembers from './pages/team-member/CRUDS/CrudMembers.jsx'
 import ProtectedRoute from './pages/ProtectedRoutes.jsx';
+import AddNewTask from './pages/proyect-manager/AddNewTask.jsx';
 import Home from './pages/Home.jsx';
 import NotAuth from './pages/NotAuth.jsx';
 
@@ -86,10 +87,11 @@ function AppRouter() {
             />}>
               <Route path="/project-manager-home" element={<ProjectManagerHome />} />
               <Route path="/add-new-project" element={<AddNewProject />} />
+              <Route path="/add-new-task" element={<AddNewTask />} />
               <Route path="/delivered-task-details" element={<DeliveredTaskDetails />} />
               <Route path="/member-information" element={<MemberInformation />} />
               <Route path="/project-details-pj/:id" element={<ProjectDetails />} />
-              <Route path="/request-details" element={<RequestDetails />} />
+              <Route path="/request-details/:id" element={<RequestDetails />} />
               {/* <Route path="/Profile-Details" element={<ProfileDetails />} /> */}
             </Route>
 

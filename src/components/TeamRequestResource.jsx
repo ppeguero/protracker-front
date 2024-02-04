@@ -36,10 +36,7 @@ function TeamRequestResource() {
         </button>
       </div> 
       <div className="flex flex-col justify-center mx-auto overflow-y-auto h-[400px] pt-48 px-5 scrollbar-track-transparent scrollbar-thumb-[#134175] scrollbar-thumb-rounded-7xl scrollbar-thin">
-        <TeamRequestCard/>
-        <TeamRequestCard/>
-        <TeamRequestCard/>
-        <TeamRequestCard/>
+        <TeamRequestCard idRequest={idRequest}/>
       </div>
       
     </div>
