@@ -8,24 +8,16 @@ const AddProjectModal = ({ isOpen, onRequestClose, handleAddOrUpdate }) => {
 
   const token_jwt = localStorage.getItem('token'); // Obtén el token del localStorage o del lugar donde lo estás almacenando
   const decodedToken = token_jwt ? jwt_decode(token_jwt) : null;
+  const userRole = decodedToken ? decodedToken.rol_name : null; 
   const iduser = decodedToken ? decodedToken.idUser : null; // Esto contendrá el rol o los permisos del usuario
 
   const [teams, setTeams] = useState([])
-
-
-
-  const [data, setData] = useState({
-      nombre: '',
-      miembros: [],
-      id_usuario_id: iduser
-  });
 
   useEffect(() => {
     fetch(`https://localhost:8080/api/teams`)
     .then(response => response.json())
     .then(data => {
       setTeams(data.equipos);
-      // console.log(data.equipos);
     })
   }, [])
 
@@ -34,17 +26,11 @@ const AddProjectModal = ({ isOpen, onRequestClose, handleAddOrUpdate }) => {
     nombre: '',
     descripcion: '',
     fecha_inicio: '',
-    id_usuario_id: '',
+    id_usuario_id: (userRole !== 'Administrador' ? iduser : ''),
     id_estado_id: '',
     id_equipo_id: ''
   });
-
   const [isAddingProject, setIsAddingProject] = useState(false);
-
-
-//   function hasOnlySpaces(str) {
-//     return str.trim() === '';
-//   }
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -54,17 +40,10 @@ const AddProjectModal = ({ isOpen, onRequestClose, handleAddOrUpdate }) => {
   const handleAddProject = (e) => {
     e.preventDefault()
 
-//     // Validación de espacios en blanco
-//   if (hasOnlySpaces(newUser.nombre) || hasOnlySpaces(newUser.descripcion) || hasOnlySpaces(newUser.id_rol_id)) {
-//     Swal.fire({
-//       title: '¡Error!',
-//       text: 'Los campos no pueden consistir solo en espacios en blanco.',
-//       icon: 'error',
-//     });
-//     return;
-//   }
+    console.log("proyecto actualizado", newProject);
 
-setIsAddingProject(true); // Activa el estado para desactivar el botón
+
+  setIsAddingProject(true); // Activa el estado para desactivar el botón
 
 
     fetch('https://localhost:8080/api/projects/', {
@@ -86,11 +65,11 @@ setIsAddingProject(true); // Activa el estado para desactivar el botón
           text: 'El proyecto ha sido añadido.',
           icon: 'success',
         })
-        setNewUser({
+        setNewProject({
         nombre: '',
         descripcion: '',
         fecha_inicio: '',
-        id_usuario_id: '',
+id_usuario_id: (userRole !== 'Administrador' ? newProject.id_usuario_id : iduser),
         id_estado_id: '',
         id_equipo_id: ''
         })}).catch((error) => {
@@ -100,6 +79,18 @@ setIsAddingProject(true); // Activa el estado para desactivar el botón
         setIsAddingProject(false); // Desactiva el estado después de que se complete la solicitud
       });;
   };
+
+  const [users, setUsers] = useState([]);
+
+    useEffect(() => {
+      fetch("https://localhost:8080/api/users/")
+        .then(response => response.json())
+        .then(data => {
+          console.log(data);
+          setUsers(data);
+        })
+        .catch(error => console.error("Fetch error:", error));
+    }, []);
   
 
   return (
@@ -121,7 +112,6 @@ setIsAddingProject(true); // Activa el estado para desactivar el botón
             className="w-full px-3 py-2 border rounded-md"
             type="text"
             name="nombre"
-            minLength={6}
             value={newProject.nombre}
             onChange={handleInputChange}
             placeholder="Nombre"
@@ -157,35 +147,37 @@ setIsAddingProject(true); // Activa el estado para desactivar el botón
             placeholder="Fecha de inicio"
           />
         </div>
-
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
-            Lider a cargo:
-          </label>
-          <input
-            required
-            className="w-full px-3 py-2 border rounded-md"
-            type="text"
-            name="id_usuario_id"
-            value={newProject.id_usuario_id}
-            onChange={handleInputChange}
-            placeholder="Lider a cargo"
-          />
+        {
+            userRole === 'Administrador' ?
+            <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2">
+                Líder a cargo:
+              </label>
+              <select
+                required
+                className="w-full px-3 py-2 border rounded-md"
+                name="id_usuario_id"
+                value={newProject.id_usuario_id}
+                onChange={handleInputChange}
+                placeholder="Líder a cargo"
+              >
+                <option value="" disabled>Líder a cargo</option>
+                {users.map((user) => { 
+                  if(user.nombre_rol === 'Project Manager'){
+                    return (<option value={user.id_usuario}>{user.nombre}</option>)
+                  }
+                })}
+              </select>
+         
         </div>
+          :
+          null
+          }
         
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">
             Estado:
           </label>
-          {/* <input
-            required
-            className="w-full px-3 py-2 border rounded-md"
-            type="text"
-            name="id_estado_id"
-            value={newProject.id_estado_id}
-            onChange={handleInputChange}
-            placeholder="Estado del proyecto"
-          /> */}
           <select
             required
             className="w-full px-3 py-2 border rounded-md"
@@ -193,8 +185,7 @@ setIsAddingProject(true); // Activa el estado para desactivar el botón
             value={newProject.id_estado_id}
             onChange={handleInputChange}
           >
-            <option value="">Seleccionar Rol</option>
-            <option value="1">Completado</option>
+            <option value="" disabled>Seleccionar Rol</option>
             <option value="2">En proceso</option>
             <option value="3">Pendiente</option>
           </select>
@@ -213,11 +204,17 @@ setIsAddingProject(true); // Activa el estado para desactivar el botón
             onChange={handleInputChange}
             placeholder="Equipo a cargo"
           >
-            <option value="">Equipo a cargo</option>
-            {
+            <option value="" disabled>Equipo a cargo</option>
+            { userRole === 'Administrador' ?
               teams.map((team) => (
                 <option value={team.id_equipo}>{team.nombre}</option>
               ))
+              :
+              teams.map((team) => {
+                if(team.id_usuario_id === iduser){
+                  return (<option value={team.id_equipo}>{team.nombre}</option>)
+                }}
+              )
             }
           </select>
 

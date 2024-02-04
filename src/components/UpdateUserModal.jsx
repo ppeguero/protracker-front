@@ -128,10 +128,10 @@ const UpdateUserModal = ({ isOpen, onRequestClose, handleAddOrUpdate, selectedUs
             value={updatedUser.id_rol_id}
             onChange={handleRoleChange}
           >
-            <option value="">Seleccionar Rol</option>
+            <option value="" disabled>Seleccionar Rol</option>
             <option value="1">Administrador</option>
             <option value="2">Project Manager</option>
-            <option value="2">Miembro</option>
+            <option value="3">Miembro</option>
           </select>
         </div>
 

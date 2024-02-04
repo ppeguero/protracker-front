@@ -13,6 +13,7 @@ function CrudTeams() {
   const [isUpdateModalOpen, setUpdateModalOpen] = useState(false);
   const [selectedTeam, setSelectedTeam] = useState({});
 
+
   useEffect(() => {
     fetchTeams();
   }, []);
@@ -121,7 +122,7 @@ function CrudTeams() {
   
 
   return (
-    <div className='flex flex-col md:flex-row'>
+    <div className='flex flex-col md:flex-row bg-[#EEF4ED]'>
       <Sidebar show={show} setShow={setShow} />
       <div className='flex-1 md:ml-72'>
         <div className="p-4">
@@ -146,10 +147,10 @@ function CrudTeams() {
                             <tbody>
                                 {Array.isArray(teams) && teams.map((team, index) => (
                                     <tr key={index}>
-                                        <td className="px-4 py-2">{team.nombre}</td>
-                                        <td className="px-4 py-2">{team.nombreUsuario}</td>
-                                        {/* <td className="px-4 py-2">{team.miembros}</td> */}
-                                        <td className="px-4 py-2">
+                                        <td className="px-4 py-2 text-center">{team.nombre}</td>
+                                        <td className="px-4 py-2 text-center">{team.nombreUsuario}</td>
+                                        {/* <td className="px-4 py-2 text-center">{team.miembros}</td> */}
+                                        <td className="px-4 py-2 text-center">
                                             <button onClick={() => updateTeam(team.id_equipo)}  className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2 md:mr-2">
                                                 <FaEdit className="inline-block mr-1" />
                                                 Actualizar
