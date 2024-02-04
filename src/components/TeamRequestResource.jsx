@@ -23,19 +23,19 @@ function TeamRequestResource() {
     };
   }, []);
   return (
-    <div className="w-full flex flex-col bg-[#8DA8C5] h-fit py-10 rounded-md space-y-4 mb-10">
+    <div className="w-[1215px] flex flex-col bg-[#8DA8C5] h-fit py-10 rounded-md space-y-4 mb-10">
       <div className="flex justify-evenly items-center px-36">
         {manager && (
           <button className="bg-[#13315C] rounded-full w-10 h-10 flex justify-center items-center mr-4">
             <img src={plusIcon} className="w-6"></img>
           </button>
         )}
-        <h3 className="text-[#13315C] text-4xl font-bold w-full">Solicitud de Recursos</h3>
+        <h3 className="text-[#13315C] text-4xl font-bold w-full">Solicitudes de Recursos</h3>
         <button>
           <img src={options}></img>
         </button>
       </div> 
-      <div className="justify-start flex flex-col mx-auto overflow-y-auto h-[400px] px-5 scrollbar-track-transparent scrollbar-thumb-[#134175] scrollbar-thumb-rounded-7xl scrollbar-thin">
+      <div className="justify-start flex flex-col mx-auto overflow-y-auto h-[400px] px-1 scrollbar-track-transparent scrollbar-thumb-[#134175] scrollbar-thumb-rounded-7xl scrollbar-thin">
         <TeamRequestCard />
         <TeamRequestCard />
         <TeamRequestCard />

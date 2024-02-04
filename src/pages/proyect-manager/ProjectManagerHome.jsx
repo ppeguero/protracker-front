@@ -63,7 +63,7 @@ function ProjectManagerHome() {
               </div>
           </div>
           <div className='flex flex-col justify-between py-5'>
-            <Calendar/>
+            {/* <Calendar/> */}
             <Statistics/>
 
             {/* <ResourcesRequests profilePhoto={profilePhoto}/> */}

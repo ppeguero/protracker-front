@@ -86,18 +86,22 @@ function ProjectDetails() {
       <div className="h-screen container bg-[#EEF4ED] w-full ">
         <Header homeLink={userRole === "Project Manager"? '/project-manager-home' : '/team-member-home'}/>
         <div className="flex flex-col w-full h-auto bg-[#EEF4ED]">
-          <div className="flex">
-            <div className="flex flex-col md:flex-row ">
-              <div className="flex flex-col ml-6 h-fit">
+              <div className="flex flex-col ml-28 h-fit">
                 <ReturnButton/>
               </div>
+          <div className="flex">
+          
+            <div className="flex flex-col md:flex-row ">
+            <div className="flex flex-col ml-28 h-fit">
+                <p></p>
+              </div>
               <div className="h-fit flex flex-col mr-8">
-                <h2 className="text-4xl text-[#134175] font-extrabold pt-10">Proyecto</h2>
+                <h2 className="text-4xl text-[#134175] font-extrabold">Proyecto</h2>
                 <ProjectDetailsCard idNumerico={idNumerico}/>
               </div>
             </div>
             <div className="">
-              <div className="h-fit mt-10">
+              <div className="h-fit">
                 <h2 className="text-4xl text-[#134175] font-extrabold">Equipo</h2>
                 <div className="flex space-x-4">
                   <TeamCard profilePhoto={profilePicture} team={team}/>
@@ -105,7 +109,7 @@ function ProjectDetails() {
               </div>
             </div>
             <div className="">
-              <div className="h-fit mt-10">
+              <div className="h-fit">
                 <h2 className="text-4xl text-[#134175] font-extrabold">Miembros</h2>
                 <div className="flex space-x-4">
                   <TeamMembersCard idNumerico={idNumerico} members={miembros}/>

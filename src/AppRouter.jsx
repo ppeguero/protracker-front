@@ -101,18 +101,9 @@ function AppRouter() {
             />}>
               <Route path="/team-member-home" element={<TeamMemberHome />} />
               <Route path="/task-details" element={<TaskDetails />} />
-              {/* <Route path="/Profile-Details" element={<ProfileDetails />} /> */}
               <Route path="/project-details-tm" element={<ProjectDetailsMember />} />
               <Route path="/request-resource" element={<RequestResource />} />
             </Route>
-
-            {/* <Route element={<ProtectedRoute
-              isAllowed={hasPermissions(user, rolesPermissions[1].nombre, rolesPermissions[1].permisos.split(', ')) ||
-              hasPermissions(user, rolesPermissions[2].nombre, rolesPermissions[2].permisos.split(', '))}
-            />}>
-              <Route path="/Profile-Details" element={<ProfileDetails />} />
-            </Route> */}
-    
     
             {/* RUTAS PROTEGIDAS DEL ADMIN */}
             <Route element={<ProtectedRoute

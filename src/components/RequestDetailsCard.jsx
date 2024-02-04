@@ -20,9 +20,9 @@ function RequestDetailsCard() {
     })
 
   return (
-    <div className='bg-[#8DA8C5] px-6 py-4 flex justify-around w-[50rem]'>
+    <div className='bg-[#8DA8C5] mx-16 rounded-lg py-4 flex justify-around w-[1000px] h-full '>
         <div className='flex flex-col space-y-4 justify-center'>
-            <h3 className='text-[#134175] text-lg font-bold'>Información del solicitante</h3>
+            <h3 className='text-[#134175] text-3xl font-bold'>Información del solicitante</h3>
             <div className='space-y-2'>
                 <h4 className='text-[#134175] font-semibold'>Nombre del solicitante</h4>
                 <p className='text-[#134175] font-thin ml-4'>{applicantData.name}</p>
@@ -44,7 +44,7 @@ function RequestDetailsCard() {
                 <p className='text-[#134175] font-thin ml-4 w-64'>{applicantData.reason}</p>
             </div>
         </div>
-        <div className='flex flex-col space-y-4 justify-center'>
+        <div className='flex flex-col space-y-4 justify-start mt-12'>
             <h3 className='text-[#134175] text-lg font-bold'>Información del recurso</h3>
             <div className='space-y-2'>
                 <h4 className='text-[#134175] font-semibold'>Nombre del recurso</h4>
@@ -62,7 +62,7 @@ function RequestDetailsCard() {
                 <h4 className='text-[#134175] font-semibold'>Fecha de límite, si aplica</h4>
                 <p className='text-[#134175] font-thin ml-4'>{applicantData.date}</p>
             </div>
-            <div className='flex space-x-4 justify-center'>
+            <div className='flex space-x-4 justify-center items-center'>
                 <button className='flex flex-col justify-center items-center hover:bg-green-600 rounded-sm p-2'>
                     <img src={accept} className='w-8 h-8'></img>
                     <p className='text-sm font-semibold text-white'>Aceptar</p>

@@ -11,7 +11,7 @@ function TeamRequestCard({ idRequest }) {
   });
 
   return (
-    <Link to={`/request-details${idRequest}`} className="container pt-6 ">
+    <Link to={`/request-details/${idRequest}`} className="container pt-6 ">
       <div className="bg-[#EEF4ED] h-fit w-[1000px] rounded-md flex justify-between items-center p-10">
         <div className="flex">
             <img src={profilePicture} className="w-12 mx-6"></img>
