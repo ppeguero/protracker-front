@@ -33,11 +33,11 @@ function Projects({ link }) {
   }, []); // El segundo argumento [] asegura que el efecto se ejecute solo una vez al montar el componente
 
   return (
-    <div className='project mx-14 my-2'>
+    <div className='project mx-14 my-2 w-full h-[600px] overflow-auto scrollbar-track-transparent scrollbar-thumb-[#134175] scrollbar-thumb-rounded-7xl scrollbar-thin'>
       <h3 className="text-xl font-extrabold text-[#13315C] text-center mt-4 md:m-0 md:text-left">
         Proyectos
       </h3>
-      <ul className="grid md:grid-cols-3 md:gap-8 justify-center md:justify-start mt-4">
+      <ul className="overflow-auto grid md:grid-cols-3 md:gap-8 justify-center md:justify-start mt-4">
         {projects
           .filter(project => project.id_usuario_id === user.id_user) // Filtrar proyectos según el id_user
           .map(project => (

@@ -114,60 +114,70 @@ function AddNewProjectForm() {
   // hacer una busquda con un nombre de usuario para desplegar al miembro e invitarlo ?
 
   return (
-    <div className='flex flex-col px-6'>
+    <div className='flex flex-col px-6 my-10'>
       <form className='space-y-6' onSubmit={handleAddProject}>
-        <div className='space-y-1'>
-          <h3 className='text-xl font-semibold text-[#13315C]'>Nombre de la tarea</h3>
-          <input required value={newProject.nombre}  onChange={(e) => setNewProject({ ...newProject, nombre: e.target.value })} className='p-2 w-80'></input>
-        </div>
-        <div className='space-y-1'>
-          <h3 className='text-xl font-semibold text-[#13315C]'>Descripción</h3>
-          <textarea required value={newProject.descripcion} onChange={(e) => setNewProject({ ...newProject, descripcion: e.target.value })} className='p-2 w-80 h-24' type='text-area' maxLength={255}></textarea>
-        </div>
-        <div className='space-y-1'>
-          <h3 className='text-xl font-semibold text-[#13315C]'>Fecha limite</h3>
-          <input required type="date" value={newProject.fecha_inicio} onChange={(e) => setNewProject({ ...newProject, fecha_inicio: e.target.value })} className='p-2 w-80'></input>
-        </div>
-        <div className='space-y-1'>
-          <h3 className='text-xl font-semibold text-[#13315C]'>Equipo</h3>
-          {/* <input required value={newProject.id_equipo_id}  onChange={(e) => setNewProject({ ...newProject, id_equipo_id: e.target.value })} className='p-2 w-80'></input> */}
-          <select
-            required
-            className="w-full px-3 py-2 border rounded-md"
-            name="id_equipo_id"
-            value={newProject.id_equipo_id}
-            onChange={handleInputChange}
-            placeholder="Equipo a cargo"
-          >
-            <option value="">Equipo a cargo</option>
-            {
+      <div className='grid grid-cols-2 gap-14'>
+          <div>
+            <div className='space-y-1'>
+             <h3 className='pt-5 text-xl font-semibold text-[#13315C]'>Nombre de la tarea</h3>
+              <input required value={newProject.nombre}  onChange={(e) => setNewProject({ ...newProject, nombre: e.target.value })} className='p-2 w-96'></input>
+            </div>
+            <div className='space-y-1'>
+             <h3 className='pt-5 text-xl font-semibold text-[#13315C]'>Descripción</h3>
+              <textarea required value={newProject.descripcion} onChange={(e) => setNewProject({ ...newProject, descripcion: e.target.value })} className='p-2 w-96 h-36' type='text-area' maxLength={255}></textarea>
+            </div>
+          </div>
 
-            teams.filter((team) => team.id_usuario_id === tokenData.idUser).map((team) => (
-                <option value={team.id_equipo}>{team.nombre}</option>
-              ))
-            }
-          </select>
+
+          <div>
+            <div className='space-y-1'>
+             <h3 className='pt-5 text-xl font-semibold text-[#13315C]'>Fecha limite</h3>
+              <input required type="date" value={newProject.fecha_inicio} onChange={(e) => setNewProject({ ...newProject, fecha_inicio: e.target.value })} className='p-2 w-96'></input>
+            </div>
+            <div className='space-y-1'>
+             <h3 className='pt-5 text-xl font-semibold text-[#13315C]'>Equipo</h3>
+              {/* <input required value={newProject.id_equipo_id}  onChange={(e) => setNewProject({ ...newProject, id_equipo_id: e.target.value })} className='p-2 w-96'></input> */}
+              <select
+                required
+                className="w-full px-3 py-2 border rounded-md"
+                name="id_equipo_id"
+                value={newProject.id_equipo_id}
+                onChange={handleInputChange}
+                placeholder="Equipo a cargo"
+              >
+                <option value="" disabled>Equipo a cargo</option>
+                {
+
+                teams.filter((team) => team.id_usuario_id === tokenData.idUser).map((team) => (
+                    <option value={team.id_equipo}>{team.nombre}</option>
+                  ))
+                }
+              </select>
+            </div>
+            <div className='space-y-1'>
+             <h3 className='pt-5 text-xl font-semibold text-[#13315C]'>Estado</h3>
+              <select
+                required
+                className="w-full px-3 py-2 border rounded-md"
+                name="id_estado_id"
+                value={newProject.id_estado_id}
+                onChange={handleInputChange}
+                placeholder="Estado del proyecto"
+              >
+                <option value="" disabled>Estado del proyecto</option>
+                {status && status.map((state) => {
+                  if(state.id_estado !== 1){
+                    return <option value={state.id_estado}>{state.nombre}</option>
+                  }
+                })}
+              </select>
+            </div>
+          </div>
+          
         </div>
-        <div className='space-y-1'>
-          <h3 className='text-xl font-semibold text-[#13315C]'>Estado</h3>
-          <select
-            required
-            className="w-full px-3 py-2 border rounded-md"
-            name="id_estado_id"
-            value={newProject.id_estado_id}
-            onChange={handleInputChange}
-            placeholder="Estado del proyecto"
-          >
-            <option value="">Estado del proyecto</option>
-            {status && status.map((state) => {
-              if(state.id_estado !== 1){
-                return <option value={state.id_estado}>{state.nombre}</option>
-              }
-            })}
-          </select>
-        </div>
+        <button type='submit' className='bg-[#13315C] text-white p-2 w-full capitalize hover:bg-[#8DA8C5]'>Crear proyecto</button>
         {/* <img src={teamMembers} className='w-20'></img> */}
-        <button type='submit' className='bg-[#13315C] text-white p-2 w-80 capitalize hover:bg-[#8DA8C5]'>Crear proyecto</button>
+        
       </form>
     </div>
   )

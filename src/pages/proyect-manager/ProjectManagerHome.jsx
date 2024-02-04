@@ -62,7 +62,7 @@ function ProjectManagerHome() {
                 {/* <TasksForToday/> */}
               </div>
           </div>
-          <div>
+          <div className='flex flex-col justify-between py-5'>
             <Calendar/>
             <Statistics/>
 
