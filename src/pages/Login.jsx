@@ -69,7 +69,7 @@ function Login() {
         const sanitizedEmail = DOMPurify.sanitize(email);
         const sanitizedPassword = DOMPurify.sanitize(password);
 
-        if (sanitizedEmail !== email || sanitizedPassword !== password ) {
+        if (sanitizedEmail !== email || sanitizedPassword !== password) {
           Swal.fire({
             icon: 'warning',
             title: 'Contenido no permitido',
