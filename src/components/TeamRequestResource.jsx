@@ -9,7 +9,7 @@ function TeamRequestResource() {
 
   const [manager, setManager] = useState(false);
   const [showScrollMessage, setShowScrollMessage] = useState(true);
-
+  // cosnt [idRequest, setIdRequest] = useState(null);
   useEffect(() => {
     const handleScroll = () => {
       const scrollPos = window.scrollY;
@@ -35,8 +35,12 @@ function TeamRequestResource() {
           <img src={options}></img>
         </button>
       </div> 
-      <div className="flex flex-col justify-center mx-auto overflow-y-auto h-[400px] pt-48 px-5 scrollbar-track-transparent scrollbar-thumb-[#134175] scrollbar-thumb-rounded-7xl scrollbar-thin">
-        <TeamRequestCard idRequest={idRequest}/>
+      <div className="justify-start flex flex-col mx-auto overflow-y-auto h-[400px] px-5 scrollbar-track-transparent scrollbar-thumb-[#134175] scrollbar-thumb-rounded-7xl scrollbar-thin">
+        <TeamRequestCard />
+        <TeamRequestCard />
+        <TeamRequestCard />
+        <TeamRequestCard />
+
       </div>
       
     </div>

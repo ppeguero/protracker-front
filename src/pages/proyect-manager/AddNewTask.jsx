@@ -1,7 +1,7 @@
 import React from 'react'
 import Header from '../../components/Header'
 import Calendar from '../../components/Calendar'
-import AddNewTaskForm from '../../components/AddNewProjectForm'
+import AddNewTaskForm from '../../components/AddNewTaskForm'
 
 function AddNewTask() { 
 

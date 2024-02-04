@@ -34,11 +34,11 @@ function TeamMembersCard({ idNumerico }) {
           <img src={options}></img>
         </button>
       </div> 
-      <div className="flex flex-col justify-center mx-auto overflow-y-auto pt-12 px-5 scrollbar-track-transparent scrollbar-thumb-[#134175] scrollbar-thumb-rounded-7xl scrollbar-thin">
+      <div className="flex flex-col justify-start mx-auto overflow-y-auto px-5 scrollbar-track-transparent scrollbar-thumb-[#134175] scrollbar-thumb-rounded-7xl scrollbar-thin">
         <TeamMember/>
         <TeamMember/>
         <TeamMember/>
-        <TeamMember/>
+
       </div>
       
     </div>

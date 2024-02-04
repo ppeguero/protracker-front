@@ -6,9 +6,7 @@ function AddNewTaskForm() {
   const [newTask, setNewTask] = useState({
     nombre : '',
     descripcion : '', 
-    fecha_de_entrega : '', 
     fecha_limite : '',
-    ruta_documento : '',
     id_proyecto_id : '',
     id_estado_id : '',
     id_miembro_id : '',
@@ -37,9 +35,7 @@ function AddNewTaskForm() {
         setNewTask({
           nombre : newTask.nombre,
           descripcion : newTask.descripcion, 
-          fecha_de_entrega : null, 
           fecha_limite : newTask.fecha_limite,
-          ruta_documento : null,
           id_proyecto_id : newTask.id_proyecto_id,
           id_estado_id : '',
           id_miembro_id : '',
