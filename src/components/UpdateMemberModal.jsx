@@ -103,19 +103,10 @@ const UpdateMemberModal = ({ isOpen, onRequestClose, handleAddOrUpdate, selected
           <label className="block text-gray-700 text-sm font-bold mb-2">
             Especialidad
           </label>
-          {/* <input
-            
-            className="w-full px-3 py-2 border rounded-md"
-            type="text"
-            name="id_especialidad_id"
-            value={updatedMember.id_especialidad_id}
-            onChange={handleInputChange}
-            placeholder="Especialidad"
-          /> */}
           <select
             required
             className="w-full px-3 py-2 border rounded-md"
-            name="id_rol_id"
+            name="id_especialidad_id"
             value={updatedMember.id_especialidad_id}
             onChange={handleInputChange}
           >

@@ -31,11 +31,6 @@ import NotAuth from './pages/NotAuth.jsx';
 
 function AppRouter() {
 
-    const projectManagerPermissions = ['viewHome', 'addProject', 'viewDeliveredTaskDetails', 'viewMemberInformation', 'viewProjectDetails', 'viewRequestDetails', 'viewProfileDetails'];
-    const memberPermissions = ['viewTeamMemberHome', 'viewTaskDetails', 'viewProfileDetails', 'viewProjectDetailsMember', 'viewRequestResource'];
-    const adminPermissions = ['viewCrudProjects', 'viewCrudTeams', 'viewCrudUsers', 'viewCrudMembers'];
-
-
     const token_jwt = localStorage.getItem('token'); 
     const decodedToken = token_jwt ? jwt_decode(token_jwt) : null;
     const userRole = decodedToken ? decodedToken.rol_name : null; 
@@ -45,22 +40,35 @@ function AppRouter() {
       permissions: decodedToken ? decodedToken.rol_permissions.split(', ') : [],
       user_rol: userRole || '',
     });
-  
-    // useEffect(() => {
-    //   console.log(user);
-    // }, []); 
-  
-      
+
+    const [rolesPermissions, setRolesPermisos] = useState([]);
+
+    useEffect(() => {
+      fetch('https://localhost:8080/api/roles')
+      .then(response => response.json())
+      .then(data => {
+        setRolesPermisos(data);
+      })
+      .catch(error => {
+        console.error('Error al obtener los roles:', error);
+      });
+    }, [])
+
+    function hasPermissions(user, requiredRole, requiredPermissions) {
+      return (
+        !!user.token &&
+        user.user_rol === requiredRole &&
+        requiredPermissions.every((permission) => user.permissions.includes(permission))
+      );
+    }
+
+
     return (
+        rolesPermissions.length > 0 ?
         <>
           <Routes>
             {/* RUTAS PUBLICAS */}
             <Route path="/" element={<Home />} />
-            {/* <Route path="/login" element={<Login/>} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/restore-password" element={<RestorePassword />} />
-            <Route path="/change-password" element={<ChangePassword />} /> */}
-            {/* <Route path="/select-account-type" element={<SelectAccountType />} /> */}
             <Route path="/not-auth" element={<NotAuth />} />
 
             <Route element={<ProtectedRoute
@@ -74,15 +82,7 @@ function AppRouter() {
     
             {/* RUTAS PROTEGIDAS DEL USUARIO PROJECT MANAGER*/}
             <Route element={<ProtectedRoute
-            isAllowed={ !!user.token && user.user_rol == "Project Manager" &&
-              user.permissions.includes('viewHome') &&
-              user.permissions.includes('addProject') &&
-              user.permissions.includes('viewDeliveredTaskDetails') &&
-              user.permissions.includes('viewMemberInformation') &&
-              user.permissions.includes('viewProjectDetails') &&
-              user.permissions.includes('viewRequestDetails') &&
-              user.permissions.includes('viewProfileDetails')
-            }
+            isAllowed={hasPermissions(user, rolesPermissions[1].nombre, rolesPermissions[1].permisos.split(', '))}
             />}>
               <Route path="/project-manager-home" element={<ProjectManagerHome />} />
               <Route path="/add-new-project" element={<AddNewProject />} />
@@ -95,14 +95,7 @@ function AppRouter() {
 
             {/* RUTAS PROTEGIDAS DEL USUARIO MEMBERS*/}
             <Route element={<ProtectedRoute
-            isAllowed={ !!user.token &&
-              user.user_rol == "Miembro" &&
-              user.permissions.includes('viewTeamMemberHome') &&
-              user.permissions.includes('viewTaskDetails') &&
-              user.permissions.includes('viewProfileDetails') &&
-              user.permissions.includes('viewProjectDetailsMember') &&
-              user.permissions.includes('viewRequestResource')
-            }
+            isAllowed={hasPermissions(user, rolesPermissions[2].nombre, rolesPermissions[2].permisos.split(', '))}
             />}>
               <Route path="/team-member-home" element={<TeamMemberHome />} />
               <Route path="/task-details" element={<TaskDetails />} />
@@ -112,25 +105,8 @@ function AppRouter() {
             </Route>
 
             <Route element={<ProtectedRoute
-              isAllowed={ 
-                (!!user.token && user.user_rol === "Project Manager" &&
-                user.permissions.includes('viewHome') &&
-                user.permissions.includes('addProject') &&
-                user.permissions.includes('viewDeliveredTaskDetails') &&
-                user.permissions.includes('viewMemberInformation') &&
-                user.permissions.includes('viewProjectDetails') &&
-                user.permissions.includes('viewRequestDetails') &&
-                user.permissions.includes('viewProfileDetails'))
-                ||
-                (!!user.token &&
-                  user.user_rol == "Miembro" &&
-                  user.permissions.includes('viewTeamMemberHome') &&
-                  user.permissions.includes('viewTaskDetails') &&
-                  user.permissions.includes('viewProfileDetails') &&
-                  user.permissions.includes('viewProjectDetailsMember') &&
-                  user.permissions.includes('viewRequestResource')
-                )
-               }
+              isAllowed={hasPermissions(user, rolesPermissions[1].nombre, rolesPermissions[1].permisos.split(', ')) ||
+              hasPermissions(user, rolesPermissions[2].nombre, rolesPermissions[2].permisos.split(', '))}
             />}>
               <Route path="/Profile-Details" element={<ProfileDetails />} />
             </Route>
@@ -138,21 +114,8 @@ function AppRouter() {
     
             {/* RUTAS PROTEGIDAS DEL ADMIN */}
             <Route element={<ProtectedRoute
-              isAllowed={
-                (!!user.token && user.user_rol === "Administrador" &&
-                  user.permissions.includes('viewCrudProjects') &&
-                  user.permissions.includes('viewCrudTeams') &&
-                  user.permissions.includes('viewCrudUsers') &&
-                  user.permissions.includes('viewCrudMembers')) ||
-                (!!user.token && user.user_rol === "Project Manager" &&
-                  user.permissions.includes('viewHome') &&
-                  user.permissions.includes('addProject') &&
-                  user.permissions.includes('viewDeliveredTaskDetails') &&
-                  user.permissions.includes('viewMemberInformation') &&
-                  user.permissions.includes('viewProjectDetails') &&
-                  user.permissions.includes('viewRequestDetails') &&
-                  user.permissions.includes('viewProfileDetails'))
-              }
+              isAllowed={hasPermissions(user, rolesPermissions[0].nombre, rolesPermissions[0].permisos.split(', ')) ||
+              hasPermissions(user, rolesPermissions[1].nombre, rolesPermissions[1].permisos.split(', '))}
             />}>
               <Route path='/projects' element={<CrudProjects />} />
               <Route path='/teams' element={<CrudTeams />} />
@@ -164,6 +127,8 @@ function AppRouter() {
             <Route path='/*' element={<NotFound />} />
           </Routes>
         </>
+        :
+        null
       );
     }
 

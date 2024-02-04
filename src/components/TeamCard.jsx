@@ -10,9 +10,9 @@ function TeamCard( { profilePhoto }) {
     <li className=" list-none">
         {/* <li className="bg-[#134175]">Equipo 2</li> */}
         <div className="container">
-        <div className="flex flex-col h-80 bg-[#13315C] rounded-lg p-10 my-5 w-72">
+        <div className="flex flex-col h-[400px] bg-[#13315C] rounded-lg p-10 my-5 w-96 mr-10">
             <div className='flex justify-between'>
-                <h4 className="text-[#EEF4ED] font-bold text-2xl">Desarrollo</h4>
+                <h4 className="text-[#EEF4ED] font-bold text-2xl">Líder del equipo</h4>
                 <button>
                     <img src={optionsIcon} className=''></img>
                 </button>

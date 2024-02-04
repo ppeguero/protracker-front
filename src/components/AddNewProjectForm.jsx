@@ -8,18 +8,19 @@ function AddNewProjectForm() {
 
   const [tokenData, setTokenData] = useState()
   const [teams, setTeams] = useState([])
+  const [status, setStatus] = useState([])
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewProject((prevProject) => ({ ...prevProject, [name]: value }));
   };
 
+
   useEffect(()=>{
     const token_jwt = localStorage.getItem('token'); // Obtén el token del localStorage o del lugar donde lo estás almacenando
     const decodedToken = token_jwt ? jwt_decode(token_jwt) : null;
     if(decodedToken){
         setTokenData(decodedToken)
-        console.log(decodedToken);
         setNewProject({ ...newProject, id_usuario_id: decodedToken.idUser });
       }
 
@@ -27,10 +28,17 @@ function AddNewProjectForm() {
           .then(response => response.json())
           .then(data => {
             setTeams(data.equipos)
-            // console.log(data.equipos);
           });
-            
-  
+
+      fetch('https://localhost:8080/api/status')
+          .then(response => response.json())
+          .then(data => {
+            setStatus(data)
+          })
+          .catch(error => {
+            console.error(error);
+          })
+
   }, [])
 
   const [newProject, setNewProject] = useState({
@@ -38,24 +46,41 @@ function AddNewProjectForm() {
     descripcion: '',
     fecha_inicio: '',
     id_usuario_id: '',
-    id_estado_id: 1,
+    id_estado_id: '',
     id_equipo_id: ''
   });
+
 
   const handleAddProject = (e) => {
     e.preventDefault()
     
-//     // Validación de espacios en blanco
-//   if (hasOnlySpaces(newUser.nombre) || hasOnlySpaces(newUser.descripcion) || hasOnlySpaces(newUser.id_rol_id)) {
-//     Swal.fire({
-//       title: '¡Error!',
-//       text: 'Los campos no pueden consistir solo en espacios en blanco.',
-//       icon: 'error',
-//     });
-//     return;
-//   }
+     // Validación de campos vacíos
+   if (!newProject.nombre || !newProject.descripcion || !newProject.fecha_inicio || !newProject.id_equipo_id || !newProject.id_estado_id) {
+    Swal.fire('Error', 'Todos los campos son obligatorios. Por favor, completa todos los campos.', 'error');
+    return;
+    }
+    // Validación de campos vacíos
+    if (!newProject.nombre.trim() || !newProject.descripcion.trim() || !newProject.fecha_inicio.trim() || !newProject.id_equipo_id.trim() || !newProject.id_estado_id.trim()) {
+      Swal.fire('Error', 'Los valores de los campos no pueden ser espacios. Por favor, completa todos los campos.', 'error');
+      return;
+    }
 
-    console.log(newProject);
+    const today = new Date().toISOString().split('T')[0];
+    if (!newProject.fecha_inicio || newProject.fecha_inicio < today) {
+        Swal.fire('Error', 'La fecha de inicio del proyecto no puede estar en el pasado.', 'error');
+        return;
+    }
+
+    if (!newProject.id_equipo_id) {
+      Swal.fire('Error', 'Selecciona un equipo para el proyecto.', 'error');
+      return;
+    }
+
+    if (!newProject.id_estado_id) {
+      Swal.fire('Error', 'Selecciona un estado para el proyecto.', 'error');
+      return;
+    }
+
 
     fetch('https://localhost:8080/api/projects/', {
       method: 'POST',
@@ -77,8 +102,8 @@ function AddNewProjectForm() {
         nombre: '',
         descripcion: '',
         fecha_inicio: '',
-        id_usuario_id: '',
-        id_estado_id: '',
+        id_usuario_id: tokenData.idUser,
+        id_estado_id: 1,
         id_equipo_id: ''
         })}).catch((error) => {
         console.error('Fetch error:', error);
@@ -123,7 +148,25 @@ function AddNewProjectForm() {
             }
           </select>
         </div>
-        <img src={teamMembers} className='w-20'></img>
+        <div className='space-y-1'>
+          <h3 className='text-xl font-semibold text-[#13315C]'>Estado</h3>
+          <select
+            required
+            className="w-full px-3 py-2 border rounded-md"
+            name="id_estado_id"
+            value={newProject.id_estado_id}
+            onChange={handleInputChange}
+            placeholder="Estado del proyecto"
+          >
+            <option value="">Estado del proyecto</option>
+            {status && status.map((state) => {
+              if(state.id_estado !== 1){
+                return <option value={state.id_estado}>{state.nombre}</option>
+              }
+            })}
+          </select>
+        </div>
+        {/* <img src={teamMembers} className='w-20'></img> */}
         <button type='submit' className='bg-[#13315C] text-white p-2 w-80 capitalize hover:bg-[#8DA8C5]'>Crear proyecto</button>
       </form>
     </div>

@@ -17,36 +17,6 @@ function Login() {
     const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
     const [loginError, setLoginError] = useState('');
 
-    // const [csrfToken, setCsrfToken] = useState('');
-
-    // useEffect(() => {
-    //   const obtenerTokenCSRF = async () => {
-    //     try {
-    //       const response = await fetch('https://localhost:8080/api/csrf-token');
-    //       if (!response.ok) {
-    //         throw new Error(`Error al obtener el token CSRF. Código de estado: ${response.status}`);
-    //       }
-      
-    //       const data = await response.json();
-    //       setCsrfToken(data.csrfToken);
-    //       console.log('Token CSRF recibido:', data.csrfToken);
-    //     } catch (error) {
-    //       console.error('Error al obtener el token CSRF:', error);
-    //     }
-    //   };
-      
-    //   // Solo ejecutar la solicitud si csrfToken es null
-    //   if (csrfToken === null || csrfToken == '') {
-    //     obtenerTokenCSRF();
-    //   }
-    // }, [csrfToken]);
-  
-    // useEffect(() => {
-    //   console.log(csrfToken);
-    // }, [csrfToken]);
-
-
-
     const seePassword = () => {
         setShowPassword(!showPassword);
     };
@@ -55,7 +25,7 @@ function Login() {
         const value = e.target.value.trim(); // Eliminar espacios vacíos al principio y al final
         setEmail(value);
         setEmailErrorMessage('');
-    };
+    };  
 
     const handlePasswordChange = (e) => {
         const value = e.target.value;

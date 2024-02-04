@@ -15,10 +15,10 @@ function Projects({ link }) {
     id_user: decodedToken ? decodedToken.idUser : null
   });
 
-  useEffect(() => {
-    console.log(user);
-    console.log(user.id_user);
-  }, []); // Asegúrate de incluir token_jwt en la dependencia del useEffect si lo utilizas dentro
+  // useEffect(() => {
+  //   console.log(user);
+  //   console.log(user.id_user);
+  // }, []); // Asegúrate de incluir token_jwt en la dependencia del useEffect si lo utilizas dentro
 
 
   useEffect(() => {

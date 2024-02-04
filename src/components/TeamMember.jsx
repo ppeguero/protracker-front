@@ -8,7 +8,7 @@ function TeamMember() {
   });
 
   return (
-    <div className="container">
+    <div className="container pt-6">
       <div className="bg-[#EEF4ED] h-16 w-72 rounded-md flex items-center">
         <img src={profilePicture} className="w-12 mx-6"></img>
         <div className="ml-4">

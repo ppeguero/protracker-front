@@ -2,10 +2,15 @@ import React, { useState, useEffect } from "react";
 import optionsIcon from "../assets/icons/options.png";
 import profilePhoto from "../assets/images/pipa-img.png";
 import arrowDown from "../assets/icons/arrow-down.png";
+import jwt_decode from 'jwt-decode';
 
 function ProjectDetailsCard({ idNumerico }) {
 
   const [projectDetail, setProjectDetail] = useState({})
+
+  const token_jwt = localStorage.getItem('token'); 
+  const decodedToken = token_jwt ? jwt_decode(token_jwt) : null;
+  const userRole = decodedToken ? decodedToken.rol_name : null; 
 
 
   const [projectData, setProjectData] = useState({
@@ -54,7 +59,7 @@ function ProjectDetailsCard({ idNumerico }) {
   }, [projectData.completedTasks, projectData.totalTasks]);
 
   return (
-    <div className="container mt-12">
+    <div className="container mt-5">
       <div className="flex flex-col h-fit bg-[#8DA8C5] rounded-lg p-8 w-fit">
         <div className="flex h-fit justify-between">
           <h2 className="text-[#134175] font-bold text-4xl w-80">

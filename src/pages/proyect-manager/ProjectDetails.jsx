@@ -9,6 +9,7 @@ import CompletedTaskHistory from "../../components/CompletedTaskHistory";
 import TeamMembersCard from "../../components/TeamMembersCard";
 import jwt_decode from 'jwt-decode';
 import { useParams } from 'react-router-dom';
+import TeamRequestResource from "../../components/TeamRequestResource";
 
 
 function ProjectDetails() {
@@ -57,30 +58,47 @@ function ProjectDetails() {
     
       show ? 
       <div className="h-screen container bg-[#EEF4ED] w-full ">
-      <Header />
-      <div className="flex w-full h-auto bg-[#EEF4ED]">
-        <div className="flex flex-col  md:flex-row ">
-          <div className="flex flex-col ml-6 h-fit">
-            <ReturnButton/>
+      <Header homeLink={userRole === "Project Manager"? '/project-manager-home' : '/team-member-home'}/>
+      <div className="flex flex-col w-full h-auto bg-[#EEF4ED]">
+        <div className="flex">
+          <div className="flex flex-col  md:flex-row ">
+            <div className="flex flex-col ml-6 h-fit">
+              <ReturnButton/>
+            </div>
+            <div className="h-fit flex flex-col mr-8">
+            <h2 className="text-4xl text-[#134175] font-extrabold pt-10">Proyecto</h2>
+              <ProjectDetailsCard idNumerico={idNumerico}/>
+              {/* <ProjectStatistics /> */}
+            </div>
           </div>
-          <div className="h-fit flex flex-col mr-8">
-            <ProjectDetailsCard idNumerico={idNumerico}/>
-            <ProjectStatistics />
+          <div className="">
+            <div className="h-fit mt-10">
+              <h2 className="text-4xl text-[#134175] font-extrabold">Equipo</h2>
+              <div className="flex space-x-4">
+                <TeamCard profilePhoto={profilePicture}/>
+              </div>      
+              <div className="flex justify-around">
+                {/* <CompletedTaskHistory/> */}
+                
+              </div>      
+            </div>
+          </div>
+          <div className="">
+            <div className="h-fit mt-10">
+              <h2 className="text-4xl text-[#134175] font-extrabold">Miembros</h2>
+              <div className="flex space-x-4">
+                <TeamMembersCard idNumerico={idNumerico}/>
+              </div>      
+              <div className="flex justify-around">
+                {/* <CompletedTaskHistory/> */}
+                
+              </div>      
+            </div>
           </div>
         </div>
-        <div className="">
-          <div className="h-fit">
-            <h2 className="text-4xl text-[#134175] font-extrabold">Equipos</h2>
-            <div className="flex space-x-4">
-              <TeamCard profilePhoto={profilePicture}/>
-              <TeamCard profilePhoto={profilePicture}/>
-              <TeamCard profilePhoto={profilePicture}/>
-            </div>      
-            <div className="flex justify-around">
-              <CompletedTaskHistory/>
-              <TeamMembersCard/>
-            </div>      
-          </div>
+
+        <div className="w-full px-[110px]">
+          <TeamRequestResource/>
         </div>
       </div>
     </div>

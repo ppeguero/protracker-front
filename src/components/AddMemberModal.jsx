@@ -137,7 +137,7 @@ setIsAddingMember(true); // Activa el estado para desactivar el botón
           <select
             required
             className="w-full px-3 py-2 border rounded-md"
-            name="id_rol_id"
+            name="id_especialidad_id"
             value={newMember.id_especialidad_id}
             onChange={handleInputChange}
           >
