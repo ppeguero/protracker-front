@@ -102,8 +102,8 @@ function AddNewProjectForm() {
         nombre: '',
         descripcion: '',
         fecha_inicio: '',
-        id_usuario_id: tokenData.idUser,
-        id_estado_id: 1,
+        id_estado_id: '',
+        id_usuario_id: '',
         id_equipo_id: ''
         })}).catch((error) => {
         console.error('Fetch error:', error);

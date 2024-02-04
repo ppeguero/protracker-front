@@ -14,7 +14,7 @@ function Register() {
         confirmarContraseña: ''
     });
 
-    const [ show, setShow ] = useState(true);
+    const [show, setShow] = useState(true);
 
     const [errors, setErrors] = useState({
         nombre: '',
@@ -22,6 +22,7 @@ function Register() {
         contraseña: '',
         confirmarContraseña: ''
     });
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
     const handleChange = (e) => {
@@ -31,16 +32,23 @@ function Register() {
         });
         setErrors({
             ...errors,
-            [e.target.name]: '' // Limpiar el mensaje de error al cambiar el valor del campo
+            [e.target.name]: ''
         });
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Validación de campos vacíos y longitud máxima
+        // Evitar múltiples envíos
+        if (isLoading) {
+            return;
+        }
+
+        setIsLoading(true);
+
         const { nombre, correo, contraseña, confirmarContraseña } = formData;
 
+        // Validación de campos vacíos y longitud máxima
         if (!nombre.trim() || !correo.trim() || !contraseña.trim() || !confirmarContraseña.trim() || contraseña.length < 8 || contraseña.length > 25 || confirmarContraseña.length > 25) {
             setErrors({
                 nombre: !nombre.trim() ? 'El nombre no puede estar vacío o ser solo espacios' : '',
@@ -48,6 +56,7 @@ function Register() {
                 contraseña: !contraseña.trim() ? 'La contraseña no puede estar vacío o ser solo espacios' : contraseña.length < 8 ? 'La contraseña debe tener al menos 8 caracteres' : contraseña.length > 25 ? 'La contraseña debe tener máximo 25 caracteres' : '',
                 confirmarContraseña: !confirmarContraseña.trim() ? 'La contraseña no puede estar vacío o ser solo espacios' : confirmarContraseña.length > 25 ? 'La contraseña de confirmación debe tener máximo 25 caracteres' : ''
             });
+            setIsLoading(false);
             return;
         }
 
@@ -57,65 +66,64 @@ function Register() {
                 ...errors,
                 confirmarContraseña: 'Las contraseñas no coinciden'
             });
+            setIsLoading(false);
             return;
         }
 
-        // Verificación de complejidad de contraseña (al menos una mayúscula, un número o un carácter especial)
+        // Verificación de complejidad de contraseña
         const passwordRegex = /^(?=.*[A-Z])(?=.*[0-9\W]).{8,}$/;
         if (!passwordRegex.test(contraseña)) {
             setErrors({
                 ...errors,
                 contraseña: 'La contraseña debe contener al menos una mayúscula, un número o un carácter especial'
             });
+            setIsLoading(false);
+            return;
         }
-
-        setShow(false);
-
 
         try {
             const response = await fetch('https://localhost:8080/api/users', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(formData),
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
             });
-          
+
             if (!response.ok) {
-              const errorData = await response.json();
-              throw new Error(errorData.message || 'Error en la solicitud: ' + response.status);
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Inicia sesión para acceder');
             }
-          
+
             const data = await response.json();
             console.log('Registro exitoso');
             Swal.fire({
-                        icon: 'success',
-                        title: 'Registro exitoso',
-                        text: '¡El usuario se ha registrado correctamente!',
-                        confirmButtonText: 'OK',
-                    })
-          
-          } catch (error) {
+                icon: 'success',
+                title: 'Registro exitoso',
+                text: '¡El usuario se ha registrado correctamente!',
+                confirmButtonText: 'OK',
+            }).then(() => {
+                navigate('/login');
+            });
+        } catch (error) {
             console.error('Error al realizar la solicitud:', error.message);
-          
-            if (error.message === 'El correo electrónico ya se encuentra registrado') {
-              // Mostrar mensaje específico para el caso de correo duplicado
-              setErrors({
-                ...errors,
-                correo: error.message,
-              });
-            } else {
-              // Mostrar mensaje genérico para otros errores
-              Swal.fire({
-                icon: 'error',
-                title: 'Error de registro',
-                text: error.message,
-              });
-            }
-          }
-          
 
-        
+            if (error.message === 'El correo electrónico ya se encuentra registrado') {
+                setErrors({
+                    ...errors,
+                    correo: error.message,
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'El usuario ya está registrado',
+                    text: error.message,
+                    button: 'OK',
+                });
+            }
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     const seePassword = () => {
@@ -127,7 +135,7 @@ function Register() {
             <div className='flex items-center w-full justify-evenly'>
                 <div className='w-1/3'>
                     <h1 className='text-[#13315C] font-bold text-3xl'>P R O T R A C K E R</h1>
-                    <ReturnButton/>
+                    <ReturnButton />
                     <div className='bg-white p-8 items-center justify-center rounded-md my-12'>
                         <img className='' src={registerImage} alt="Register Image" />
                     </div>
@@ -142,7 +150,7 @@ function Register() {
                             </label>
                             <div className='flex items-center bg-white rounded-sm w-3/4'>
                                 <input
-                                required
+                                    required
                                     type='text'
                                     name='nombre'
                                     value={formData.nombre}
@@ -199,7 +207,7 @@ function Register() {
                             </label>
                             <div className='flex items-center justify-between bg-white rounded-sm w-3/4'>
                                 <input
-                                required
+                                    required
                                     type={showPassword ? 'text' : 'password'}
                                     name='confirmarContraseña'
                                     value={formData.confirmarContraseña}
@@ -215,7 +223,13 @@ function Register() {
                             )}
                         </div>
                         <div className='text-center w-3/4 mt-4'>
-                        <button type='submit' className='text-center bg-[#8DA8C5] py-2 px-10 font-bold rounded-md align-center text-white'>Registrarse</button>
+                            <button
+                                type='submit'
+                                className='text-center bg-[#8DA8C5] py-2 px-10 font-bold rounded-md align-center text-white'
+                                disabled={isLoading}
+                            >
+                                {isLoading ? 'Registrando...' : 'Registrarse'}
+                            </button>
                         </div>
                     </div>
                 </form>
