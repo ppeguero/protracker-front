@@ -4,6 +4,7 @@ import { ImEyeBlocked, ImEye } from "react-icons/im";
 import registerImage from '../assets/images/registerImage.png';
 import Swal from 'sweetalert2';
 import ReturnButton from '../components/ReturnButton';
+import DOMPurify from 'dompurify';
 
 function Register() {
     const [showPassword, setShowPassword] = useState(false);
@@ -26,14 +27,37 @@ function Register() {
     const navigate = useNavigate();
 
     const handleChange = (e) => {
+        const value = DOMPurify.sanitize(e.target.value);
         setFormData({
             ...formData,
-            [e.target.name]: e.target.value
+            [e.target.name]: value
         });
         setErrors({
             ...errors,
             [e.target.name]: ''
         });
+
+        if (e.target.value !== value) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Contenido no permitido',
+                text: 'Se ha detectado contenido no permitido en el campo de entrada. Por favor, evita incluir scripts u otros elementos maliciosos.',
+            });
+        }
+        const sqlPatterns = ['DROP', 'DELETE', 'UPDATE', 'INSERT', 'ALTER', 'TRUNCATE', 'CREATE', 'SELECT'];
+        if (sqlPatterns.some(pattern => value.toUpperCase().includes(pattern))) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Contenido no permitido',
+                text: 'Se ha detectado contenido no permitido en el campo de entrada. Por favor, evita incluir scripts u otros elementos maliciosos.',
+            }).then(() => {
+
+            setFormData({
+                ...formData,
+                [e.target.name]: ''
+            });
+        });
+        }
     };
 
     const handleSubmit = async (e) => {

@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import DOMPurify from 'dompurify';
 
 //* Images
 import bgImage from '../assets/images/bgImage.png';
@@ -34,6 +35,38 @@ function Login() {
     };
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        const sanitizedEmail = DOMPurify.sanitize(email);
+        const sanitizedPassword = DOMPurify.sanitize(password);
+
+        if (sanitizedEmail !== email || sanitizedPassword !== password ) {
+          Swal.fire({
+            icon: 'warning',
+            title: 'Contenido no permitido',
+            text: 'Se ha detectado contenido no permitido en el campo de entrada. Por favor, evita incluir scripts u otros elementos maliciosos.',
+          });
+
+        const sqlPatterns = ['DROP', 'DELETE', 'UPDATE', 'INSERT', 'ALTER', 'TRUNCATE', 'CREATE', 'SELECT'];
+        if (sqlPatterns.some(pattern => email.toUpperCase().includes(pattern))) {
+          Swal.fire({
+              icon: 'warning',
+              title: 'Contenido no permitido',
+              text: 'Se ha detectado contenido no permitido en el campo de entrada. Por favor, evita incluir scripts u otros elementos maliciosos.',
+          }).then(() => {
+              setEmail('');
+          });
+      }
+      
+      if (sqlPatterns.some(pattern => password.toUpperCase().includes(pattern))) {
+          Swal.fire({
+              icon: 'warning',
+              title: 'Contenido no permitido',
+              text: 'Se ha detectado contenido no permitido en el campo de entrada. Por favor, evita incluir scripts u otros elementos maliciosos.',
+          }).then(() => {
+              setPassword(''); 
+          });
+      }}
+        
       
         // Validación de campos vacíos
         
