@@ -63,7 +63,7 @@ function ProjectDetailsMember() {
         if(data.length > 0){
           setShow(true);
         } else{
-          location.href = '/team-member-home';
+          location.href = '/not-auth';
         }
         console.log(data.length);
         console.log(show);

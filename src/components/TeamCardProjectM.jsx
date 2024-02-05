@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import optionsIcon from '../assets/icons/options.png'
 
 function TeamCardProjectM( { profilePhoto, team, tasks, idNumerico }) {
-
+    console.log(idNumerico);
     console.log("team card", team);
     console.log("team card", tasks);
     const [userData, setUserData] = useState(null)
@@ -37,9 +37,9 @@ function TeamCardProjectM( { profilePhoto, team, tasks, idNumerico }) {
                 </div>
             </div>
         <p className='text-white font-extralight'>Últimas tareas asignadas</p>
-        <ul>
+        <ul className='overflow-hidden overflow-y-auto scrollbar-track-transparent scrollbar-thumb-[#EEF4ED] scrollbar-thumb-rounded-7xl scrollbar-thin'>
         {
-            tasks.slice(0, 3).map((task, index) => {
+            tasks.map((task, index) => {
                 if (task.id_proyecto_id === idNumerico) {
                 const date = new Date(task.fecha_limite);
 
@@ -66,7 +66,8 @@ function TeamCardProjectM( { profilePhoto, team, tasks, idNumerico }) {
                 }
                 return null;
             })
-            }
+        }
+
 
 
 

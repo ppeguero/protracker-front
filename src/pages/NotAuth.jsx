@@ -10,6 +10,8 @@ function NotFound() {
   const token_jwt = localStorage.getItem('token'); // Obtén el token del localStorage o del lugar donde lo estás almacenando
   const decodedToken = token_jwt ? jwt_decode(token_jwt) : null;
   const nombre_rol = decodedToken ? decodedToken.rol_name : null; // Esto contendrá el rol o los permisos del usuario
+
+
   return (
     <div className='flex flex-col items-start justify-center h-screen bg-gray-100 relative'>
       <div className='w-full p-10 '>
@@ -41,7 +43,7 @@ function NotFound() {
             Regresar a la sesión
             </button>
           :
-          null
+         null
 
         }
         
