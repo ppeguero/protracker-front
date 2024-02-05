@@ -8,7 +8,8 @@ import profileImage from "../assets/images/pipa-img.png";
 import { MdOutlineLogout } from "react-icons/md";
 import { HiOutlineMenu } from "react-icons/hi";
 import { IoCloseOutline } from "react-icons/io5";
-
+import jwt_decode from 'jwt-decode';
+import { BsArrowReturnLeft } from "react-icons/bs";
 
 function Sidebar({ show, setShow }) {
 
@@ -16,6 +17,15 @@ function Sidebar({ show, setShow }) {
     localStorage.removeItem("token");
     window.location.href = "/login";
   }
+
+  const token_jwt = localStorage.getItem('token');
+    const decodedToken = token_jwt ? jwt_decode(token_jwt) : null;
+    const userRole = decodedToken ? decodedToken.rol_name : null;
+    const [user, setUser] = useState({
+      token: token_jwt || null,
+      permissions: decodedToken ? decodedToken.rol_permissions.split(', ') : [],
+      id_user: decodedToken ? decodedToken.idUser : null
+    });
 
   return (
       show ? (
@@ -33,12 +43,18 @@ function Sidebar({ show, setShow }) {
           </div>
           <div className="flex flex-row justify-center">
             <div>
-              <Link
-                to="/users"
-                className="w-11 h-11 bg-[#8DA8C5] p-2 rounded-lg m-5 items-center justify-center flex"
-              >
+              {
+                userRole === 'Project Manager' ? 
+                <Link
+                to='/project-manager-home'
+                className="w-11 h-11 bg-[#8DA8C5] p-2 rounded-lg m-5 items-center justify-center flex">
                 <img src={homeIcon}></img>
-              </Link>
+                </Link>
+                :
+                null
+              }
+              
+                
             </div>
             <div>
               {/* <Link
@@ -52,26 +68,49 @@ function Sidebar({ show, setShow }) {
           </div>
           
           <div className="flex flex-col items-center md:pt-10">
-          <Link to="/users" className="text-2xl">
-              <div className="px-4 py-2 mt-5 text-white bg-[#8DA8C5] hover:bg-[#6F849F] rounded w-40 text-center">
-                Usuarios
-              </div>
-            </Link>
-            <Link to="/projects" className="text-2xl">
-              <div className="px-4 py-2 mt-5 text-white bg-[#8DA8C5] hover:bg-[#6F849F] rounded w-40 text-center">
-                Proyectos
-              </div>
-            </Link>
-            <Link to="/teams" className="text-2xl">
-              <div className="px-4 py-2 mt-5 text-white bg-[#8DA8C5] hover:bg-[#6F849F] rounded w-40 text-center">
-                Equipos
-              </div>
-            </Link>
-            <Link to="/members" className="text-2xl">
+          {
+                userRole === 'Project Manager' ?
+                <div>
+              <Link to="/projects" className="text-2xl">
+                <div className="px-4 py-2 mt-5 text-white bg-[#8DA8C5] hover:bg-[#6F849F] rounded w-40 text-center">
+                  Proyectos
+                </div>
+              </Link>
+              <Link to="/teams" className="text-2xl">
+                <div className="px-4 py-2 mt-5 text-white bg-[#8DA8C5] hover:bg-[#6F849F] rounded w-40 text-center">
+                  Equipos
+                </div>
+              </Link>
+              <Link to="/members" className="text-2xl">
               <div className="px-4 py-2 mt-5 text-white bg-[#8DA8C5] hover:bg-[#6F849F] rounded w-40 text-center">
                 Miembros
               </div>
             </Link>
+                </div>
+                :
+                <div>
+                    <Link to="/users" className="text-2xl">
+                  <div className="px-4 py-2 mt-5 text-white bg-[#8DA8C5] hover:bg-[#6F849F] rounded w-40 text-center">
+                    Usuarios
+                  </div>
+                </Link>
+                <Link to="/projects" className="text-2xl">
+                  <div className="px-4 py-2 mt-5 text-white bg-[#8DA8C5] hover:bg-[#6F849F] rounded w-40 text-center">
+                    Proyectos
+                  </div>
+                </Link>
+                <Link to="/teams" className="text-2xl">
+                  <div className="px-4 py-2 mt-5 text-white bg-[#8DA8C5] hover:bg-[#6F849F] rounded w-40 text-center">
+                    Equipos
+                  </div>
+                </Link>
+                <Link to="/members" className="text-2xl">
+                <div className="px-4 py-2 mt-5 text-white bg-[#8DA8C5] hover:bg-[#6F849F] rounded w-40 text-center">
+                  Miembros
+                </div>
+              </Link>
+                </div>
+              }
             <button onClick={logout} className="block md:hidden text-2xl">
               <div className="flex justify-center items-center px-4 py-2 mt-5 text-white bg-red-600 hover:bg-red-700 rounded w-40 text-center">
                 <MdOutlineLogout className="text-3xl text-white" />
@@ -88,12 +127,16 @@ function Sidebar({ show, setShow }) {
             </div>
             <div className="flex flex-row justify-center">
               <div>
+              {
+                userRole === 'Project Manager' ? 
                 <Link
-                  to="/users"
-                  className="w-11 h-11 bg-[#8DA8C5] p-2 rounded-lg m-5 items-center justify-center flex"
-                >
-                  <img src={homeIcon}></img>
+                to='/project-manager-home'
+                className="w-11 h-11 bg-[#8DA8C5] p-2 rounded-lg m-5 items-center justify-center flex">
+                <img src={homeIcon}></img>
                 </Link>
+                :
+                null
+              }
               </div>
               <div>
                 {/* <Link
@@ -105,11 +148,9 @@ function Sidebar({ show, setShow }) {
               </div>
             </div>
             <div className="flex flex-col items-center md:pt-10">
-            <Link to="/users" className="text-2xl">
-                <div className="px-4 py-2 mt-5 text-white bg-[#8DA8C5] hover:bg-[#6F849F] rounded w-40 text-center">
-                  Usuarios
-                </div>
-              </Link>
+              {
+                userRole === 'Project Manager' ?
+                <div>
               <Link to="/projects" className="text-2xl">
                 <div className="px-4 py-2 mt-5 text-white bg-[#8DA8C5] hover:bg-[#6F849F] rounded w-40 text-center">
                   Proyectos
@@ -125,7 +166,32 @@ function Sidebar({ show, setShow }) {
                 Miembros
               </div>
             </Link>
-            </div>
+                </div>
+                :
+                <div>
+                    <Link to="/users" className="text-2xl">
+                  <div className="px-4 py-2 mt-5 text-white bg-[#8DA8C5] hover:bg-[#6F849F] rounded w-40 text-center">
+                    Usuarios
+                  </div>
+                </Link>
+                <Link to="/projects" className="text-2xl">
+                  <div className="px-4 py-2 mt-5 text-white bg-[#8DA8C5] hover:bg-[#6F849F] rounded w-40 text-center">
+                    Proyectos
+                  </div>
+                </Link>
+                <Link to="/teams" className="text-2xl">
+                  <div className="px-4 py-2 mt-5 text-white bg-[#8DA8C5] hover:bg-[#6F849F] rounded w-40 text-center">
+                    Equipos
+                  </div>
+                </Link>
+                <Link to="/members" className="text-2xl">
+                <div className="px-4 py-2 mt-5 text-white bg-[#8DA8C5] hover:bg-[#6F849F] rounded w-40 text-center">
+                  Miembros
+                </div>
+              </Link>
+                </div>
+              }
+                          </div>
             <div className="hidden md:flex flex-row justify-center bottom-0 absolute">
               <div>
                 <button

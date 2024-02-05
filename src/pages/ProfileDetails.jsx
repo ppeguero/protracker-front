@@ -4,8 +4,14 @@ import ShowPassword from '../assets/icons/ShowPassword.png';
 import Pipa from '../assets/images/pipa-img.png'; // Importa la imagen Pipa
 import axios from 'axios';
 import ReturnButton from '../components/ReturnButton';
+import jwt_decode from 'jwt-decode';
 
 function ProfileDetails() {
+
+    const token_jwt = localStorage.getItem('token'); 
+    const decodedToken = token_jwt ? jwt_decode(token_jwt) : null;
+    const userRole = decodedToken ? decodedToken.rol_name : null; 
+
     const [userData, setUserData] = useState({
         name: '',
         email: '',
@@ -66,7 +72,7 @@ function ProfileDetails() {
 
     return (
         <div className="h-screen container bg-[#EEF4ED] w-full">
-            <Header homeLink={'/team-member-home'}/>
+            <Header homeLink={userRole === "Project Manager"? '/project-manager-home' : '/team-member-home'}/>
             <div className="flex flex-col w-full h-auto bg-[#EEF4ED] md:flex-row">
                 <div className='flex flex-col user-info mx-5 md:mx-10'>
                     <ReturnButton/>

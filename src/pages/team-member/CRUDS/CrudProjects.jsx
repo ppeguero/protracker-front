@@ -14,7 +14,7 @@ function CrudProjects() {
     const [isAddModalOpen, setAddModalOpen] = useState(false);
     const [isUpdateModalOpen, setUpdateModalOpen] = useState(false);
     const [selectedProject, setSelectedProject] = useState({});
-
+    
     useEffect(() => {
         fetch("https://localhost:8080/api/projects/")
           .then(response => response.json())
@@ -24,6 +24,8 @@ function CrudProjects() {
           })
           .catch(error => console.error("Fetch error:", error));
       }, []);
+
+      
     
       const updateProject = (id_proyecto) => {
         const projectToUpdate = projects.find(project => project.id_proyecto === id_proyecto);
@@ -56,7 +58,11 @@ function CrudProjects() {
               })
               .catch(error => {
                 console.error("Fetch error:", error);
-                MySwal.fire('Error', 'Hubo un error al eliminar el proyecto.', 'error');
+                Swal.fire({
+              icon: 'info',
+              title: 'Oops...',
+              text: 'El proyecto esta enlazado a un equipo.',
+            });
               });
           }
         });
@@ -88,7 +94,7 @@ function CrudProjects() {
           fetch("https://localhost:8080/api/projects/")
             .then(response => response.json())
             .then(data => {
-              console.log(data);
+              // console.log(data);
               setProjects(data);
             })
             .catch(error => console.error("Fetch error:", error));
@@ -97,9 +103,10 @@ function CrudProjects() {
           closeUpdateModal();
         });
       };
+      
 
     return (
-        <div className='flex flex-col md:flex-row'>
+        <div className='flex flex-col md:flex-row bg-[#EEF4ED]'>
             <Sidebar show={show} setShow={setShow}/>
             {
                 !show ?
@@ -118,7 +125,7 @@ function CrudProjects() {
                             <thead>
                                 <tr>
                                     <th className="px-4 py-2">Nombre</th>
-                                    <th className="hidden md:table-cell px-4 py-2">Creador</th>
+                                    <th className="hidden md:table-cell px-4 py-2">Lider a Cargo</th>
                                     <th className="hidden md:table-cell px-4 py-2">Equipo Asignado</th>
                                     <th className="hidden md:table-cell px-4 py-2">Fecha Inicio</th>
                                     <th className="hidden md:table-cell px-4 py-2">Estado</th>
@@ -128,11 +135,11 @@ function CrudProjects() {
                             <tbody>
                                 {projects.map((project, index) => (
                                     <tr key={index}>
-                                            <td className="px-4 py-2">{project.nombre}</td>
-                                        <td className="hidden md:table-cell px-4 py-2">{project.nombre_usuario}</td>
-                                        <td className="hidden md:table-cell px-4 py-2">{project.nombre_equipo}</td>
-                                        <td className="hidden md:table-cell px-4 py-2">{project.fecha_inicio.split('T')[0]}</td>
-                                        <td className="hidden md:table-cell px-4 py-2">{project.nombre_estado}</td>
+                                            <td className="px-4 py-2 text-center">{project.nombre}</td>
+                                        <td className="hidden md:table-cell px-4 py-2 text-center">{project.nombre_usuario}</td>
+                                        <td className="hidden md:table-cell px-4 py-2 text-center">{project.nombre_equipo}</td>
+                                        <td className="hidden md:table-cell px-4 py-2 text-center">{project.fecha_inicio.split('T')[0]}</td>
+                                        <td className="hidden md:table-cell px-4 py-2 text-center">{project.nombre_estado}</td>
                                         <td className="px-4 py-2">
                                         <button onClick={() => updateProject(project.id_proyecto)}  className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2 md:mr-2">
                                             <FaEdit className="inline-block mr-1" />

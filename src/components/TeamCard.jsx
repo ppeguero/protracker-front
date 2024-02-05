@@ -41,10 +41,11 @@ function TeamCard( { infoTeam, profilePhoto }) {
       };
 
   return (
-    <li className=" list-none">
+    userData && userData.length > 0 ? 
+    (<li className=" list-none">
         {/* <li className="bg-[#134175]">Equipo 2</li> */}
         <div className="container">
-        <div className="flex flex-col h-80 bg-[#13315C] rounded-lg p-10 my-5 w-72">
+        <div className="flex flex-col h-[400px] bg-[#13315C] rounded-lg p-10 my-5 w-96 mr-10">
             <div className='flex justify-between'>
                 <h4 className="text-[#EEF4ED] font-bold text-2xl">{userTeamInfo[infoTeam]?.nombre}</h4>
                 <button>
@@ -82,7 +83,12 @@ function TeamCard( { infoTeam, profilePhoto }) {
         </ul>
         </div>
         </div>
-    </li>
+    </li>)
+    :
+    (
+       null
+
+    )
   )
 }
 

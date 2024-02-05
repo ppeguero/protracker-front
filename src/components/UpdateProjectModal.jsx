@@ -3,7 +3,6 @@ import Modal from 'react-modal';
 import Swal from 'sweetalert2';
 import jwt_decode from 'jwt-decode';
 
-
 const UpdateProjectModal = ({ isOpen, onRequestClose, handleAddOrUpdate, selectedProject }) => {
   const [updatedProject, setUpdatedProject] = useState({
     nombre: selectedProject.nombre || '',
@@ -16,6 +15,7 @@ const UpdateProjectModal = ({ isOpen, onRequestClose, handleAddOrUpdate, selecte
 
   const token_jwt = localStorage.getItem('token'); // Obtén el token del localStorage o del lugar donde lo estás almacenando
   const decodedToken = token_jwt ? jwt_decode(token_jwt) : null;
+  const userRole = decodedToken ? decodedToken.rol_name : null; 
   const iduser = decodedToken ? decodedToken.idUser : null; // Esto contendrá el rol o los permisos del usuario
 
   const [teams, setTeams] = useState([])
@@ -36,12 +36,38 @@ const UpdateProjectModal = ({ isOpen, onRequestClose, handleAddOrUpdate, selecte
     setUpdatedProject({
       nombre: selectedProject.nombre || '',
       descripcion: selectedProject.descripcion || '',
-      fecha_inicio: selectedProject.fecha_inicio || '',
+      fecha_inicio: formatDate(selectedProject.fecha_inicio) || '', // Convert the date format      id_usuario_id: selectedProject.id_usuario_id || '',
       id_usuario_id: selectedProject.id_usuario_id || '',
       id_estado_id: selectedProject.id_estado_id || '',
       id_equipo_id: selectedProject.id_equipo_id || ''
+      
     });
+    
   }, [selectedProject]);
+
+  useEffect(()=>{
+    console.log(updatedProject);
+  }, [updatedProject])
+
+  const formatDate = (dateString) => {
+    try {
+      if (!dateString) {
+        return ''; // Return empty string for invalid or empty date
+      }
+  
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) {
+        return ''; // Return empty string for invalid date
+      }
+  
+      const formattedDate = date.toISOString().split('T')[0];
+      return formattedDate;
+    } catch (error) {
+      console.error('Error formatting date:', error);
+      return ''; // Return empty string for any unexpected error
+    }
+  };
+  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -54,6 +80,38 @@ const UpdateProjectModal = ({ isOpen, onRequestClose, handleAddOrUpdate, selecte
 
   const handleUpdateProject = (e) => {
     e.preventDefault();
+
+    // Validación de campos vacíos
+    if (!updatedProject.nombre || !updatedProject.descripcion || !updatedProject.fecha_inicio || !updatedProject.id_usuario_id || !updatedProject.id_estado_id || !updatedProject.id_equipo_id) {
+      Swal.fire('Error', 'Todos los campos son obligatorios. Por favor, completa todos los campos.', 'error');
+      return;
+      }
+      // Validación de campos vacíos
+      if (!updatedProject.nombre.trim() || !updatedProject.descripcion.trim() || !updatedProject.fecha_inicio.trim()) {
+        Swal.fire('Error', 'Los valores de los campos no pueden ser espacios. Por favor, completa todos los campos.', 'error');
+        return;
+      }
+
+      const today = new Date().toISOString().split('T')[0];
+      if (!updatedProject.fecha_inicio || updatedProject.fecha_inicio < today) {
+        Swal.fire('Error', 'La fecha de inicio del proyecto no puede estar en el pasado.', 'error');
+        return;
+      }
+  
+      if (!updatedProject.id_usuario_id) {
+        Swal.fire('Error', 'Selecciona un líder para el proyecto.', 'error');
+        return;
+      }
+
+      if (!updatedProject.id_estado_id) {
+        Swal.fire('Error', 'Selecciona un estado para el proyecto.', 'error');
+        return;
+      }
+
+      if (!updatedProject.id_equipo_id) {
+        Swal.fire('Error', 'Selecciona un equipo para el proyecto.', 'error');
+        return;
+      }
 
     // Validación de espacios en blanco
     if (hasOnlySpaces(updatedProject.nombre) || hasOnlySpaces(updatedProject.descripcion)) {
@@ -98,6 +156,19 @@ const UpdateProjectModal = ({ isOpen, onRequestClose, handleAddOrUpdate, selecte
       });
   };
 
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    fetch("https://localhost:8080/api/users/")
+      .then(response => response.json())
+      .then(data => {
+        // console.log(data);
+        setUsers(data);
+      })
+      .catch(error => console.error("Fetch error:", error));
+  }, []);
+
+
   return (
     <Modal
       isOpen={isOpen}
@@ -119,7 +190,6 @@ const UpdateProjectModal = ({ isOpen, onRequestClose, handleAddOrUpdate, selecte
             className="w-full px-3 py-2 border rounded-md"
             type="text"
             name="nombre"
-            minLength={6}
             value={updatedProject.nombre}
             onChange={handleInputChange}
           />
@@ -154,19 +224,34 @@ const UpdateProjectModal = ({ isOpen, onRequestClose, handleAddOrUpdate, selecte
           />
         </div>
 
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
+        {
+            userRole === 'Administrador' ?
+            <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2">
             Líder a cargo:
-          </label>
-          <input
-            required
-            className="w-full px-3 py-2 border rounded-md"
-            type="text"
-            name="id_usuario_id"
-            value={updatedProject.id_usuario_id}
-            onChange={handleInputChange}
-          />
+              </label>
+              <select
+                required
+                className="w-full px-3 py-2 border rounded-md"
+                name="id_usuario_id"
+                value={updatedProject.id_usuario_id}
+                onChange={handleInputChange}
+                placeholder="Líder a cargo"
+              >
+                <option value="" disabled>Líder a cargo</option>
+                {
+                  users.map((user) => { 
+                    if(user.nombre_rol === 'Project Manager'){
+                      return(<option value={user.id_equipo}>{user.nombre}</option>)
+                    }
+                  })
+                }
+              </select>
+         
         </div>
+          :
+          null
+          }
 
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">
@@ -179,8 +264,8 @@ const UpdateProjectModal = ({ isOpen, onRequestClose, handleAddOrUpdate, selecte
             value={updatedProject.id_estado_id}
             onChange={handleInputChange}
           >
-            <option value="">Seleccionar Rol</option>
-            <option value="1">Completado</option>
+            <option value="" disabled>Seleccionar Estado</option>
+            {/* <option value="1">Completado</option> */}
             <option value="2">En proceso</option>
             <option value="3">Pendiente</option>
           </select>
@@ -198,7 +283,7 @@ const UpdateProjectModal = ({ isOpen, onRequestClose, handleAddOrUpdate, selecte
             onChange={handleInputChange}
             placeholder="Equipo a cargo"
           >
-            <option value="">Equipo a cargo</option>
+            <option value="" disabled>Equipo a cargo</option>
             {
               teams.map((team) => (
                 <option value={team.id_equipo}>{team.nombre}</option>

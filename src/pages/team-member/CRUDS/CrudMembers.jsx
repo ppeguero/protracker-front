@@ -56,7 +56,7 @@ function CrudMembers() {
               })
               .catch(error => {
                 console.error("Fetch error:", error);
-                MySwal.fire('Error', 'Hubo un error al eliminar al miembro.', 'error');
+                Swal.fire('Error', 'Hubo un error al eliminar al miembro.', 'error');
               });
           }
         });
@@ -100,7 +100,7 @@ function CrudMembers() {
 
 
     return (
-        <div className='flex flex-col md:flex-row'>
+        <div className='flex flex-col md:flex-row bg-[#EEF4ED]'>
             <Sidebar show={show} setShow={setShow}/>
             {
                 !show ?
@@ -109,7 +109,7 @@ function CrudMembers() {
                     <h1 className="text-3xl font-bold mb-4">Gestionar Miembros</h1>
                     <div className="bg-white p-4 rounded-lg shadow-md">
                         <div className="mb-4">
-                            <button onClick={openAddModal} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                            <button onClick={openAddModal} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 text-center px-4 rounded">
                                 <FaUserPlus className="inline-block mr-1" />
                                 Agregar miembro
                             </button>
@@ -118,25 +118,25 @@ function CrudMembers() {
                         <table className="table-auto">
                             <thead>
                                 <tr>
-                                    <th className="px-4 py-2">Nombre del usuario</th>
-                                    <th className="px-4 py-2">Nombre del equipo</th>
-                                    <th className="hidden md:table-cell px-4 py-2">Especialidad</th>
-                                    <th className="px-4 py-2">Acciones</th>
+                                    <th className="px-4 py-2 text-center">Nombre del usuario</th>
+                                    <th className="px-4 py-2 text-center">Nombre del equipo</th>
+                                    <th className="hidden md:table-cell px-4 py-2 text-center">Especialidad</th>
+                                    <th className="px-4 py-2 text-center">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {members.map((member, index) => 
                                 (
                                     <tr key={index}>
-                                            <td className="px-4 py-2">{member.nombre_usuario}</td>
-                                            <td className="px-4 py-2">{member.nombre_equipo}</td>
-                                        <td className="hidden md:table-cell px-4 py-2">{member.nombre_especialidad}</td>
-                                        <td className="px-4 py-2">
-                                        <button onClick={() => updateMember(member.id_miembro)}  className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2 md:mr-2">
+                                            <td className="px-4 py-2 text-center">{member.nombre_usuario}</td>
+                                            <td className="px-4 py-2 text-center">{member.nombre_equipo}</td>
+                                        <td className="hidden md:table-cell px-4 py-2 text-center">{member.nombre_especialidad}</td>
+                                        <td className="px-4 py-2 text-center">
+                                        <button onClick={() => updateMember(member.id_miembro)}  className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 text-center px-4 rounded mb-2 md:mr-2">
                                             <FaEdit className="inline-block mr-1" />
                                             Actualizar
                                         </button>
-                                        <button onClick={() => deleteMember(member.id_miembro)} className="w-full bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                                        <button onClick={() => deleteMember(member.id_miembro)} className="w-full bg-red-500 hover:bg-red-700 text-white font-bold py-2 text-center px-4 rounded">
                                             <FaTrash className="inline-block mr-1" />
                                             Eliminar
                                         </button>

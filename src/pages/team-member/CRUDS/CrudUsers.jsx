@@ -4,6 +4,7 @@ import Sidebar from '../../../components/Sidebar';
 import AddUserModal from '../../../components/AddUserModal';
 import UpdateUserModal from '../../../components/UpdateUserModal';
 import { FaEdit, FaTrash, FaUserPlus } from 'react-icons/fa';
+import jwt_decode from 'jwt-decode';
 
 function CrudUsers() {
   const [show, setShow] = useState(false);
@@ -11,6 +12,12 @@ function CrudUsers() {
   const [isAddModalOpen, setAddModalOpen] = useState(false);
   const [isUpdateModalOpen, setUpdateModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState({});
+
+  const token_jwt = localStorage.getItem('token'); 
+  const decodedToken = token_jwt ? jwt_decode(token_jwt) : null;
+  const idUser = decodedToken ? decodedToken.idUser : null; 
+    
+
 
 
   useEffect(() => {
@@ -56,7 +63,11 @@ function CrudUsers() {
           })
           .catch(error => {
             console.error("Fetch error:", error);
-            MySwal.fire('Error', 'Hubo un error al eliminar el usuario.', 'error');
+            Swal.fire({
+              icon: 'info',
+              title: 'Oops...',
+              text: 'El usuario esta enlazado a un equipo.',
+            });
           });
       }
     });
@@ -102,7 +113,7 @@ function CrudUsers() {
   
 
   return (
-    <div className='flex flex-col md:flex-row'>
+    <div className='flex flex-col md:flex-row bg-[#EEF4ED]'>
       <Sidebar show={show} setShow={setShow} />
       <div className='flex-1 md:ml-72'>
         <div className="p-4 w-full">
@@ -125,23 +136,29 @@ function CrudUsers() {
                 </tr>
               </thead>
               <tbody>
-                {users.map((user, index) => (
-                  <tr key={index}>
-                    <td className="px-4 py-2">{user.nombre}</td>
-                    <td className="hidden md:table-cell px-4 py-2">{user.correo}</td>
-                    <td className="hidden md:table-cell px-4 py-2">{user.nombre_rol}</td>
-                    <td className="px-4 py-2">
-                      <button onClick={() => updateUser(user.id_usuario)} className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2 md:mr-2">
-                        <FaEdit className="inline-block mr-1" />
-                        Actualizar
-                      </button>
-                      <button onClick={() => deleteUser(user.id_usuario)} className="w-full bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-                        <FaTrash className="inline-block mr-1" />
-                        Eliminar
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                {users.map((user, index) => {
+                  if(user.id_usuario === idUser){
+                    return null;
+                  }
+                  return(
+                    <tr key={index}>
+                      <td className="px-4 py-2 text-center">{user.nombre}</td>
+                      <td className="hidden md:table-cell px-4 py-2 text-center">{user.correo}</td>
+                      <td className="hidden md:table-cell px-4 py-2 text-center">{user.nombre_rol}</td>
+                      <td className="px-4 py-2">
+                        <button onClick={() => updateUser(user.id_usuario)} className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2 md:mr-2">
+                          <FaEdit className="inline-block mr-1" />
+                          Actualizar
+                        </button>
+                        <button onClick={() => deleteUser(user.id_usuario)} className="w-full bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                          <FaTrash className="inline-block mr-1" />
+                          Eliminar
+                        </button>
+                      </td>
+                    </tr>
+                  )
+                }
+                )}
               </tbody>
             </table>
           </div>

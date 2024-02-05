@@ -34,6 +34,23 @@ const UpdateUserModal = ({ isOpen, onRequestClose, handleAddOrUpdate, selectedUs
   const handleUpdateUser = (e) => {
     e.preventDefault();
 
+
+         // Validación de campos vacíos
+         if (!updatedUser.nombre || !updatedUser.correo || !updatedUser.contraseña || !updatedUser.id_rol_id) {
+          Swal.fire('Error', 'Todos los campos son obligatorios. Por favor, completa todos los campos.', 'error');
+          return;
+          }
+          // Validación de campos vacíos
+          if (!updatedUser.nombre.trim() || !updatedUser.correo.trim() || !updatedUser.contraseña.trim()) {
+            Swal.fire('Error', 'Los valores de los campos no pueden ser espacios. Por favor, completa todos los campos.', 'error');
+            return;
+          }
+      
+          if (!updatedUser.id_rol_id) {
+            Swal.fire('Error', 'Selecciona un rol para el usuario.', 'error');
+            return;
+          }
+
     // Realizar la petición de actualizar usuario
     fetch(`https://localhost:8080/api/users/${selectedUser.id_usuario}`, {
       method: 'PATCH',
@@ -84,7 +101,6 @@ const UpdateUserModal = ({ isOpen, onRequestClose, handleAddOrUpdate, selectedUs
             className="w-full px-3 py-2 border rounded-md"
             type="text"
             name="nombre"
-            minLength={6}
             value={updatedUser.nombre}
             onChange={handleInputChange}
           />
@@ -128,10 +144,10 @@ const UpdateUserModal = ({ isOpen, onRequestClose, handleAddOrUpdate, selectedUs
             value={updatedUser.id_rol_id}
             onChange={handleRoleChange}
           >
-            <option value="">Seleccionar Rol</option>
+            <option value="" disabled>Seleccionar Rol</option>
             <option value="1">Administrador</option>
             <option value="2">Project Manager</option>
-            <option value="2">Miembro</option>
+            <option value="3">Miembro</option>
           </select>
         </div>
 

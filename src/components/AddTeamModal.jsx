@@ -103,7 +103,7 @@ const AddTeamModal = ({ isOpen, onRequestClose, handleAddTeam }) => {
                     />
                 </div>
                 <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2">
+                    {/* <label className="block text-gray-700 text-sm font-bold mb-2">
                         Miembros
                     </label>
                     <div>
@@ -119,7 +119,7 @@ const AddTeamModal = ({ isOpen, onRequestClose, handleAddTeam }) => {
                                 <label htmlFor={`user_${usuario.id}`}>{usuario.nombre}</label>
                             </div>
                         ))}
-                    </div>
+                    </div> */}
                 </div>
                 <div className="grid grid-cols-2 gap-2">
                     <button
