@@ -3,7 +3,7 @@ import warning from '../assets/icons/warning.png';
 import jwt_decode from 'jwt-decode';
 import axios from 'axios';
 
-function Tasks({ infoTask, profilePhoto }) {
+function Tasks({ infoTask, profilePhoto, setNotTasks }) {
   const token_jwt = localStorage.getItem('token');
   const decodedToken = token_jwt ? jwt_decode(token_jwt) : null;
 
@@ -19,9 +19,19 @@ function Tasks({ infoTask, profilePhoto }) {
   useEffect(() => {
     axios
       .get(`https://localhost:8080/api/users/task/${user.id_user}`)
-      .then((response) => setUserTaskInfo(response.data))
-      .catch((error) => console.error('Error fetching project details:', error));
-  }, []);
+      .then((response) => {
+        setUserTaskInfo(response.data);
+        if (!response.data.length) {
+          setNotTasks(true);
+        } else {
+          setNotTasks(false);
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching project details:', error);
+      });
+
+  }, [user.id_user, setNotTasks]);
 
   const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -47,9 +57,9 @@ function Tasks({ infoTask, profilePhoto }) {
             <p className='text-white font-extralight text-sm'>{formatDate(userTaskInfo[infoTask]?.fecha_limite)}</p>
           </div>
           <div>
-            <img src={profilePhoto} className='w-12 h-12'></img>
+            <img src={profilePhoto} alt='Profile' className='w-12 h-12'></img>
           </div>
-          {isDateApproaching(userTaskInfo[infoTask]?.fecha_limite) && <img src={warning} className='w-6 h-6'></img>}
+          {isDateApproaching(userTaskInfo[infoTask]?.fecha_limite) && <img src={warning} alt='Warning' className='w-6 h-6'></img>}
           {
             isDateApproaching(userTaskInfo[infoTask]?.fecha_limite) ?
             null

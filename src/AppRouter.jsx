@@ -101,7 +101,7 @@ function AppRouter() {
             />}>
               <Route path="/team-member-home" element={<TeamMemberHome />} />
               <Route path="/task-details" element={<TaskDetails />} />
-              <Route path="/project-details-tm" element={<ProjectDetailsMember />} />
+              <Route path="/project-details-tm/:id" element={<ProjectDetailsMember />} />
               <Route path="/request-resource" element={<RequestResource />} />
             </Route>
     

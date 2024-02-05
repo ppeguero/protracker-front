@@ -37,7 +37,7 @@ function Projects({ link }) {
         {projects
           .filter(project => project.id_usuario_id === user.id_user) // Filtrar proyectos según el id_user
           .map(project => (
-            <ProjectCard key={project.id} title={project.nombre} idProject={project.id_proyecto} link={link} description={project.descripcion}/>
+            <ProjectCard key={project.id} title={project.nombre} idProject={project.id_proyecto} link={link} description={project.descripcion} fecha_inicio={project.fecha_inicio}/>
           ))}
       </ul>
     </div>

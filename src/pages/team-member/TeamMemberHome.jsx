@@ -5,29 +5,47 @@ import ProjectCardMember from '../../components/ProjectCardMember';
 import AddResourceButton from '../../components/AddResourceButton';
 import TeamCard from '../../components/TeamCard';
 import profilePhoto from '../../assets/images/pipa-img.png';
-import jwt_decode from 'jwt-decode'; // Paquete para decodificar tokens JWT
+import jwt_decode from 'jwt-decode';
 
 function TeamMemberHome() {
-
-  const token_jwt = localStorage.getItem('token'); // Obtén el token del localStorage o del lugar donde lo estás almacenando
-  const decodedToken = token_jwt ? jwt_decode(token_jwt) : null;
-  const userRole = decodedToken ? decodedToken.rol_name : null; // Esto contendrá el rol o los permisos del usuario
-  
-  const [user, setUser] = useState({
-    token: token_jwt || null,
-    permissions: decodedToken ? decodedToken.rol_permissions.split(', ') : [],
-    id_user: decodedToken ? decodedToken.idUser : null,
-    name: decodedToken ? decodedToken.user_name : null,
-  });
-
-  useEffect(() => {
-    // console.log(user);
-    // console.log(user.id_user);
-  }, []); // Asegúrate de incluir token_jwt en la dependencia del useEffect si lo utilizas dentro
-
-
+  const [projects, setProjects] = useState([]);
+  const [teams, setTeams] = useState([]);
+  const [uniqueTeams, setUniqueTeams] = useState(new Set());
   const [currentUser, setCurrentUser] = useState(null);
   const [currentDate, setCurrentDate] = useState('');
+
+  const token_jwt = localStorage.getItem('token');
+  const decodedToken = token_jwt ? jwt_decode(token_jwt) : null;
+  const idUser = decodedToken ? decodedToken.idUser : null;
+  const link = '/project-details-tm';
+
+  useEffect(() => {
+    fetch(`https://localhost:8080/api/teams-member/${idUser}`)
+      .then(response => response.json())
+      .then(data => {
+        setTeams(data);
+        setUniqueTeams(new Set(data.map(team => team.id_equipo)));
+        console.log(data);
+      })
+      .catch(error => console.error('Error al obtener equipos:', error));
+  }, [idUser]); 
+
+  useEffect(() => {
+    if (uniqueTeams.size > 0) {
+      const teamPromises = Array.from(uniqueTeams).map(teamId => {
+        return fetch(`https://localhost:8080/api/projects-team/${teamId}`)
+          .then(response => response.json());
+      });
+
+      Promise.all(teamPromises)
+        .then(data => {
+          const flattenedProjects = data.flat();
+          setProjects(flattenedProjects);
+          console.log(flattenedProjects);
+        })
+        .catch(error => console.error('Error al obtener proyectos de los equipos:', error));
+    }
+  }, [uniqueTeams]); 
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -46,18 +64,19 @@ function TeamMemberHome() {
 
   return (
     <div className='w-full container h-screen bg-[#EEF4ED]'>
-      <Header/>
+      <Header />
       <div className='flex justify-around px-12 pb-6 w-full h-auto bg-[#EEF4ED]'>
         <div className='container w-fit'>
           <div className='mb-6 flex flex-col space-y-2'>
             <h1 className='text-3xl font-extrabold text-[#13315C]'>Bienvenido, {currentUser}</h1>
-            <p className='text-lg font-regular text-[#13315C]'>Aquí está tu agenda para hoy,
-              <br></br>
+            <p className='text-lg font-regular text-[#13315C]'>
+              Aquí está tu agenda para hoy,
+              <br />
               {currentDate}
             </p>
           </div>
           <div className='w-fit'>
-            <UrgentTasks/>
+            <UrgentTasks />
           </div>
         </div>
         <div className='container w-fit flex flex-col'>
@@ -66,24 +85,32 @@ function TeamMemberHome() {
               <h2 className='text-3xl font-bold text-[#13315C] mb-5'>Proyectos activos</h2>
             </div>
             <div className=' h-[610px] overflow-y-scroll scrollbar-track-transparent scrollbar-thumb-[#134175] scrollbar-thumb-rounded-7xl scrollbar-thin pr-2'>
-              <ProjectCardMember infoProyect={0}/>
-              <ProjectCardMember infoProyect={1}/>
-              <ProjectCardMember infoProyect={1}/>
+              {projects.map(project => (
+                <ProjectCardMember
+                  key={project.id_proyecto}
+                  title={project.nombre}
+                  idProject={project.id_proyecto}
+                  link={link}
+                  description={project.descripcion}
+                  fecha_inicio={project.fecha_inicio}
+                />
+              ))}
             </div>
           </div>
           <div className='resources space-y-2 '>
             <h2 className='text-3xl font-bold text-[#13315C] mt-4'>Recursos</h2>
-            <AddResourceButton/>
+            <AddResourceButton />
           </div>
         </div>
         <div className='teams flex flex-col pt-8'>
           <h2 className='w-44 text-2xl font-bold text-[#13315C]'>Equipos a los que perteneces</h2>
-          <TeamCard infoTeam = {0} profilePhoto={profilePhoto}/>
-          <TeamCard infoTeam = {1} profilePhoto={profilePhoto}/>
+          {teams.map(team => (
+            <TeamCard key={team.id_equipo} idTeam={team.id_equipo} name={team.nombre_equipo} leader={team.nombre_usuario} />
+          ))}
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 export default TeamMemberHome;

@@ -5,28 +5,10 @@ import { Link } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 import axios from 'axios';
 
-function ProjectCardMember({ infoProyect, idProject, link }) {
-  const token_jwt = localStorage.getItem('token');
-  const decodedToken = token_jwt ? jwt_decode(token_jwt) : null;
-
-  const [user, setUser] = useState({
-    token: token_jwt || null,
-    permissions: decodedToken ? decodedToken.rol_permissions.split(', ') : [],
-    id_user: decodedToken ? decodedToken.idUser : null,
-    name: decodedToken ? decodedToken.user_name : null,
-  });
-
-  const [userProjectInfo, setUserProjectInfo] = useState([]);
-
-  useEffect(() => {
-    axios
-      .get(`https://localhost:8080/api/users/proyect/${user.id_user}`)
-      .then((response) => setUserProjectInfo(response.data))
-      .catch((error) => console.error('Error fetching project details:', error));
-  }, []);
-
+function ProjectCardMember({ infoProyect, idProject, link, title, description, fecha_inicio }) {
+  // Función para formatear la fecha
   const formatDate = (dateString) => {
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    const options = { day: '2-digit', month: 'long', year: 'numeric' };
     return new Date(dateString).toLocaleDateString('es-ES', options);
   };
 
@@ -42,21 +24,14 @@ function ProjectCardMember({ infoProyect, idProject, link }) {
               <img src={optionsIcon} alt="Options Icon" />
             </button>
           </div>
-          {userProjectInfo[infoProyect] ? (
-            <>
-              <h4 className="text-[#EEF4ED] mt-5 font-bold text-xl">
-                Nombre del proyecto: {userProjectInfo[infoProyect]?.nombre}
-              </h4>
-              <p className="text-white font-extralight mt-4 text-xs">
-                Descripción: {userProjectInfo[infoProyect]?.descripcion}
-              </p>
-              <p className="text-white font-extralight mt-2 text-xs">
-                Fecha de inicio: {formatDate(userProjectInfo[infoProyect]?.fecha_inicio)}
-              </p>
-            </>
-          ) : (
-            <p className="text-white font-extralight mt-10 text-xs">No hay información de algún proyecto disponible.</p>
-          )}
+          <>
+            <h4 className="text-[#EEF4ED] mt-5 font-bold text-xl">
+              {title}
+            </h4>
+            <p className="text-white font-extralight mt-2 text-xs">
+              Fecha de inicio: {formatDate(fecha_inicio)}
+            </p>
+          </>
         </div>
       </div>
     </Link>
