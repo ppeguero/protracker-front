@@ -5,21 +5,20 @@ import AddUserModal from '../../../components/AddUserModal';
 import UpdateUserModal from '../../../components/UpdateUserModal';
 import { FaEdit, FaTrash, FaUserPlus } from 'react-icons/fa';
 import jwt_decode from 'jwt-decode';
+import AddTaskModal from '../../../components/AddTaskModal';
+import UpdateTaskModal from '../../../components/UpdateTaskModal';
 
 function CrudTasks() {
   const [show, setShow] = useState(false);
   const [tasks, setTasks] = useState([]);
   const [isAddModalOpen, setAddModalOpen] = useState(false);
   const [isUpdateModalOpen, setUpdateModalOpen] = useState(false);
-  const [selectedUser, setSelectedUser] = useState({});
+  const [selectedTask, setSelectedTask] = useState({});
 
   const token_jwt = localStorage.getItem('token'); 
   const decodedToken = token_jwt ? jwt_decode(token_jwt) : null;
   const idUser = decodedToken ? decodedToken.idUser : null; 
     
-
-
-
   useEffect(() => {
     fetch("https://localhost:8080/api/tasks-info/")
       .then(response => response.json())
@@ -30,14 +29,15 @@ function CrudTasks() {
       .catch(error => console.error("Fetch error:", error));
   }, []);
 
-  const updateUser = (id_usuario) => {
+  const updateTask = (id_tarea) => {
     // Lógica para cargar los datos del usuario seleccionado y abrir el modal de actualización
-    const userToUpdate = users.find(user => user.id_usuario === id_usuario);
-    setSelectedUser(userToUpdate);
+    const taskToUpadte = tasks.find(tarea => tarea.id_tarea === id_tarea);
+    console.log(taskToUpadte);
+    setSelectedTask(taskToUpadte);
     setUpdateModalOpen(true);
   };
 
-  const deleteUser = (id_usuario) => {
+  const deleteTask = (id_tarea) => {
     Swal.fire({
       title: '¿Estás seguro?',
       text: '¡No podrás revertir esto!',
@@ -49,24 +49,24 @@ function CrudTasks() {
       cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`https://localhost:8080/api/users/${id_usuario}`, {
+        fetch(`https://localhost:8080/api/tasks/${id_tarea}`, {
           method: 'DELETE',
         })
           .then(response => {
             if (!response.ok) {
-              throw new Error(`Error al eliminar el usuario: ${response.statusText}`);
+              throw new Error(`Error al eliminar la tarea: ${response.statusText}`);
             }
-            console.log("Usuario eliminado con éxito");
-            Swal.fire('¡Eliminado!', 'El usuario ha sido eliminado.', 'success');
+            console.log("Tarea eliminada con éxito");
+            Swal.fire('¡Eliminado!', 'La tarea ha sido eliminada.', 'success');
             // Actualizar el estado local eliminando el usuario de la lista
-            setUsers(prevUsers => prevUsers.filter(user => user.id_usuario !== id_usuario));
+            setTasks(prevUsers => prevUsers.filter(task => task.id_tarea !== id_tarea));
           })
           .catch(error => {
             console.error("Fetch error:", error);
             Swal.fire({
-              icon: 'info',
-              title: 'Oops...',
-              text: 'El usuario esta enlazado a un equipo.',
+              icon: 'error',
+              title: 'Error',
+              text: 'Error al eliminar la tarea.',
             });
           });
       }
@@ -88,7 +88,7 @@ function CrudTasks() {
   const closeUpdateModal = () => {
     setUpdateModalOpen(false);
     // Limpiar los datos del usuario seleccionado cuando se cierra el modal de actualización
-    setSelectedUser({});
+    setSelectedTask({});
   };
 
   const handleAddOrUpdate = ({ title, text, icon }) => {
@@ -98,11 +98,11 @@ function CrudTasks() {
       icon: icon,
     }).then(() => {
       // Operaciones que deben ocurrir después de mostrar el SweetAlert
-      fetch("https://localhost:8080/api/users/")
+      fetch("https://localhost:8080/api/tasks-info/")
         .then(response => response.json())
         .then(data => {
           console.log(data);
-          setUsers(data);
+          setTasks(data);
         })
         .catch(error => console.error("Fetch error:", error));
   
@@ -156,11 +156,11 @@ function CrudTasks() {
                       <td className="hidden md:table-cell px-4 py-2 text-center">{task.nombre_usuario}</td>
                       <td className="hidden md:table-cell px-4 py-2 text-center">{formatDate(task.fecha_limite)}</td>
                       <td className="px-4 py-2">
-                        <button onClick={() => updateTask(task.id_usuario)} className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2 md:mr-2">
+                        <button onClick={() => updateTask(task.id_tarea)} className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2 md:mr-2">
                           <FaEdit className="inline-block mr-1" />
                           Actualizar
                         </button>
-                        <button onClick={() => deleteTask(task.id_usuario)} className="w-full bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                        <button onClick={() => deleteTask(task.id_tarea)} className="w-full bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
                           <FaTrash className="inline-block mr-1" />
                           Eliminar
                         </button>
@@ -176,18 +176,18 @@ function CrudTasks() {
       </div>
 
         {/* Modal para añadir usuario */}
-        <AddUserModal
+        <AddTaskModal
           isOpen={isAddModalOpen}
           onRequestClose={closeAddModal}
           handleAddOrUpdate={handleAddOrUpdate}
         />
 
         {/* Modal para actualizar usuario */}
-        <UpdateUserModal
+        <UpdateTaskModal
           isOpen={isUpdateModalOpen}
           onRequestClose={closeUpdateModal}
           handleAddOrUpdate={handleAddOrUpdate}
-          selectedUser={selectedUser}
+          selectedUser={selectedTask}
         />
     </div>
   );
