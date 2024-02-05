@@ -21,8 +21,8 @@ function TeamMemberHome() {
   });
 
   useEffect(() => {
-    console.log(user);
-    console.log(user.id_user);
+    // console.log(user);
+    // console.log(user.id_user);
   }, []); // Asegúrate de incluir token_jwt en la dependencia del useEffect si lo utilizas dentro
 
 
@@ -50,7 +50,7 @@ function TeamMemberHome() {
       <div className='flex justify-around px-12 pb-6 w-full h-auto bg-[#EEF4ED]'>
         <div className='container w-fit'>
           <div className='mb-6 flex flex-col space-y-2'>
-            <h1 className='text-3xl font-extrabold text-[#13315C]'>Bienvenida, {currentUser}</h1>
+            <h1 className='text-3xl font-extrabold text-[#13315C]'>Bienvenido, {currentUser}</h1>
             <p className='text-lg font-regular text-[#13315C]'>Aquí está tu agenda para hoy,
               <br></br>
               {currentDate}
@@ -66,8 +66,8 @@ function TeamMemberHome() {
               <h2 className='text-3xl font-bold text-[#13315C]'>Proyectos activos</h2>
             </div>
             <div>
-              <ProjectCard/>
-              <ProjectCard/>
+              <ProjectCard infoProyect={0}/>
+              <ProjectCard infoProyect={1}/>
             </div>
           </div>
           <div className='resources space-y-2'>

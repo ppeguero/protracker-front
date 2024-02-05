@@ -86,6 +86,7 @@ function Sidebar({ show, setShow }) {
                 Miembros
               </div>
             </Link>
+       
                 </div>
                 :
                 <div>
@@ -109,6 +110,7 @@ function Sidebar({ show, setShow }) {
                   Miembros
                 </div>
               </Link>
+   
                 </div>
               }
             <button onClick={logout} className="block md:hidden text-2xl">
@@ -166,6 +168,7 @@ function Sidebar({ show, setShow }) {
                 Miembros
               </div>
             </Link>
+          
                 </div>
                 :
                 <div>
@@ -189,6 +192,7 @@ function Sidebar({ show, setShow }) {
                   Miembros
                 </div>
               </Link>
+           
                 </div>
               }
                           </div>

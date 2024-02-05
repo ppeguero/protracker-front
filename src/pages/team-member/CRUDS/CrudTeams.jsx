@@ -136,6 +136,8 @@ function CrudTeams() {
             </div>
             <h2 className="text-2xl mb-4">Equipos registrados:</h2>
             <table className="table-auto">
+            {/* <table className="table-auto" style={{ width: '-webkit-fill-available' }}> */}
+
                             <thead>
                                 <tr>
                                     <th className="px-4 py-2">Equipo</th>
