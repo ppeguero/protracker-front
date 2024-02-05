@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import warning from '../assets/icons/warning.png';
 import jwt_decode from 'jwt-decode';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
-function Tasks({ infoTask, profilePhoto, setNotTasks }) {
+function Tasks({ infoTask, profilePhoto, setNotTasks, idMiembro }) {
   const token_jwt = localStorage.getItem('token');
   const decodedToken = token_jwt ? jwt_decode(token_jwt) : null;
 
@@ -21,6 +22,7 @@ function Tasks({ infoTask, profilePhoto, setNotTasks }) {
       .get(`https://localhost:8080/api/users/task/${user.id_user}`)
       .then((response) => {
         setUserTaskInfo(response.data);
+        // console.log(response.data);
         if (!response.data.length) {
           setNotTasks(true);
         } else {
@@ -46,8 +48,9 @@ function Tasks({ infoTask, profilePhoto, setNotTasks }) {
     return taskDate <= currentDate; 
   };
 
+
   return (
-    <li className='list-none'>
+    <Link to={`/task-details/${userTaskInfo[infoTask]?.id_tarea}`} className='list-none'>
       {userTaskInfo[infoTask] && (
         <div className={`container w-[400px] h-[100px] flex items-center justify-around px-2 py-5 rounded-xl ${isDateApproaching(userTaskInfo[infoTask]?.fecha_limite) ? 'bg-[#8DA8C5]' : 'bg-[#8DA8C5]' }`}>
           <div>
@@ -68,7 +71,7 @@ function Tasks({ infoTask, profilePhoto, setNotTasks }) {
           }
         </div>
       )}
-    </li>
+    </Link>
   );
 }
 

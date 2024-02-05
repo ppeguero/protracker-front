@@ -18,6 +18,7 @@ function TeamMemberHome() {
   const decodedToken = token_jwt ? jwt_decode(token_jwt) : null;
   const idUser = decodedToken ? decodedToken.idUser : null;
   const link = '/project-details-tm';
+  const [idMiembro, setIdMiembro] = useState([]);
 
   useEffect(() => {
     fetch(`https://localhost:8080/api/teams-member/${idUser}`)
@@ -25,10 +26,22 @@ function TeamMemberHome() {
       .then(data => {
         setTeams(data);
         setUniqueTeams(new Set(data.map(team => team.id_equipo)));
-        console.log(data);
+        // console.log(data);
       })
       .catch(error => console.error('Error al obtener equipos:', error));
+
+      fetch(`https://localhost:8080/api/members/`)
+      .then(response => response.json())
+      .then(data => {
+        const miembrosFiltrados = data.filter(miembro => miembro.id_usuario === idUser);
+        setIdMiembro(miembrosFiltrados[0]?.id_miembro);
+        // console.log(miembrosFiltrados[0]?.id_miembro);
+      })
   }, [idUser]); 
+
+
+
+
 
   useEffect(() => {
     if (uniqueTeams.size > 0) {
@@ -41,7 +54,7 @@ function TeamMemberHome() {
         .then(data => {
           const flattenedProjects = data.flat();
           setProjects(flattenedProjects);
-          console.log(flattenedProjects);
+          // console.log(flattenedProjects);
         })
         .catch(error => console.error('Error al obtener proyectos de los equipos:', error));
     }
@@ -76,7 +89,7 @@ function TeamMemberHome() {
             </p>
           </div>
           <div className='w-fit'>
-            <UrgentTasks />
+            <UrgentTasks idMiembro={idMiembro}/>
           </div>
         </div>
         <div className='container w-fit flex flex-col'>

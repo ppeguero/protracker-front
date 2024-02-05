@@ -28,6 +28,9 @@ function ProjectDetailsMember() {
     id_user: decodedToken ? decodedToken.idUser : null
   });
 
+  const [teamProjectId, setTeamProjectId] = useState(null);
+
+
   const { id } = useParams();
   const idNumerico = parseInt(id, 10);
 
@@ -44,26 +47,28 @@ function ProjectDetailsMember() {
     }
   }, [projectDetail.id_equipo_id]);
 
-  useEffect(() => {   
-    if (teams && project) {
-      let isMemberOfTeam = false;
-  
-      teams.some(team => {
-        if (team.id_equipo === project.id_equipo_id) {
-          setShow(true);
-          isMemberOfTeam = true;
-          return true; // Sale del bucle some cuando encuentra un equipo
-        }
-        return false;
-      });
-  
-      if (!isMemberOfTeam) {
-        // Realiza la redirección solo si no es miembro del equipo
-        window.location.href = "/team-member-home";
-      }
+  useEffect(() => {
+    if(user.id_user && teamProjectId){
+      getMemberWithIdprojectAndUserId();
     }
-  }, [teams, project]);
+  }, [user.id_user, teamProjectId])
 
+  const getMemberWithIdprojectAndUserId = () => {
+    console.log(teamProjectId);
+    console.log(user.id_user);
+    fetch(`https://localhost:8080/api/members-project-user/${teamProjectId}/${user.id_user}`)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        if(data.length > 0){
+          setShow(true);
+        } else{
+          location.href = '/team-member-home';
+        }
+        console.log(data.length);
+        console.log(show);
+      })
+  }
 
   const getProject = () => {
     try {
@@ -71,7 +76,8 @@ function ProjectDetailsMember() {
         .then(response => response.json())
         .then(data => {
           setProjectDetail(data);
-  
+          console.log(data.id_equipo_id);
+          setTeamProjectId(data.id_equipo_id);
         })
         .catch(error => {
           console.error('Error al obtener proyectos:', error);
@@ -81,8 +87,6 @@ function ProjectDetailsMember() {
     }
   };
   
-  
-
   const getTeams = async () => {
     try {
       const response = await fetch(`https://localhost:8080/api/teams-member/${user.id_user}`);
@@ -95,7 +99,6 @@ function ProjectDetailsMember() {
     }
   }
   
-
   const getTeam = async () => {
     try {
       console.log(projectDetail.id_equipo_id);
