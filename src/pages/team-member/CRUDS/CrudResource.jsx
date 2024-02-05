@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
 import Sidebar from '../../../components/Sidebar';
-import AddUserModal from '../../../components/AddUserModal';
 import UpdateUserModal from '../../../components/UpdateUserModal';
 import { FaEdit, FaTrash, FaUserPlus } from 'react-icons/fa';
 import jwt_decode from 'jwt-decode';
+import AddResourceModal from '../../../components/AddResourceModal';
 
-function CrudUsers() {
+function CrudTasks() {
   const [show, setShow] = useState(false);
-  const [users, setUsers] = useState([]);
+  const [resources, setResources] = useState([]);
   const [isAddModalOpen, setAddModalOpen] = useState(false);
   const [isUpdateModalOpen, setUpdateModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState({});
@@ -21,11 +21,11 @@ function CrudUsers() {
 
 
   useEffect(() => {
-    fetch("https://localhost:8080/api/users/")
+    fetch("https://localhost:8080/api/resource")
       .then(response => response.json())
       .then(data => {
         console.log(data);
-        setUsers(data);
+        setResources(data);
       })
       .catch(error => console.error("Fetch error:", error));
   }, []);
@@ -117,40 +117,38 @@ function CrudUsers() {
       <Sidebar show={show} setShow={setShow} />
       <div className='flex-1 md:ml-72'>
         <div className="p-4 w-full">
-          <h1 className="text-3xl font-bold mb-4">Gestionar Usuarios</h1>
+          <h1 className="text-3xl font-bold mb-4">Gestionar Recursos</h1>
           <div className="bg-white p-4 rounded-lg shadow-md">
             <div className="mb-4">
               <button onClick={openAddModal} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
                 <FaUserPlus className="inline-block mr-1" />
-                Agregar usuario
+                Agregar recurso
               </button>
             </div>
-            <h2 className="text-2xl mb-4">Usuarios registrados:</h2>
+            <h2 className="text-2xl mb-4">Recursos:</h2>
             <table className="table-auto">
               <thead>
                 <tr>
                   <th className="px-4 py-2">Nombre</th>
-                  <th className="hidden md:table-cell px-4 py-2">Correo</th>
-                  <th className="hidden md:table-cell px-4 py-2">Rol</th>
-                  <th className="px-4 py-2">Acciones</th>
+                  <th className="hidden md:table-cell px-4 py-2">Descripción</th>
+                  <th className="hidden md:table-cell px-4 py-2">Tipo</th>
+                  <th className="px-4 py-2">Cantidad</th>
                 </tr>
               </thead>
               <tbody>
-                {users.map((user, index) => {
-                  if(user.id_usuario === idUser){
-                    return null;
-                  }
+                {resources.map((resource, index) => {
                   return(
                     <tr key={index}>
-                      <td className="px-4 py-2 text-center">{user.nombre}</td>
-                      <td className="hidden md:table-cell px-4 py-2 text-center">{user.correo}</td>
-                      <td className="hidden md:table-cell px-4 py-2 text-center">{user.nombre_rol}</td>
+                      <td className="px-4 py-2 text-center">{resource.nombre}</td>
+                      <td className="hidden md:table-cell px-4 py-2 text-center">{resource.descripcion}</td>
+                      <td className="hidden md:table-cell px-4 py-2 text-center">{resource.tipo}</td>
+                      <td className="hidden md:table-cell px-4 py-2 text-center">{resource.cantidad}</td>
                       <td className="px-4 py-2">
-                        <button onClick={() => updateUser(user.id_usuario)} className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2 md:mr-2">
+                        <button onClick={() => updateResource(resource.cantidad)} className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2 md:mr-2">
                           <FaEdit className="inline-block mr-1" />
                           Actualizar
                         </button>
-                        <button onClick={() => deleteUser(user.id_usuario)} className="w-full bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                        <button onClick={() => deleteResource(resource.id_recurso)} className="w-full bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
                           <FaTrash className="inline-block mr-1" />
                           Eliminar
                         </button>
@@ -166,7 +164,7 @@ function CrudUsers() {
       </div>
 
         {/* Modal para añadir usuario */}
-        <AddUserModal
+        <AddResourceModal
           isOpen={isAddModalOpen}
           onRequestClose={closeAddModal}
           handleAddOrUpdate={handleAddOrUpdate}
@@ -183,4 +181,4 @@ function CrudUsers() {
   );
 }
 
-export default CrudUsers;
+export default CrudTasks;

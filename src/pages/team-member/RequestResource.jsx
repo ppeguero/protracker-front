@@ -33,15 +33,43 @@ function RequestResource({id_usuario, id_proyecto_id}) {
   const handleSubmitRequest = async (e) => {
     e.preventDefault()
 
-    if (!resourceName.trim() || !type.trim() || !limitDate.trim() || !reason.trim()){
-      console.error("Los campos no pueden estar vacios!")
-      return;
-    }
+  //   if (!resourceName.trim() || !type.trim() || !limitDate.trim() || !reason.trim()){
+  //     console.error("Los campos no pueden estar vacios!")
+  //     return;
+  //   }
 
-    if (quantity === 0){
-      console.error("La cantidad no puede ser cero!")
-      return;
-    }
+  //   if (quantity === 0){
+  //     console.error("La cantidad no puede ser cero!")
+  //     return;
+  //   }
+
+  //     // Validación de campos vacíos
+  //  if (!resourceName.nombre || !resourceName.descripcion || !resourceName.fecha_inicio || !resourceName.id_equipo_id || !resourceName.id_estado_id) {
+  //   Swal.fire('Error', 'Todos los campos son obligatorios. Por favor, completa todos los campos.', 'error');
+  //   return;
+  //   }
+  //   // Validación de campos vacíos
+  //   if (!resourceName.nombre.trim() || !resourceName.descripcion.trim() || !resourceName.fecha_inicio.trim() || !resourceName.id_equipo_id.trim() || !resourceName.id_estado_id.trim()) {
+  //     Swal.fire('Error', 'Los valores de los campos no pueden ser espacios. Por favor, completa todos los campos.', 'error');
+  //     return;
+  //   }
+
+  //   const today = new Date().toISOString().split('T')[0];
+  //   if (!resourceName.fecha_inicio || resourceName.fecha_inicio < today) {
+  //       Swal.fire('Error', 'La fecha de inicio del proyecto no puede estar en el pasado.', 'error');
+  //       return;
+  //   }
+
+  //   if (!resourceName.id_equipo_id) {
+  //     Swal.fire('Error', 'Selecciona un equipo para el proyecto.', 'error');
+  //     return;
+  //   }
+
+  //   if (!resourceName.id_estado_id) {
+  //     Swal.fire('Error', 'Selecciona un estado para el proyecto.', 'error');
+  //     return;
+  //   }
+
 
     const requestBody = {
       "cantidad": quantity,
@@ -70,12 +98,6 @@ function RequestResource({id_usuario, id_proyecto_id}) {
     console.log("Error al crear la solicitud", error)
   }
 }
-
-  const sendForm = (e) => {
-    e.preventDefault();
-    alert("Solicitud enviada");
-    
-  }
 
   return (
     <div className="h-screen container bg-[#EEF4ED] w-full">

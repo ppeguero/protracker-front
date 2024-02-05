@@ -1,19 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import jwt_decode from 'jwt-decode';
+import Swal from 'sweetalert2';
 
-const UpdateTeamModal = ({ isOpen, onRequestClose, handleUpdateTeam, selectedTeam }) => {
+const UpdateTeamModal = ({ isOpen, onRequestClose, handleUpdateTeam, handleAddOrUpdate, selectedTeam }) => {
   
   const token_jwt = localStorage.getItem('token'); // Obtén el token del localStorage o del lugar donde lo estás almacenando
   const decodedToken = token_jwt ? jwt_decode(token_jwt) : null;
+  const userRole = decodedToken ? decodedToken.rol_name : null; 
   const iduser = decodedToken ? decodedToken.idUser : null; // Esto contendrá el rol o los permisos del usuario
 
 
   const [updatedTeam, setUpdatedTeam] = useState({
     nombre: selectedTeam.nombre || '',
     miembros: selectedTeam.miembros || [],
-    id_usuario_id: iduser
+    id_usuario_id: (userRole !== 'Administrador' ? iduser : selectedTeam.id_usuario_id)
   });
+
+  useEffect(() => {
+    console.log(selectedTeam);
+    // Actualizar los datos cuando cambia el usuario seleccionado
+    setUpdatedTeam({
+      nombre: selectedTeam.nombre || '',
+      miembros: selectedTeam.miembros || [],
+      id_usuario_id: (userRole !== 'Administrador' ? iduser : selectedTeam.id_usuario_id)
+    });
+  }, [selectedTeam]);
 
   const [usuarios, setUsuarios] = useState([]);
 
@@ -30,26 +42,26 @@ const UpdateTeamModal = ({ isOpen, onRequestClose, handleUpdateTeam, selectedTea
     setUpdatedTeam((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const handleCheckboxChange = (userId) => {
-    setUpdatedTeam(prevData => {
-      if (prevData.miembros.includes(userId)) {
-        // Si el usuario ya está en la lista de miembros, quítalo
-        return {
-          ...prevData,
-          miembros: prevData.miembros.filter(memberId => memberId !== userId)
-        };
-      } else {
-        // Si el usuario no está en la lista de miembros, agrégalo
-        return {
-          ...prevData,
-          miembros: [...prevData.miembros, userId]
-        };
-      }
-    });
-  };
-
   const updateTeam = (e) => {
     e.preventDefault();
+    console.log(updatedTeam.id_usuario_id);
+    console.log(updatedTeam.nombre);
+    // Validación de campos vacíos
+    if (!updatedTeam.nombre || !updatedTeam.id_usuario_id) {
+      Swal.fire('Error', 'Todos los campos son obligatorios. Por favor, completa todos los campos.', 'error');
+      return;
+      }
+      // Validación de campos vacíos
+      if (!updatedTeam.nombre.trim()) {
+        Swal.fire('Error', 'Los valores de los campos no pueden ser espacios. Por favor, completa todos los campos.', 'error');
+        return;
+      }
+  
+      if (!updatedTeam.id_usuario_id) {
+        Swal.fire('Error', 'Selecciona un usuario.', 'error');
+        return;
+      }
+          
 
     // Lógica de actualización del equipo
     fetch(`https://localhost:8080/api/teams/${selectedTeam.id_equipo}`, {
@@ -67,6 +79,11 @@ const UpdateTeamModal = ({ isOpen, onRequestClose, handleUpdateTeam, selectedTea
       })
       .then((data) => {
         console.log('Equipo actualizado con éxito:', data);
+        handleAddOrUpdate({
+          title: '¡Actualizado!',
+          text: 'El equipo ha sido actualizado.',
+          icon: 'success',
+        });
         // Después de actualizar el equipo, llamar a la función handleUpdateTeam
         handleUpdateTeam();
         // Cerrar el modal
@@ -79,6 +96,20 @@ const UpdateTeamModal = ({ isOpen, onRequestClose, handleUpdateTeam, selectedTea
         // Puedes manejar el error como desees, por ejemplo, mostrar un mensaje de error al usuario
       });
   };
+
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    fetch("https://localhost:8080/api/users/")
+      .then(response => response.json())
+      .then(data => {
+        // console.log(data);
+        setUsers(data);
+      })
+      .catch(error => console.error("Fetch error:", error));
+  }, []);
+
+
 
   return (
     <Modal
@@ -104,25 +135,33 @@ const UpdateTeamModal = ({ isOpen, onRequestClose, handleUpdateTeam, selectedTea
             placeholder="Nombre del equipo"
           />
         </div>
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
-            Miembros
-          </label>
-          <div>
-            {usuarios.map(usuario => (
-              <div key={usuario.id} className="flex items-center mb-2">
-                <input
-                  type="checkbox"
-                  id={`user_${usuario.id}`}
-                  checked={updatedTeam.miembros.includes(usuario.id)}
-                  onChange={() => handleCheckboxChange(usuario.id)}
-                  className="mr-2"
-                />
-                <label htmlFor={`user_${usuario.id}`}>{usuario.nombre}</label>
-              </div>
-            ))}
-          </div>
+        {
+            userRole === 'Administrador' ?
+            <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2">
+                Líder a cargo:
+              </label>
+              <select
+                required
+                className="w-full px-3 py-2 border rounded-md"
+                name="id_usuario_id"
+                value={updatedTeam.id_usuario_id}
+                onChange={handleInputChange}
+                placeholder="Líder a cargo"
+              >
+                <option value="" disabled>Líder a cargo</option>
+                {users.map((user) => { 
+                  if(user.nombre_rol === 'Project Manager'){
+                    return (<option value={user.id_usuario}>{user.nombre}</option>)
+                  }
+                })}
+              </select>
+         
         </div>
+          :
+          null
+          }
+       
         <div className="grid grid-cols-2 gap-2">
           <button
             className="bg-green-500 hover:bg-green-700 w-full text-white font-bold py-2 px-4 rounded-md"

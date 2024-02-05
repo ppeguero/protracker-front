@@ -96,7 +96,7 @@ function CrudMembers() {
   };
 
   return (
-    <div className='flex flex-col md:flex-row bg-[#EEF4ED]'>
+    <div className='flex flex-col md:flex-row bg-[#EEF4ED] h-fit min-h-screen '>
       <Sidebar show={show} setShow={setShow} />
       {!show ? (
         <div className='flex-1 md:ml-72'>

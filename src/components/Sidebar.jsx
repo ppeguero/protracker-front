@@ -86,6 +86,16 @@ function Sidebar({ show, setShow }) {
                 Miembros
               </div>
             </Link>
+            <Link to="/resource" className="text-2xl">
+              <div className="px-4 py-2 mt-5 text-white bg-[#8DA8C5] hover:bg-[#6F849F] rounded w-40 text-center">
+                Recursos
+              </div>
+            </Link>
+            <Link to="/tasks" className="text-2xl">
+              <div className="px-4 py-2 mt-5 text-white bg-[#8DA8C5] hover:bg-[#6F849F] rounded w-40 text-center">
+                Tareas
+              </div>
+            </Link>
        
                 </div>
                 :
@@ -110,6 +120,16 @@ function Sidebar({ show, setShow }) {
                   Miembros
                 </div>
               </Link>
+              <Link to="/resource" className="text-2xl">
+              <div className="px-4 py-2 mt-5 text-white bg-[#8DA8C5] hover:bg-[#6F849F] rounded w-40 text-center">
+                Recursos
+              </div>
+            </Link>
+            <Link to="/tasks" className="text-2xl">
+              <div className="px-4 py-2 mt-5 text-white bg-[#8DA8C5] hover:bg-[#6F849F] rounded w-40 text-center">
+                Tareas
+              </div>
+            </Link>
    
                 </div>
               }
@@ -168,6 +188,16 @@ function Sidebar({ show, setShow }) {
                 Miembros
               </div>
             </Link>
+            <Link to="/resource" className="text-2xl">
+              <div className="px-4 py-2 mt-5 text-white bg-[#8DA8C5] hover:bg-[#6F849F] rounded w-40 text-center">
+                Recursos
+              </div>
+            </Link>
+            <Link to="/tasks" className="text-2xl">
+              <div className="px-4 py-2 mt-5 text-white bg-[#8DA8C5] hover:bg-[#6F849F] rounded w-40 text-center">
+                Tareas
+              </div>
+            </Link>
           
                 </div>
                 :
@@ -192,6 +222,16 @@ function Sidebar({ show, setShow }) {
                   Miembros
                 </div>
               </Link>
+              <Link to="/resource" className="text-2xl">
+              <div className="px-4 py-2 mt-5 text-white bg-[#8DA8C5] hover:bg-[#6F849F] rounded w-40 text-center">
+                Recursos
+              </div>
+            </Link>
+            <Link to="/tasks" className="text-2xl">
+              <div className="px-4 py-2 mt-5 text-white bg-[#8DA8C5] hover:bg-[#6F849F] rounded w-40 text-center">
+                Tareas
+              </div>
+            </Link>
            
                 </div>
               }

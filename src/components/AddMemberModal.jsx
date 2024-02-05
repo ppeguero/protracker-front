@@ -13,9 +13,6 @@ const AddMemberModal = ({ isOpen, onRequestClose, handleAddOrUpdate }) => {
   const [isAddingMember, setIsAddingMember] = useState(false);
   const [users, setUsers] = useState([]);
 
-//   function hasOnlySpaces(str) {
-//     return str.trim() === '';
-//   }
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -24,16 +21,6 @@ const AddMemberModal = ({ isOpen, onRequestClose, handleAddOrUpdate }) => {
 
   const handleAddMember = (e) => {
     e.preventDefault()
-
-//     // Validación de espacios en blanco
-//   if (hasOnlySpaces(newUser.nombre) || hasOnlySpaces(newUser.descripcion) || hasOnlySpaces(newUser.id_rol_id)) {
-//     Swal.fire({
-//       title: '¡Error!',
-//       text: 'Los campos no pueden consistir solo en espacios en blanco.',
-//       icon: 'error',
-//     });
-//     return;
-//   }
 
 setIsAddingMember(true); // Activa el estado para desactivar el botón
 
@@ -125,15 +112,6 @@ setIsAddingMember(true); // Activa el estado para desactivar el botón
           <label className="block text-gray-700 text-sm font-bold mb-2">
             Especialidad
           </label>
-          {/* <input
-            required
-            className="w-full px-3 py-2 border rounded-md"
-            type="text"
-            name="id_especialidad_id"
-            value={newMember.id_especialidad_id}
-            onChange={handleInputChange}
-            placeholder="Especialidad"
-          /> */}
           <select
             required
             className="w-full px-3 py-2 border rounded-md"

@@ -1,19 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import jwt_decode from 'jwt-decode';
+import Swal from 'sweetalert2';
 
-const AddTeamModal = ({ isOpen, onRequestClose, handleAddTeam }) => {
+const AddTeamModal = ({ isOpen, onRequestClose, handleAddTeam, handleAddOrUpdate }) => {
 
 
-    const token_jwt = localStorage.getItem('token'); // Obtén el token del localStorage o del lugar donde lo estás almacenando
-    const decodedToken = token_jwt ? jwt_decode(token_jwt) : null;
-    const iduser = decodedToken ? decodedToken.idUser : null; // Esto contendrá el rol o los permisos del usuario
-  
+  const token_jwt = localStorage.getItem('token'); // Obtén el token del localStorage o del lugar donde lo estás almacenando
+  const decodedToken = token_jwt ? jwt_decode(token_jwt) : null;
+  const userRole = decodedToken ? decodedToken.rol_name : null; 
+  const iduser = decodedToken ? decodedToken.idUser : null; // Esto contendrá el rol o los permisos del usuario
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setData((prevProject) => ({ ...prevProject, [name]: value }));
+  };
 
     const [data, setData] = useState({
         nombre: '',
         miembros: [],
-        id_usuario_id: iduser
+        id_usuario_id: (userRole !== 'Administrador' ? iduser : '')
     });
 
     const [usuarios, setUsuarios] = useState([]);
@@ -28,6 +34,22 @@ const AddTeamModal = ({ isOpen, onRequestClose, handleAddTeam }) => {
 
     const addTeam = (e) => {
         e.preventDefault();
+
+           // Validación de campos vacíos
+    if (!data.nombre || !data.id_usuario_id) {
+        Swal.fire('Error', 'Todos los campos son obligatorios. Por favor, completa todos los campos.', 'error');
+        return;
+        }
+        // Validación de campos vacíos
+        if (!data.nombre.trim()) {
+          Swal.fire('Error', 'Los valores de los campos no pueden ser espacios. Por favor, completa todos los campos.', 'error');
+          return;
+        }
+    
+        if (!data.id_usuario_id) {
+          Swal.fire('Error', 'Selecciona un usuario.', 'error');
+          return;
+        }
     
         // Enviar solicitud para agregar el equipo al servidor
         fetch('https://localhost:8080/api/teams', {
@@ -44,6 +66,16 @@ const AddTeamModal = ({ isOpen, onRequestClose, handleAddTeam }) => {
             return response.json();
           })
           .then((newTeam) => {
+            handleAddOrUpdate({
+                title: 'Añadido!',
+                text: 'El equipo ha sido añadido.',
+                icon: 'success',
+              });
+              setData({
+                nombre: '',
+                miembros: [],
+                id_usuario_id: (userRole !== 'Administrador' ? iduser : '')
+              });
             // Manejar la respuesta exitosa del servidor
             console.log('Equipo agregado con éxito:', newTeam);
             // Puedes realizar acciones adicionales después de agregar el equipo si es necesario
@@ -60,23 +92,20 @@ const AddTeamModal = ({ isOpen, onRequestClose, handleAddTeam }) => {
           });
     };
 
-    const handleCheckboxChange = (userId) => {
-        setData(prevData => {
-            if (prevData.miembros.includes(userId)) {
-                // Si el usuario ya está en la lista de miembros, quítalo
-                return {
-                    ...prevData,
-                    miembros: prevData.miembros.filter(memberId => memberId !== userId)
-                };
-            } else {
-                // Si el usuario no está en la lista de miembros, agrégalo
-                return {
-                    ...prevData,
-                    miembros: [...prevData.miembros, userId]
-                };
-            }
-        });
-    };
+    
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    fetch("https://localhost:8080/api/users/")
+      .then(response => response.json())
+      .then(data => {
+        // console.log(data);
+        setUsers(data);
+      })
+      .catch(error => console.error("Fetch error:", error));
+  }, []);
+
+
 
     return (
         <Modal
@@ -102,25 +131,32 @@ const AddTeamModal = ({ isOpen, onRequestClose, handleAddTeam }) => {
                         placeholder="Nombre del equipo"
                     />
                 </div>
-                <div className="mb-4">
-                    {/* <label className="block text-gray-700 text-sm font-bold mb-2">
-                        Miembros
-                    </label>
-                    <div>
-                        {usuarios.map(usuario => (
-                            <div key={usuario.id} className="flex items-center mb-2">
-                                <input
-                                    type="checkbox"
-                                    id={`user_${usuario.id}`}
-                                    checked={data.miembros.includes(usuario.id)}
-                                    onChange={() => handleCheckboxChange(usuario.id)}
-                                    className="mr-2"
-                                />
-                                <label htmlFor={`user_${usuario.id}`}>{usuario.nombre}</label>
-                            </div>
-                        ))}
-                    </div> */}
-                </div>
+                {
+            userRole === 'Administrador' ?
+            <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2">
+                Líder a cargo:
+              </label>
+              <select
+                required
+                className="w-full px-3 py-2 border rounded-md"
+                name="id_usuario_id"
+                value={data.id_usuario_id}
+                onChange={handleInputChange}
+                placeholder="Líder a cargo"
+              >
+                <option value="" disabled>Líder a cargo</option>
+                {users.map((user) => { 
+                  if(user.nombre_rol === 'Project Manager'){
+                    return (<option value={user.id_usuario}>{user.nombre}</option>)
+                  }
+                })}
+              </select>
+         
+        </div>
+          :
+          null
+          }
                 <div className="grid grid-cols-2 gap-2">
                     <button
                         className="bg-green-500 hover:bg-green-700 w-full text-white font-bold py-2 px-4 rounded-md"

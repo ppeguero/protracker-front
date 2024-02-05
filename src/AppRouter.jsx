@@ -28,6 +28,8 @@ import ProtectedRoute from './pages/ProtectedRoutes.jsx';
 import AddNewTask from './pages/proyect-manager/AddNewTask.jsx';
 import Home from './pages/Home.jsx';
 import NotAuth from './pages/NotAuth.jsx';
+import CrudResource from './pages/team-member/CRUDS/CrudResource.jsx';
+import CrudTasks from './pages/team-member/CRUDS/CrudTask.jsx';
 
 
 function AppRouter() {
@@ -114,6 +116,8 @@ function AppRouter() {
               <Route path='/teams' element={<CrudTeams />} />
               <Route path='/users' element={<CrudUsers />} />
               <Route path='/members' element={<CrudMembers />} />
+              <Route path='/resource' element={<CrudResource />} />
+              <Route path='/tasks' element={<CrudTasks />} />
             </Route>
             
             {/* RUTA NO ENCONTRADA */}

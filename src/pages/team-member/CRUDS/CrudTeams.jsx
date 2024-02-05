@@ -5,6 +5,7 @@ import AddTeamModal from '../../../components/AddTeamModal.jsx'; // Importa el c
 import UpdateTeamModal from '../../../components/UpdateTeamModal.jsx'; // Importa el componente UpdateTeamModal
 import { FaEdit, FaTrash, FaUserPlus } from 'react-icons/fa';
 import Swal from 'sweetalert2';
+import jwt_decode from 'jwt-decode';
 
 function CrudTeams() {
   const [show, setShow] = useState(false);
@@ -12,6 +13,13 @@ function CrudTeams() {
   const [isAddModalOpen, setAddModalOpen] = useState(false);
   const [isUpdateModalOpen, setUpdateModalOpen] = useState(false);
   const [selectedTeam, setSelectedTeam] = useState({});
+
+  const token_jwt = localStorage.getItem('token'); // Obtén el token del localStorage o del lugar donde lo estás almacenando
+  const decodedToken = token_jwt ? jwt_decode(token_jwt) : null;
+  const userRole = decodedToken ? decodedToken.rol_name : null; 
+  const iduser = decodedToken ? decodedToken.idUser : null; // Esto contendrá el rol o los permisos del usuario
+
+
 
 
   useEffect(() => {
@@ -40,8 +48,11 @@ function CrudTeams() {
   const closeAddModal = () => setAddModalOpen(false);
 
   const openUpdateModal = () => setUpdateModalOpen(true);
-  const closeUpdateModal = () => setUpdateModalOpen(false);
-
+  const closeUpdateModal = () => {
+    setUpdateModalOpen(false);
+    // Limpiar los datos del usuario seleccionado cuando se cierra el modal de actualización
+    setSelectedTeam({});
+  };
   const deleteTeam = async (id_equipo) => {
     try {
       // Mostrar mensaje de confirmación
@@ -87,15 +98,17 @@ function CrudTeams() {
       console.error('Error al eliminar el equipo:', error);
       // Mostrar un mensaje de error
       Swal.fire({
-        title: 'Error',
-        text: 'Hubo un error al eliminar el equipo.',
-        icon: 'error',
+        title: 'Opss..',
+        text: 'El equipo esta enlazado a uno o más miembro.',
+        icon: 'info',
       });
     }
   };
 
   const updateTeam = (id_equipo) => {
+    console.log(teams);
     const teamToUpdate = teams.find(team => team.id_equipo === id_equipo);
+    console.log(teamToUpdate);
     setSelectedTeam(teamToUpdate);
     setUpdateModalOpen(true);
   };
@@ -111,7 +124,7 @@ function CrudTeams() {
         .then(response => response.json())
         .then(data => {
           console.log(data);
-          setUsers(data);
+          fetchTeams();
         })
         .catch(error => console.error("Fetch error:", error));
   
@@ -120,9 +133,10 @@ function CrudTeams() {
     });
   };
   
+  
 
   return (
-    <div className='flex flex-col md:flex-row bg-[#EEF4ED]'>
+    <div className='flex flex-col md:flex-row bg-[#EEF4ED] h-fit min-h-screen '>
       <Sidebar show={show} setShow={setShow} />
       <div className='flex-1 md:ml-72'>
         <div className="p-4">
@@ -147,7 +161,9 @@ function CrudTeams() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {Array.isArray(teams) && teams.map((team, index) => (
+                                {userRole === 'Administrador' ?
+                                
+                                Array.isArray(teams) && teams.map((team, index) => (
                                     <tr key={index}>
                                         <td className="px-4 py-2 text-center">{team.nombre}</td>
                                         <td className="px-4 py-2 text-center">{team.nombreUsuario}</td>
@@ -163,7 +179,32 @@ function CrudTeams() {
                                             </button>
                                         </td>
                                     </tr>
-                                ))}
+                                )):
+                                Array.isArray(teams) && teams.map((team, index) => {
+                                  
+                                  if(team.id_usuario_id !== iduser){
+                                    return null;
+                                  }
+
+                                  return(
+                                  <tr key={index}>
+                                      <td className="px-4 py-2 text-center">{team.nombre}</td>
+                                      <td className="px-4 py-2 text-center">{team.nombreUsuario}</td>
+                                      {/* <td className="px-4 py-2 text-center">{team.miembros}</td> */}
+                                      <td className="px-4 py-2 text-center">
+                                          <button onClick={() => updateTeam(team.id_equipo)}  className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2 md:mr-2">
+                                              <FaEdit className="inline-block mr-1" />
+                                              Actualizar
+                                          </button>
+                                          <button onClick={()=>deleteTeam(team.id_equipo)} className="w-full bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                                              <FaTrash className="inline-block mr-1" />
+                                              Eliminar
+                                          </button>
+                                      </td>
+                                  </tr>
+                              )})
+                              
+                              }
                             </tbody>
             </table>
           </div>
@@ -171,7 +212,7 @@ function CrudTeams() {
       </div>
 
       {/* Renderiza el componente del modal de agregar equipo */}
-      <AddTeamModal isOpen={isAddModalOpen} onRequestClose={closeAddModal} />
+      <AddTeamModal isOpen={isAddModalOpen} onRequestClose={closeAddModal} handleAddOrUpdate={handleAddOrUpdate}/>
 
       {/* Renderiza el componente del modal de actualizar equipo */}
       <UpdateTeamModal isOpen={isUpdateModalOpen} onRequestClose={closeUpdateModal} handleAddOrUpdate={handleAddOrUpdate}
