@@ -11,8 +11,8 @@ function TeamRequestCard({ idRequest }) {
   });
 
   return (
-    <Link to={`/request-details/${idRequest}`} className="container pt-6 ">
-      <div className="bg-[#EEF4ED] h-fit w-[1000px] rounded-md flex justify-between items-center p-10">
+    <div className="bg-[#EEF4ED] h-fit w-[1000px] rounded-md flex justify-between items-center p-5 mt-5">
+    <Link to={`/request-details/${idRequest}`} className="container">
         <div className="flex">
             <img src={profilePicture} className="w-12 mx-6"></img>
             <div className="ml-4">
@@ -36,7 +36,9 @@ function TeamRequestCard({ idRequest }) {
             <p className="text-sm text-[#134175] font-light">{memberData.speciality}</p>
             </div>
         </div>
-        <div className="flex">
+        
+    </Link>
+    <div className="flex">
             <button className="ml-4 flex flex-col justify-center items-center pr-2">
                 <p className="font-semibold text-green-500">Aceptar</p>
                 <div className="border-2 rounded-full p-0.5 text-green-600 border-green-500 m-1">
@@ -48,9 +50,8 @@ function TeamRequestCard({ idRequest }) {
                 <p className="font-semibold text-red-600">Denegar</p>
                 <IoIosCloseCircleOutline className="text-red-600 text-3xl"/>
             </button>
-        </div>
-      </div>
-    </Link>
+    </div>
+    </div>
   );
 }
 

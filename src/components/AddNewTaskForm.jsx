@@ -167,8 +167,7 @@ function AddNewTaskForm() {
     setNewTask((prevProject) => ({ ...prevProject, [name]: value }));
   };
 
-    
-   
+
 
   return (
     <div className='flex flex-col px-6 my-10'>

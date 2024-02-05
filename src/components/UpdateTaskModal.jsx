@@ -44,6 +44,7 @@ const UpdateTaskModal = ({ isOpen, onRequestClose, handleAddOrUpdate, selectedUs
   
 
   useEffect(() => {
+    console.log(selectedUser);
     setUpdatedTask({
         nombre: selectedUser.nombre_tarea || '',
         descripcion: selectedUser.descripcion || '',
@@ -214,6 +215,11 @@ const UpdateTaskModal = ({ isOpen, onRequestClose, handleAddOrUpdate, selectedUs
           >
             <option value="" disabled>Seleccionar Proyecto</option>
             {teams.map((team) => { 
+
+                if(userRole =='Administrador'){
+                  return  <option value={team.id_proyecto}>{team.nombre}</option>
+                }
+
                 if(iduser != team.id_usuario_id){
                     return null;
                 }
@@ -221,6 +227,7 @@ const UpdateTaskModal = ({ isOpen, onRequestClose, handleAddOrUpdate, selectedUs
                   return(
                     <option value={team.id_proyecto}>{team.nombre}</option>
                   )
+                  
                   
                 })}
           </select>

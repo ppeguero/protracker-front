@@ -68,15 +68,26 @@ const iduser = decodedToken ? decodedToken.idUser : null; // Esto contendrá el 
       return;
     }
 
+    // return(console.log(task))
+
+    const taskToSend = {
+      nombre: task.nombre,
+      descripcion: task.descripcion,
+      fecha_limite: new Date(task.fecha_limite).toISOString().split('T')[0],  // Formatear y eliminar hora y zona horaria
+      id_proyecto_id: task.id_proyecto_id,
+      id_estado_id: task.id_estado_id,
+      id_miembro_id: task.id_miembro_id,
+    };
+    
 
     setIsAddingUser(true); // Activa el estado para desactivar el botón
-
+    console.log('Task before fetch:', task);
     fetch('https://localhost:8080/api/tasks/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(task),
+      body: JSON.stringify(taskToSend),
     })
       .then((response) => {
         if (!response.ok) {
@@ -192,15 +203,21 @@ const iduser = decodedToken ? decodedToken.idUser : null; // Esto contendrá el 
           >
             <option value="" disabled>Seleccionar Proyecto</option>
             {teams.map((team) => { 
-                if(iduser != team.id_usuario_id){
-                    return null;
-                }
 
-                  return(
-                    <option value={team.id_proyecto}>{team.nombre}</option>
-                  )
-                  
-                })}
+              if(userRole =='Administrador'){
+                return  <option value={team.id_proyecto}>{team.nombre}</option>
+              }
+
+              if(iduser != team.id_usuario_id){
+                  return null;
+              }
+
+                return(
+                  <option value={team.id_proyecto}>{team.nombre}</option>
+                )
+                
+                
+              })}
           </select>
         </div>
 
@@ -233,8 +250,7 @@ const iduser = decodedToken ? decodedToken.idUser : null; // Esto contendrá el 
               >
                 <option value="" disabled>Seleccionar Miembro</option>
                 {users.map((user) => {
-                  
-                  if(user.id_rol_id != 3){
+                 if(user.id_rol_id != 3){
                     return null;
                   }
                   

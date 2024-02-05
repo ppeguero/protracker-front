@@ -176,16 +176,13 @@ function TaskDetails() {
                   style={{ marginRight: "-250px" }}
                 />
                 <img src={Rafa} alt="Rafa" className="my-4 w-44 h-auto" />
-                <p className="text-xl font-bold mt-2 text-center text-[#13315C] ">
-                  Jefe de proyecto
-                </p>
                 <p className="text-xl mt-2 text-center text-[#13315C] ">
-                  {task[0]?.nombre_usuario}
+                <strong>Para:</strong> {task[0]?.nombre_usuario}
                 </p>
                 <p className="text-xl-2 mt-2 text-[#EEF4ED] ">
                   <strong className="text-lg">
-                    Fecha Entrega: {formatDate(task[0]?.fecha_limite)}
-                  </strong>
+                    Fecha Entrega: 
+                  </strong> {formatDate(task[0]?.fecha_limite)}
                 </p>
                 {/* <img src={attach} alt="options" className='my-5 items-end' /> */}
                 {/* <button className='bg-[#D9D9D9] text-[#13315C] font-bold text-2xl mt-4 rounded-md py-4 px-4 hover:bg-[#d1d1d1]'>

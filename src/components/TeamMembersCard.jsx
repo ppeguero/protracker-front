@@ -38,10 +38,13 @@ function TeamMembersCard({ idNumerico, members }) {
         </button>
       </div> 
       <div className="flex flex-col justify-start mx-auto overflow-x-hidden scrollbar-track-transparent scrollbar-thumb-[#134175] scrollbar-thumb-rounded-7xl scrollbar-thin">
-        {
-          members.map((member) => (
-            <TeamMember key={member.id_miembro} member={member} />
-          ))
+        {members.length > 0 ?
+        members.map((member) => (
+          <TeamMember key={member.id_miembro} member={member} />
+        ))
+        :
+        null
+          
         }
 
       </div>

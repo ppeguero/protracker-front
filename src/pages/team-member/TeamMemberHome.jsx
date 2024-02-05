@@ -19,6 +19,8 @@ function TeamMemberHome() {
   const idUser = decodedToken ? decodedToken.idUser : null;
   const link = '/project-details-tm';
   const [idMiembro, setIdMiembro] = useState([]);
+  const [requestResources, setRequestResources] = useState([]);
+
 
   useEffect(() => {
     fetch(`https://localhost:8080/api/teams-member/${idUser}`)
@@ -36,6 +38,14 @@ function TeamMemberHome() {
         const miembrosFiltrados = data.filter(miembro => miembro.id_usuario === idUser);
         setIdMiembro(miembrosFiltrados[0]?.id_miembro);
         // console.log(miembrosFiltrados[0]?.id_miembro);
+      })
+      
+      fetch(`https://localhost:8080/api//resource/request/`)
+      .then(response => response.json())
+      .then(data => {
+        const userRequestFiltrados = data.filter(request => request.id_miembro_id === idUser);
+        setRequestResources(userRequestFiltrados);
+        console.log(userRequestFiltrados);
       })
   }, [idUser]); 
 
@@ -120,6 +130,18 @@ function TeamMemberHome() {
           <h2 className='text-3xl font-bold text-[#13315C] my-7 mt-6'>Solicita un recurso</h2>
           <AddResourceButton />
           <h2 className='text-3xl font-bold text-[#13315C] mt-4'>Recursos</h2>
+          <div className='flex flex-wrap justify-center'>
+            {requestResources.map((request, index) => (
+              <div className="bg-[#13315C] p-4 rounded-md shadow-md w-full mt-2">
+              <h1 className=" mb-2 text-white"><strong>Petición:</strong> {index + 1}</h1>
+              <p className="mb-2 text-white text-xs"><strong>Recurso:</strong> {request.nombre_recurso}</p>
+              <p className="mb-2 text-white text-xs"><strong>Razón:</strong> {request.razon_de_solicitud}</p>
+              <p className="mb-2 text-white text-xs"><strong>Cantidad:</strong> {request.cantidad}</p>
+              <p className='mb-2 text-white text-xs'><strong>Estatus:</strong> {request.aprobado === null ? "En evaluación" : request.aprobado}</p>
+            </div>
+            
+            ))}
+          </div>
         </div>
       </div>
     </div>
