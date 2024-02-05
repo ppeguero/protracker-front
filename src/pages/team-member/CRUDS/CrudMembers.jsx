@@ -53,7 +53,11 @@ function CrudMembers() {
           })
           .catch(error => {
             console.error("Fetch error:", error);
-            Swal.fire('Error', 'Hubo un error al eliminar al miembro.', 'error');
+            Swal.fire({
+              title: 'Ops...',
+              text: 'El miembro no se puede eliminar, tiene tareas enlazadas.',
+              icon: 'info',
+            });
           });
       }
     });
