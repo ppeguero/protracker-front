@@ -58,7 +58,11 @@ function CrudProjects() {
               })
               .catch(error => {
                 console.error("Fetch error:", error);
-                MySwal.fire('Error', 'Hubo un error al eliminar el proyecto.', 'error');
+                Swal.fire({
+              icon: 'info',
+              title: 'Oops...',
+              text: 'El proyecto esta enlazado a un equipo.',
+            });
               });
           }
         });

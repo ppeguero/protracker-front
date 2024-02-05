@@ -3,7 +3,6 @@ import Modal from 'react-modal';
 import Swal from 'sweetalert2';
 import jwt_decode from 'jwt-decode';
 
-
 const UpdateProjectModal = ({ isOpen, onRequestClose, handleAddOrUpdate, selectedProject }) => {
   const [updatedProject, setUpdatedProject] = useState({
     nombre: selectedProject.nombre || '',
@@ -38,11 +37,17 @@ const UpdateProjectModal = ({ isOpen, onRequestClose, handleAddOrUpdate, selecte
       nombre: selectedProject.nombre || '',
       descripcion: selectedProject.descripcion || '',
       fecha_inicio: formatDate(selectedProject.fecha_inicio) || '', // Convert the date format      id_usuario_id: selectedProject.id_usuario_id || '',
+      id_usuario_id: selectedProject.id_usuario_id || '',
       id_estado_id: selectedProject.id_estado_id || '',
       id_equipo_id: selectedProject.id_equipo_id || ''
+      
     });
-
+    
   }, [selectedProject]);
+
+  useEffect(()=>{
+    console.log(updatedProject);
+  }, [updatedProject])
 
   const formatDate = (dateString) => {
     try {
@@ -75,6 +80,38 @@ const UpdateProjectModal = ({ isOpen, onRequestClose, handleAddOrUpdate, selecte
 
   const handleUpdateProject = (e) => {
     e.preventDefault();
+
+    // Validación de campos vacíos
+    if (!updatedProject.nombre || !updatedProject.descripcion || !updatedProject.fecha_inicio || !updatedProject.id_usuario_id || !updatedProject.id_estado_id || !updatedProject.id_equipo_id) {
+      Swal.fire('Error', 'Todos los campos son obligatorios. Por favor, completa todos los campos.', 'error');
+      return;
+      }
+      // Validación de campos vacíos
+      if (!updatedProject.nombre.trim() || !updatedProject.descripcion.trim() || !updatedProject.fecha_inicio.trim()) {
+        Swal.fire('Error', 'Los valores de los campos no pueden ser espacios. Por favor, completa todos los campos.', 'error');
+        return;
+      }
+
+      const today = new Date().toISOString().split('T')[0];
+      if (!updatedProject.fecha_inicio || updatedProject.fecha_inicio < today) {
+        Swal.fire('Error', 'La fecha de inicio del proyecto no puede estar en el pasado.', 'error');
+        return;
+      }
+  
+      if (!updatedProject.id_usuario_id) {
+        Swal.fire('Error', 'Selecciona un líder para el proyecto.', 'error');
+        return;
+      }
+
+      if (!updatedProject.id_estado_id) {
+        Swal.fire('Error', 'Selecciona un estado para el proyecto.', 'error');
+        return;
+      }
+
+      if (!updatedProject.id_equipo_id) {
+        Swal.fire('Error', 'Selecciona un equipo para el proyecto.', 'error');
+        return;
+      }
 
     // Validación de espacios en blanco
     if (hasOnlySpaces(updatedProject.nombre) || hasOnlySpaces(updatedProject.descripcion)) {
@@ -153,7 +190,6 @@ const UpdateProjectModal = ({ isOpen, onRequestClose, handleAddOrUpdate, selecte
             className="w-full px-3 py-2 border rounded-md"
             type="text"
             name="nombre"
-            minLength={6}
             value={updatedProject.nombre}
             onChange={handleInputChange}
           />

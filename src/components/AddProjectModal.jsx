@@ -40,7 +40,38 @@ const AddProjectModal = ({ isOpen, onRequestClose, handleAddOrUpdate }) => {
   const handleAddProject = (e) => {
     e.preventDefault()
 
-    // console.log("proyecto actualizado", newProject);
+
+     // Validación de campos vacíos
+     if (!newProject.nombre || !newProject.descripcion || !newProject.fecha_inicio || !newProject.id_usuario_id || !newProject.id_estado_id || !newProject.id_equipo_id) {
+      Swal.fire('Error', 'Todos los campos son obligatorios. Por favor, completa todos los campos.', 'error');
+      return;
+      }
+      // Validación de campos vacíos
+      if (!newProject.nombre.trim() || !newProject.descripcion.trim() || !newProject.fecha_inicio.trim()) {
+        Swal.fire('Error', 'Los valores de los campos no pueden ser espacios. Por favor, completa todos los campos.', 'error');
+        return;
+      }
+
+      const today = new Date().toISOString().split('T')[0];
+    if (!newProject.fecha_inicio || newProject.fecha_inicio < today) {
+        Swal.fire('Error', 'La fecha de inicio del proyecto no puede estar en el pasado.', 'error');
+        return;
+    }
+  
+      if (!newProject.id_usuario_id) {
+        Swal.fire('Error', 'Selecciona un líder para el proyecto.', 'error');
+        return;
+      }
+
+      if (!newProject.id_estado_id) {
+        Swal.fire('Error', 'Selecciona un estado para el proyecto.', 'error');
+        return;
+      }
+
+      if (!newProject.id_equipo_id) {
+        Swal.fire('Error', 'Selecciona un equipo para el proyecto.', 'error');
+        return;
+      }
 
 
   setIsAddingProject(true); // Activa el estado para desactivar el botón
@@ -69,7 +100,7 @@ const AddProjectModal = ({ isOpen, onRequestClose, handleAddOrUpdate }) => {
         nombre: '',
         descripcion: '',
         fecha_inicio: '',
-id_usuario_id: (userRole !== 'Administrador' ? newProject.id_usuario_id : iduser),
+        id_usuario_id: (userRole !== 'Administrador' ? iduser : ''),
         id_estado_id: '',
         id_equipo_id: ''
         })}).catch((error) => {
