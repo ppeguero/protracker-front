@@ -85,7 +85,8 @@ function TeamMemberHome() {
               <h2 className='text-3xl font-bold text-[#13315C] mb-5'>Proyectos activos</h2>
             </div>
             <div className=' h-[610px] overflow-y-scroll scrollbar-track-transparent scrollbar-thumb-[#134175] scrollbar-thumb-rounded-7xl scrollbar-thin pr-2'>
-              {projects.map(project => (
+              {projects.length > 0 ?
+              projects.map(project => (
                 <ProjectCardMember
                   key={project.id_proyecto}
                   title={project.nombre}
@@ -94,7 +95,9 @@ function TeamMemberHome() {
                   description={project.descripcion}
                   fecha_inicio={project.fecha_inicio}
                 />
-              ))}
+              ))
+            :
+            null}
             </div>
           </div>
           <div className='resources space-y-2 '>
@@ -104,9 +107,16 @@ function TeamMemberHome() {
         </div>
         <div className='teams flex flex-col pt-8'>
           <h2 className='w-44 text-2xl font-bold text-[#13315C]'>Equipos a los que perteneces</h2>
-          {teams.map(team => (
+          {
+          
+          teams.length > 0 ? 
+          teams.map(team => (
             <TeamCard key={team.id_equipo} idTeam={team.id_equipo} name={team.nombre_equipo} leader={team.nombre_usuario} />
-          ))}
+          ))
+          :
+          null
+          
+          }
         </div>
       </div>
     </div>
