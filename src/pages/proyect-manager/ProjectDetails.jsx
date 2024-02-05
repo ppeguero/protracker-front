@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Header from "../../components/Header";
 import ReturnButton from "../../components/ReturnButton";
 import ProjectDetailsCard from "../../components/ProjectDetailsCard";
-import TeamCard from "../../components/TeamCard"
+import TeamCardProjectM from "../../components/TeamCardProjectM"
 import TeamMembersCard from "../../components/TeamMembersCard";
 import TeamRequestResource from "../../components/TeamRequestResource";
 import profilePicture from "../../assets/images/pipa-img.png";
@@ -124,7 +124,7 @@ function ProjectDetails() {
               <div className="h-fit">
                 <h2 className="text-4xl text-[#134175] font-extrabold">Equipo</h2>
                 <div className="flex space-x-4">
-                  <TeamCard profilePhoto={profilePicture} team={team} tasks={tasks} idNumerico={idNumerico}/>
+                  <TeamCardProjectM profilePhoto={profilePicture} team={team} tasks={tasks} idNumerico={idNumerico}/>
                 </div>
               </div>
             </div>
