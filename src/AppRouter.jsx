@@ -100,7 +100,7 @@ function AppRouter() {
             isAllowed={hasPermissions(user, rolesPermissions[2].nombre, rolesPermissions[2].permisos.split(', '))}
             />}>
               <Route path="/team-member-home" element={<TeamMemberHome />} />
-              <Route path="/task-details" element={<TaskDetails />} />
+              <Route path="/task-details/:id" element={<TaskDetails />} />
               <Route path="/project-details-tm/:id" element={<ProjectDetailsMember />} />
               <Route path="/request-resource" element={<RequestResource />} />
             </Route>

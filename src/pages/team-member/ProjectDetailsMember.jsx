@@ -18,7 +18,7 @@ function ProjectDetailsMember() {
   const [team, setTeam] = useState([]);
   const [dataLoaded, setDataLoaded] = useState(false);
   const [tasks, setTasks] = useState([]);
-
+  const [teams, setTeams] = useState([]);
   const token_jwt = localStorage.getItem('token');
   const decodedToken = token_jwt ? jwt_decode(token_jwt) : null;
   const userRole = decodedToken ? decodedToken.rol_name : null;
@@ -33,9 +33,10 @@ function ProjectDetailsMember() {
 
   useEffect(() => {
     getProject();
+    getTeams();
   }, []);
 
-  useEffect(() => {
+  useEffect(() => {   
     if(projectDetail.id_equipo_id){
       getTeam();
       getMembers();
@@ -43,19 +44,34 @@ function ProjectDetailsMember() {
     }
   }, [projectDetail.id_equipo_id]);
 
+  useEffect(() => {   
+    if (teams && project) {
+      let isMemberOfTeam = false;
+  
+      teams.some(team => {
+        if (team.id_equipo === project.id_equipo_id) {
+          setShow(true);
+          isMemberOfTeam = true;
+          return true; // Sale del bucle some cuando encuentra un equipo
+        }
+        return false;
+      });
+  
+      if (!isMemberOfTeam) {
+        // Realiza la redirección solo si no es miembro del equipo
+        window.location.href = "/team-member-home";
+      }
+    }
+  }, [teams, project]);
+
+
   const getProject = () => {
     try {
       fetch(`https://localhost:8080/api/projects/${idNumerico}`)
         .then(response => response.json())
         .then(data => {
           setProjectDetail(data);
-          console.log("detalles del proyecto", data);
   
-          // if (data.id_usuario_id !== user.id_user) {
-          //   window.location.href = "/project-manager-home";
-          // } else {
-          //   setShow(true);
-          // }
         })
         .catch(error => {
           console.error('Error al obtener proyectos:', error);
@@ -64,6 +80,20 @@ function ProjectDetailsMember() {
       console.error('Error al obtener proyectos:', error);
     }
   };
+  
+  
+
+  const getTeams = async () => {
+    try {
+      const response = await fetch(`https://localhost:8080/api/teams-member/${user.id_user}`);
+      const data = await response.json();
+      console.log(data);
+      setTeams(data);
+      // console.log("detalles de los equipos", data);
+    } catch (error) {
+      console.error(error);
+    }
+  }
   
 
   const getTeam = async () => {
@@ -102,7 +132,7 @@ function ProjectDetailsMember() {
       }
 
   return (
-    dataLoaded ? (
+    show && dataLoaded ? (
       <div className="h-screen container bg-[#EEF4ED] w-full ">
         <Header homeLink={userRole === "Project Manager"? '/project-manager-home' : '/team-member-home'}/>
         <div className="flex flex-col w-full h-auto bg-[#EEF4ED]">
