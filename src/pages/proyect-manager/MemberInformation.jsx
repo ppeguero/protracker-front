@@ -20,7 +20,7 @@ function MemberInformation() {
 
   return (
     <div className="h-screen container bg-[#EEF4ED] w-full">
-        <Header/>
+        <Header homeLink={'/team-member-home'}/>
         <div className= "flex flex-col w-full h-auto bg-[#EEF4ED] md:flex-row">
             <UserInfo name={userData.name} email={userData.email} specialty={userData.specialty} profilePhoto={profilePhoto}/>
             <div>

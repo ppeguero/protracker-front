@@ -1,44 +1,148 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Header from "../../components/Header";
 import ReturnButton from "../../components/ReturnButton";
 import ProjectDetailsCard from "../../components/ProjectDetailsCard";
-import ProjectStatistics from "../../components/ProjectStatistics";
-import TeamCard from "../../components/TeamCard"
-import profilePicture from "../../assets/images/pipa-img.png"
-import CompletedTaskHistory from "../../components/CompletedTaskHistory";
+import TeamCardProjectM from "../../components/TeamCardProjectM"
 import TeamMembersCard from "../../components/TeamMembersCard";
+import TeamRequestResource from "../../components/TeamRequestResource";
+import profilePicture from "../../assets/images/pipa-img.png";
+import jwt_decode from 'jwt-decode';
+import { useParams } from 'react-router-dom';
+
 
 function ProjectDetails() {
+  const [projectDetail, setProjectDetail] = useState({});
+  const [show, setShow] = useState(false);
+  const [project, setProject] = useState([]);
+  const [miembros, setMiembros] = useState([]);
+  const [team, setTeam] = useState([]);
+  const [dataLoaded, setDataLoaded] = useState(false);
+  const [tasks, setTasks] = useState([]);
+
+  const token_jwt = localStorage.getItem('token');
+  const decodedToken = token_jwt ? jwt_decode(token_jwt) : null;
+  const userRole = decodedToken ? decodedToken.rol_name : null;
+  const [user, setUser] = useState({
+    token: token_jwt || null,
+    permissions: decodedToken ? decodedToken.rol_permissions.split(', ') : [],
+    id_user: decodedToken ? decodedToken.idUser : null
+  });
+
+  const { id } = useParams();
+  const idNumerico = parseInt(id, 10);
+
+  useEffect(() => {
+    getProject();
+  }, []);
+
+  useEffect(() => {
+    if(projectDetail.id_equipo_id){
+      getTeam();
+      getMembers();
+      getTasks();
+    }
+  }, [projectDetail.id_equipo_id]);
+
+  const getProject = () => {
+    try {
+      fetch(`https://localhost:8080/api/projects/${idNumerico}`)
+        .then(response => response.json())
+        .then(data => {
+          setProjectDetail(data);
+          console.log("detalles del proyecto", data);
+  
+          if (data.id_usuario_id !== user.id_user) {
+            window.location.href = "/project-manager-home";
+          } else {
+            setShow(true);
+          }
+        })
+        .catch(error => {
+          console.error('Error al obtener proyectos:', error);
+        });
+    } catch (error) {
+      console.error('Error al obtener proyectos:', error);
+    }
+  };
+  
+
+  const getTeam = async () => {
+    try {
+      console.log(projectDetail.id_equipo_id);
+      const response = await fetch(`https://localhost:8080/api/teams/${projectDetail.id_equipo_id}`);
+      const data = await response.json();
+      setTeam(data.equipo);
+      console.log("detalles del equipo", data.equipo);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getMembers = async () => {
+    try {
+      const response = await fetch(`https://localhost:8080/api/members-team/${projectDetail.id_equipo_id}`);
+      const data = await response.json();
+      setMiembros(data);
+      setDataLoaded(true);
+      console.log("detalles de los miembros", data);
+    } catch (error) {
+      console.error(error);
+    }
+    }
+
+    const getTasks = async () => {
+      try {
+        const response = await fetch(`https://localhost:8080/api/tasks/`);
+        const data = await response.json();
+        setTasks(data);
+        console.log("detalles de las tareas", data);
+      } catch (error) {
+        console.error(error);
+      }
+      }
 
   return (
-    <div className="h-screen container bg-[#EEF4ED] w-full ">
-      <Header />
-      <div className="flex w-full h-auto bg-[#EEF4ED]">
-        <div className="flex flex-col  md:flex-row ">
-          <div className="flex flex-col ml-6 h-fit">
-            <ReturnButton link={"/"} />
+    dataLoaded ? (
+      <div className="h-screen container bg-[#EEF4ED] w-full ">
+        <Header homeLink={userRole === "Project Manager"? '/project-manager-home' : '/team-member-home'}/>
+        <div className="flex flex-col w-full h-auto bg-[#EEF4ED]">
+              <div className="flex flex-col ml-28 h-fit">
+                <ReturnButton/>
+              </div>
+          <div className="flex">
+          
+            <div className="flex flex-col md:flex-row ">
+            <div className="flex flex-col ml-28 h-fit">
+                <p></p>
+              </div>
+              <div className="h-fit flex flex-col mr-8">
+                <h2 className="text-4xl text-[#134175] font-extrabold">Proyecto</h2>
+                <ProjectDetailsCard idNumerico={idNumerico}/>
+              </div>
+            </div>
+            <div className="">
+              <div className="h-fit">
+                <h2 className="text-4xl text-[#134175] font-extrabold">Equipo</h2>
+                <div className="flex space-x-4">
+                  <TeamCardProjectM profilePhoto={profilePicture} team={team} tasks={tasks} idNumerico={idNumerico}/>
+                </div>
+              </div>
+            </div>
+            <div className="">
+              <div className="h-fit">
+                <h2 className="text-4xl text-[#134175] font-extrabold">Miembros</h2>
+                <div className="flex space-x-4">
+                  <TeamMembersCard idNumerico={idNumerico} members={miembros}/>
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="h-fit flex flex-col mr-8">
-            <ProjectDetailsCard />
-            <ProjectStatistics />
-          </div>
-        </div>
-        <div className="">
-          <div className="h-fit">
-            <h2 className="text-4xl text-[#134175] font-extrabold">Equipos</h2>
-            <div className="flex space-x-4">
-              <TeamCard profilePhoto={profilePicture}/>
-              <TeamCard profilePhoto={profilePicture}/>
-              <TeamCard profilePhoto={profilePicture}/>
-            </div>      
-            <div className="flex justify-around">
-              <CompletedTaskHistory/>
-              <TeamMembersCard/>
-            </div>      
+          <div className="w-full px-[110px]">
+            <TeamRequestResource/>
           </div>
         </div>
       </div>
-    </div>
+    ) : null
   );
 }
 
