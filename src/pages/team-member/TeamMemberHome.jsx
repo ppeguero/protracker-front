@@ -77,8 +77,8 @@ function TeamMemberHome() {
         </div>
         <div className='teams flex flex-col'>
           <h2 className='w-44 text-2xl font-bold text-[#13315C]'>Equipos a los que perteneces</h2>
-          <TeamCard profilePhoto={profilePhoto}/>
-          <TeamCard profilePhoto={profilePhoto}/>
+          <TeamCard infoTeam = {0} profilePhoto={profilePhoto}/>
+          <TeamCard infoTeam = {1} profilePhoto={profilePhoto}/>
         </div>
       </div>
     </div>
