@@ -137,7 +137,7 @@ function TeamMemberHome() {
               <p className="mb-2 text-white text-xs"><strong>Recurso:</strong> {request.nombre_recurso}</p>
               <p className="mb-2 text-white text-xs"><strong>Razón:</strong> {request.razon_de_solicitud}</p>
               <p className="mb-2 text-white text-xs"><strong>Cantidad:</strong> {request.cantidad}</p>
-              <p className='mb-2 text-white text-xs'><strong>Estatus:</strong> {request.aprobado === null ? "En evaluación" : request.aprobado}</p>
+              <p className='mb-2 text-white text-xs'><strong>Estatus:</strong> {request.aprobado === null ? "En evaluación" : request.aprobado == 0 ? "Denegado" : "Aprobado"}</p>
             </div>
             
             ))}

@@ -4,7 +4,7 @@ import plusIcon from "../assets/icons/plus.png";
 import TeamMember from "./TeamMember";
 import TeamRequestCard from "./TeamRequestCard";
 
-function TeamRequestResource() {
+function TeamRequestResource({ idNumerico }) {
   // Añadir la validacion que si detecta que es el jefe de proyecto, se muestre el botón de añadir miembro
 
   const [manager, setManager] = useState(false);
@@ -22,6 +22,29 @@ function TeamRequestResource() {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+
+  const [resources, setResources] = useState([]);
+  const [request, setRequest] = useState([]);
+
+  useEffect(() => {
+    fetch(`https://localhost:8080/api/resource/request`)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        setResources(data);
+      })
+  }, []);
+  
+  useEffect(() => {
+    if (resources) {
+      const filtered = resources.filter(resource => resource.id_proyecto_id === idNumerico);
+      console.log("filtr", filtered);
+      setRequest(filtered);
+    }
+  }, [resources]);
+  
+
+
   return (
     <div className="w-[1215px] flex flex-col bg-[#8DA8C5] h-fit py-10 rounded-md space-y-4 mb-10">
       <div className="flex justify-evenly items-center px-36">
@@ -36,10 +59,16 @@ function TeamRequestResource() {
         </button>
       </div> 
       <div className="justify-start flex flex-col mx-auto overflow-y-auto h-[400px] px-1 scrollbar-track-transparent scrollbar-thumb-[#134175] scrollbar-thumb-rounded-7xl scrollbar-thin">
-        <TeamRequestCard />
-        <TeamRequestCard />
-        <TeamRequestCard />
-        <TeamRequestCard />
+        {
+          request && request.length > 0?
+          request.map(resource => {
+              return (
+                <TeamRequestCard key={resource.id} resource={resource} />
+              )
+            })
+            :
+            null
+        }
 
       </div>
       

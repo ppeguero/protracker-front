@@ -138,7 +138,7 @@ function ProjectDetails() {
             </div>
           </div>
           <div className="w-full px-[110px]">
-            <TeamRequestResource/>
+            <TeamRequestResource idNumerico={idNumerico}/>
           </div>
         </div>
       </div>
