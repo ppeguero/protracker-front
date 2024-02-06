@@ -130,9 +130,9 @@ function TeamMemberHome() {
           <h2 className='text-3xl font-bold text-[#13315C] my-7 mt-6'>Solicita un recurso</h2>
           <AddResourceButton />
           <h2 className='text-3xl font-bold text-[#13315C] mt-4'>Recursos</h2>
-          <div className='flex flex-wrap justify-center'>
+          <div className='flex flex-wrap justify-center flex-col'>
             {requestResources.map((request, index) => (
-              <div className="bg-[#13315C] p-4 rounded-md shadow-md w-full mt-2">
+              <div className="bg-[#13315C] p-4 rounded-md shadow-md w-[380px] mt-2">
               <h1 className=" mb-2 text-white"><strong>Petición:</strong> {index + 1}</h1>
               <p className="mb-2 text-white text-xs"><strong>Recurso:</strong> {request.nombre_recurso}</p>
               <p className="mb-2 text-white text-xs"><strong>Razón:</strong> {request.razon_de_solicitud}</p>

@@ -12,6 +12,10 @@ function UrgentTasks( { idMiembro }) {
         <h2 className='text-white text-xl font-semibold mb-6'>Tareas para realizar</h2>
         <div className='flex flex-col space-y-4'>
             <UrgentTaskCard infoTask={0} profilePhoto={profilePhoto} setNotTasks={setNotTasks} idMiembro={idMiembro}/>
+            <UrgentTaskCard infoTask={1} profilePhoto={profilePhoto} setNotTasks={setNotTasks} idMiembro={idMiembro}/>
+            <UrgentTaskCard infoTask={2} profilePhoto={profilePhoto} setNotTasks={setNotTasks} idMiembro={idMiembro}/>
+            <UrgentTaskCard infoTask={3} profilePhoto={profilePhoto} setNotTasks={setNotTasks} idMiembro={idMiembro}/>
+            <UrgentTaskCard infoTask={4} profilePhoto={profilePhoto} setNotTasks={setNotTasks} idMiembro={idMiembro}/>
         </div>
     </div>
   )

@@ -63,7 +63,7 @@ const AddMemberModal = ({ isOpen, onRequestClose, handleAddOrUpdate }) => {
             id_especialidad_id: '',
         })}).catch((error) => {
         console.error('Fetch error:', error);
-        Swal.fire('Error', 'Hubo un error al añadir el miembro.', 'error');
+        Swal.fire('Error', 'El usuario ya esta en un equipo, por favor actualiza el usuario.', 'error');
       }).finally(() => {
         setIsAddingMember(false); // Desactiva el estado después de que se complete la solicitud
       });;
